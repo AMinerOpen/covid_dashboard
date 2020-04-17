@@ -1,0 +1,91 @@
+
+$marker-size: 36px;
+
+.event-marker-groups {
+    position: relative;
+}
+
+.mapboxgl-marker:hover {
+    z-index: 100;
+}
+
+.event-marker {
+    position: relative;
+    vertical-align: top;
+    display: inline-flex;
+    margin-top: - $marker-size;
+
+    .icon {
+        position: relative;
+        transform-origin: 50% 100%;
+        text-align: center;
+        transition: transform .2s;
+    }
+
+    &.first .iconfont-icon {
+        width: $marker-size;
+        height: $marker-size;
+        fill: currentColor;
+        overflow: hidden;
+    }
+
+    &.follow .iconfont-icon {
+        width: $marker-size * 21 / 27;
+        height: $marker-size * 21 / 27;
+        fill: currentColor;
+        overflow: hidden;
+    }
+
+    .content {
+        position: absolute;
+        background: #ffffffee;
+        width: 200px;
+        max-height: 400px;
+        padding: 10px;
+        margin-left: $marker-size;
+        display: none;
+        overflow-y: scroll;
+        margin-top: -25px;
+        h3 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+        }
+        h4 {
+            margin: 0 0 3px 0;
+            font-size: 14px;
+            text-align: center;
+        }
+        p {
+            margin: 0 0 2px 0;
+            text-indent: 10px;
+            text-align: left;
+            font-size: 12px;
+            a {
+                color: black;
+            }
+        }
+    }
+    &:hover {
+        .content {
+            display: block;
+        }
+        .icon {
+            transform: scale(1.5);
+            cursor: pointer;
+        }
+    }
+}
+
+.event-marker {
+    .icon {
+        animation: cutin .5s;
+    }
+
+    @keyframes cutin {
+        0% { transform: scale(0) }
+        80% { transform: scale(1.2) }
+        100% { transform: scale(1) }
+    }
+}

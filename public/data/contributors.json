@@ -1,0 +1,52 @@
+[
+    {
+        "system_zh": "新冠自测系统",
+        "system_en": "Self-assessment system",
+        "teams": [
+            {
+                "en": "Prof. Bin Yang Team, Tsinghua University",
+                "zh": "杨斌教授团队，清华大学"
+            }
+        ]
+    },
+    {
+        "system_zh": "疫情数据预测",
+        "system_en": "Data forecast",
+        "teams": [
+            {
+                "en": "Prof. Yiqun Liu Team, Tsinghua University",
+                "zh": "刘奕群教授团队，清华大学"
+            }
+        ]
+    },
+    {
+        "system_zh": "新冠图谱",
+        "system_en": "COKG-19",
+        "teams": [
+            {
+                "en": "Dr. Panpan Zhou, Dr. Bing Zou, Tsinghua University",
+                "zh": "周盼盼博士，邹兵博士，清华大学"
+            }
+        ]
+    },
+    {
+        "system_zh": "系统",
+        "system_en": "System",
+        "teams": [
+            {
+                "en": "Da Yin, Aohan Zeng, Tsinghua University",
+                "zh": "殷达，曾奥涵，清华大学"
+            }
+        ]
+    },
+    {
+        "system_zh": "数据",
+        "system_en": "Data",
+        "teams": [
+            {
+                "en": "Zhipu.AI Team",
+                "zh": "智谱.AI 团队"
+            }
+        ]
+    }
+]

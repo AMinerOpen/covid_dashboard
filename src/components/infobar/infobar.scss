@@ -1,0 +1,23 @@
+.infobar {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 6px 12px;
+    font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .item {
+        line-height: 18px;
+        color: rgb(230, 230, 230);
+        min-width: 49%;
+        margin-top: 4px;
+        .num {
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            margin-left: 4px;
+            font-style: italic;
+        }
+    }
+}

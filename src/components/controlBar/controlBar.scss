@@ -1,0 +1,71 @@
+.controlbar {
+    position: relative;
+    width: 240px;
+    color: #020E26bb;
+    font-size: 24px;
+
+    img {
+        width: 100%;
+    }
+
+    .playpause {
+        position: absolute;
+        left: 9.4%;
+        top: 22%;
+        color: white;
+        font-size: 40px;
+        cursor: pointer;
+    }
+
+    .playpause:hover {
+        left: 8.4%;
+        top: 18%;
+        font-size: 46px;
+    }
+
+    .end {
+        position: absolute;
+        left: 54%;
+        top: 34%;
+        cursor: pointer;
+    }
+
+    .end :hover {
+        color: rgba(44, 64, 104, 0.733);
+    }
+
+    .start {
+        position: absolute;
+        left: 40%;
+        top: 34%;
+        cursor: pointer;
+    }
+
+    .start :hover {
+        color: rgba(44, 64, 104, 0.733);
+    }
+
+    .speed {
+        position: absolute;
+        left: 72%;
+        top: 37%;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 18px;
+        padding: 0 4px;
+        border: 1px solid #020E26bb;
+        user-select: none;
+        cursor: pointer;
+    }
+
+    .speed :hover {
+        color: rgba(44, 64, 104, 0.733);
+    }
+}
+
+@media screen and (max-width: 560px) {
+    .controlbar {
+        transform: scale(0.8);
+        transform-origin: left;
+    }
+}

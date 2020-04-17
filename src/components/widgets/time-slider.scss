@@ -1,0 +1,104 @@
+.right-side-panel .button {
+    font-size: 18px;
+    color: white;
+    margin-left: 15px;
+}
+
+.right-side-panel .button:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.info-box {
+    position: relative;
+    left: 30px;
+    display:flex;
+    width: 450px;
+    margin-top: 3px;
+}
+
+.map-name {
+    color: white;
+    font-size: 18px;
+    flex-grow: 1;
+}
+
+.map-fps {
+    color: lightgreen;
+    font-weight: bold;
+    font-size: 16px;
+    flex-grow: 1;
+}
+
+.right-side-panel {
+    transform: translateX(0%) skew(-30deg, 0);
+    border-bottom-right-radius: 30px;
+    user-select: none;
+}
+
+
+.calibers .marks {
+    position: relative;
+    height: 30px;
+    background: #00000040;
+}
+
+.calibers .marks:hover {
+    cursor: pointer;
+    background: #000000C0;
+}
+
+.calibers .grad {
+    background: white;
+    position: absolute;
+    top: 5px;
+}
+
+.calibers .grad.full {
+    height: 5px;
+    width: 2px;
+}
+
+.calibers .grad.half {
+    height: 2px;
+    width: 1px;
+}
+
+.calibers .date {
+    position: absolute;
+    color: white;
+    top: 8px;
+}
+
+.info-date {
+    margin-left: 5px;
+    font-size: 18px;
+    text-align: left;
+    color: white;
+}
+
+.identifier-line {
+    top: -35px;
+    left: 170px;
+    background: yellow;
+    height: 32px;
+    width: 2px;
+    position: absolute;
+}
+
+.identifier {
+    left: 171px;
+    top: -10px;
+    width: 8px;
+    height: 8px;
+    background: yellow;
+    transform: rotate(45deg);
+    transform-origin: left top;
+    position: absolute;
+}
+
+@media screen and (max-width: 560px) {
+    .right-side-panel {
+        opacity: 0.01;
+    }
+}

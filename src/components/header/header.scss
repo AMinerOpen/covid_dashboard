@@ -1,0 +1,202 @@
+.header {
+    position: relative;
+    width: 100%;
+    height: 82px;
+    background-color: #000e27;
+    user-select: none;
+
+    .logo {
+        position: absolute;
+        left: 2%;
+        top: 26px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        .logo1 {
+            width: 32px;
+            display: block;
+            margin-top: 4px;
+            img {
+                width: 100%;
+            }
+        }
+        .line1 {
+            display: block;
+            width: 2px;
+            height: 20px;
+            margin: 4px 8px;
+            background-color: grey;
+        }
+        .logo2 {
+            width: 68px;
+            img {
+                width: 100%;
+            }
+        }
+        .line2 {
+            width: 2px;
+            margin: 0 12px;
+            background-color: grey;
+        }
+        .map_logo {
+            font-weight: bold;
+            color: #0095ff;
+            .logo_up {
+                font-size: 14px;
+                line-height: 14px;
+            }
+            .logo_down {
+                font-size: 12px;
+                font-style: italic;
+                line-height: 14px;
+            }
+            .logo_en {
+                font-size: 16px;
+                font-style: italic;
+                line-height: 28px;
+            }
+        }
+    }
+    .tabs {
+        position: absolute;
+        left: 30%;
+        top: 28px;
+        width: 60%;
+        font-size: 16px;
+        color: #0095ff;
+        font-weight: bold;
+        display: flex;
+        flex-direction: row;
+        .tab {
+            margin: 0 32px;
+            cursor: pointer;
+        }
+        .tab:hover {
+            color: #5fbcff;
+        }
+        .map {
+            color: #ebc543;
+        }
+    }
+    .subtabs {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 24px;
+        width: 100%;
+        background-color: #7a848d;
+        transition: all 0.5s;
+        .inner {
+            position: absolute;
+            top: 0;
+            transform: translateX(-50%);
+            display: flex;
+            height: 100%;
+            flex-direction: row;
+            font-size: 12px;
+            .subtab {
+                margin: 0px 24px;
+                height: 100%;
+                line-height: 24px;
+                color: #000e27;
+                cursor: pointer;
+            }
+            .subtab:hover {
+                color: white;
+            }
+        }
+    }
+    .menu {
+        display: none;
+    }
+    .lang {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        width: 36px;
+        height: 36px;
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 560px) {
+    .header {
+        height: 62px;
+        .logo {
+            top: 18px;
+            .logo1 {
+                width: 26px;
+                margin-top: 2px;
+            }
+            .line1 {
+                height: 16px;
+                margin: 6px 4px;
+            }
+            .logo2 {
+                width: 58px;
+            }
+            .line2 {
+                margin: 0 6px;
+            }
+            .map_logo {
+                .logo_up {
+                    font-size: 12px;
+                    line-height: 14px;
+                }
+                .logo_down {
+                    font-size: 12px;
+                    font-style: italic;
+                    line-height: 14px;
+                }
+                .logo_en {
+                    font-size: 14px;
+                    font-style: italic;
+                    line-height: 28px;
+                }
+            }
+        }
+        .tabs {
+            display: none;
+        }
+        .menu {
+            display: block;
+            float: right;
+            margin-top: 16px;
+            margin-right: 8px;
+            svg {
+                width: 28px;
+                height: 32px;
+                fill: rgba(211, 211, 211, 0.8);
+            }
+        }
+        .list {
+            z-index: 1000;
+            position: fixed;
+            right: 1px;
+            top: 63px;
+            width: 220px;
+            user-select: none;
+            .item {
+                width: 100%;
+                font-size: 14px;
+                color: white;
+                font-weight: bold;
+                padding-left: 16px;
+                height: 32px;
+                line-height: 32px;
+                background-color: #000e27dd;
+                margin-bottom: 1px;
+            }
+            .sub {
+                font-size: 12px;
+                padding-left: 32px !important;
+            }
+        }
+        .lang {
+            display: none;
+        }
+    }
+}

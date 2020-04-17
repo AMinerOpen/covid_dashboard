@@ -1,0 +1,181 @@
+.forcast {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    .forcast_inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-height: 800px;
+        display: flex;
+        flex-direction: column;
+        .forcast_title {
+            position: relative;
+            width: 100%;
+            height: 32px;
+            font-size: 24px;
+            font-weight: bold;
+            padding-left: 8px;
+            color: white;
+            margin-top: 8px;
+            border-bottom: 1px solid lightgrey;
+
+            .tip {
+                margin-left: 8px;
+                svg {
+                    width: 20px;
+                    height: 20px;
+                    fill: lightgrey;
+                }
+            }
+        }
+    
+        .forcast_forcast {
+            margin: 20px 8px 6px 8px;
+            background-color: #ffffffcc;
+        }
+
+        .realdata {
+            position: relative;
+            margin-top: 12px;
+            user-select: none;
+            .realdata_datas {
+                position: relative;
+                width: 100%;
+                margin-bottom: 10px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                .realdata_item {
+                    text-align: center;
+                    .realdata_title {
+                        font-size: 14px;
+                        font-weight: bold;
+                        color: white;
+                    }
+                    .realdata_data {
+                        font-size: 20px;
+                        font-weight: bold;
+                    }
+                    .realdata_daily {
+                        width: 100%;
+                        color: white;
+                        font-size: 12px;
+                        border-radius: 6px;
+                        margin: 0 auto;
+                        background-color: rgba(240, 240, 240, 0.192);
+                    }
+                }
+            }
+            .realdata_bar {
+                width: 96%;
+                height: 14px;
+                margin-left: 2%;
+                border-radius: 4px;
+                display: flex;
+                flex-direction: row;
+                overflow: hidden;
+            }
+        }
+    
+        .forcast_table {
+            position: relative;
+            flex: 1;
+            width: 100%;
+            height: 0;
+            margin-top: 12px;
+            padding: 0 8px;
+            text-align: center;
+            overflow-y: scroll;
+    
+            .forcast_table_table {
+                .forcast_table_column {
+                    background-color: #cccccc00 !important;
+                }
+            }
+
+            .forcast_table_column {
+                color: white;
+                font-weight: bold;
+            }
+        }
+    
+        .forcast_close {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            width: 32px;
+            height: 32px;
+    
+            svg {
+                fill: lightgrey;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}
+
+.ant-table {
+    background: #cccccc00 !important;
+    th {
+        padding: 8px 0px !important;
+        text-align: center !important;
+    }
+    td {
+        padding: 6px 2px !important;
+    }
+    table {
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 560px) {
+    .forcast {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: block;
+        flex-direction: unset;
+        overflow-y: scroll;
+        overflow-x: hidden;
+
+        .forcast_inner {
+            position: relative;
+            width: 100%;
+            height: unset;
+            display: block;
+            flex-direction: unset;
+            .forcast_table {
+                flex: unset;
+                width: 100%;
+                height: unset;
+                margin-top: 12px;
+                padding: 0 8px;
+                overflow-y: scroll;
+                overflow-x: hidden;
+                text-align: center;
+        
+                .forcast_table_table {
+                    .forcast_table_column {
+                        background-color: #cccccc00 !important;
+                    }
+                }
+            }
+            .forcast_close {
+                position: absolute;
+                right: 12px;
+                top: 0px;
+                width: 32px;
+                height: 32px;
+        
+                svg {
+                    fill: lightgrey;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+    }
+}

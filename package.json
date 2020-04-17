@@ -1,0 +1,187 @@
+{
+  "name": "ncov-miner",
+  "homepage": "https://covid-dashboard.aminer.cn",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ant-design/icons": "^4.0.3",
+    "@babel/core": "7.8.4",
+    "@babel/helper-create-regexp-features-plugin": "^7.8.8",
+    "@fortawesome/fontawesome-free": "^5.12.1",
+    "@mapbox/geojson-area": "^0.2.2",
+    "@mapbox/mapbox-gl-language": "^0.10.1",
+    "@svgr/webpack": "4.3.3",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@turf/turf": "^5.1.6",
+    "@types/chroma-js": "^2.0.0",
+    "@types/csv-parse": "^1.2.2",
+    "@types/dateformat": "^3.0.1",
+    "@types/geojson": "^7946.0.7",
+    "@types/jest": "^24.0.0",
+    "@types/lodash": "^4.14.149",
+    "@types/mapbox-gl": "^1.8.1",
+    "@types/node": "^12.0.0",
+    "@types/pako": "^1.0.1",
+    "@types/polylabel": "^1.0.5",
+    "@types/query-string": "^6.3.0",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "@types/topojson": "^3.2.2",
+    "@types/topojson-client": "^3.0.0",
+    "@types/turf": "^3.5.32",
+    "@typescript-eslint/eslint-plugin": "^2.10.0",
+    "@typescript-eslint/parser": "^2.10.0",
+    "antd": "^4.0.3",
+    "axios": "^0.19.2",
+    "babel-eslint": "10.0.3",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "8.0.6",
+    "babel-plugin-named-asset-import": "^0.3.6",
+    "babel-preset-react-app": "^9.1.1",
+    "camelcase": "^5.3.1",
+    "case-sensitive-paths-webpack-plugin": "2.3.0",
+    "chroma-js": "^2.1.0",
+    "css-loader": "3.4.2",
+    "csv-parse": "^4.8.8",
+    "dateformat": "^3.0.3",
+    "dotenv": "^8.2.0",
+    "dotenv-expand": "5.1.0",
+    "echarts": "^4.7.0",
+    "echarts-for-react": "^2.0.15-beta.1",
+    "eslint": "^6.6.0",
+    "eslint-config-react-app": "^5.2.0",
+    "eslint-loader": "3.0.3",
+    "eslint-plugin-flowtype": "4.6.0",
+    "eslint-plugin-import": "2.20.0",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.18.0",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "file-loader": "4.3.0",
+    "fs-extra": "^8.1.0",
+    "gh-pages": "^2.2.0",
+    "html-webpack-plugin": "4.0.0-beta.11",
+    "http-proxy-middleware": "^1.0.3",
+    "identity-obj-proxy": "3.0.0",
+    "jest": "24.9.0",
+    "jest-environment-jsdom-fourteen": "1.0.1",
+    "jest-resolve": "24.9.0",
+    "jest-watch-typeahead": "0.4.2",
+    "lodash": "^4.17.15",
+    "mapbox-gl": "^1.8.1",
+    "mini-css-extract-plugin": "0.9.0",
+    "node-sass": "^4.13.1",
+    "optimize-css-assets-webpack-plugin": "5.0.3",
+    "pako": "^1.0.11",
+    "pnp-webpack-plugin": "1.6.0",
+    "polylabel": "^1.0.2",
+    "postcss-flexbugs-fixes": "4.1.0",
+    "postcss-loader": "3.0.0",
+    "postcss-normalize": "8.0.1",
+    "postcss-preset-env": "6.7.0",
+    "postcss-safe-parser": "4.0.1",
+    "query-string": "^6.12.1",
+    "react": "^16.13.0",
+    "react-app-polyfill": "^1.0.6",
+    "react-dev-utils": "^10.2.0",
+    "react-dom": "^16.13.0",
+    "react-intl": "^4.1.1",
+    "react-scripts": "3.4.0",
+    "resolve": "1.15.0",
+    "resolve-url-loader": "3.1.1",
+    "sass-loader": "8.0.2",
+    "semver": "6.3.0",
+    "style-loader": "0.23.1",
+    "terser-webpack-plugin": "2.3.4",
+    "topojson-client": "^3.1.0",
+    "ts-pnp": "1.1.5",
+    "typescript": "~3.7.2",
+    "url-loader": "2.3.0",
+    "webpack": "4.41.5",
+    "webpack-dev-server": "3.10.2",
+    "webpack-manifest-plugin": "2.2.0",
+    "workbox-webpack-plugin": "4.3.1"
+  },
+  "scripts": {
+    "start": "node scripts/start.js",
+    "start:local-api": "REACT_APP_API_URL=http://localhost:9081 node scripts/start.js",
+    "build": "node scripts/build.js",
+    "test": "node scripts/test.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts"
+    ],
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.ts"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+    ],
+    "testEnvironment": "jest-environment-jsdom-fourteen",
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "modulePaths": [],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web",
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+    },
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ],
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
+  },
+  "devDependencies": {
+    "react-perf-devtool": "^3.1.8"
+  }
+}
