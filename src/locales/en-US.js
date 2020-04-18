@@ -12,6 +12,7 @@ export default {
     "main.kg" : "Knowledge Graph",
     "main.datasets" : "Datasets",
     "main.contributors": "Contributors",
+    "main.title": "COVID-19 Graph - Knowledge Dashboard",
 
     //toolbar
     "toolbar.showall" : "Show all",

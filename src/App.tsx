@@ -46,6 +46,9 @@ export default class App extends React.Component<any, IState> {
 
   private getCurrentLanguage(): 'en' | 'zh' {
     let lang: 'zh' | 'en' = navigator.language.toLowerCase().indexOf('zh') >= 0 ? 'zh' : 'en';
+    if(lang == 'en') {
+      document.title = "COVID-19 Graph - Knowledge Dashboard";
+    }
     return lang;
   }
 
@@ -72,6 +75,7 @@ export default class App extends React.Component<any, IState> {
 
   private handleSwitchLocale() {
     let env: IEnv = {...this.state.env, lang: this.state.env.lang == 'en' ? 'zh' : 'en'};
+    document.title = env.lang == 'zh' ? "全球新冠疫情智能驾驶舱" : "COVID-19 Graph - Knowledge Dashboard";
     this.setState({env});
   }
 

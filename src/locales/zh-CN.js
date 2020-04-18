@@ -12,6 +12,7 @@ export default {
     "main.kg" : "知识图谱",
     "main.datasets" : "数据集",
     "main.contributors": "合作者",
+    "main.title": "全球新冠疫情智能驾驶舱",
 
     //toolbar
     "toolbar.showall" : "全部数据",
