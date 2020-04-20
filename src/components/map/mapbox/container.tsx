@@ -197,7 +197,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
 
         requestRegionsInfo().then(csvdata => {
                 csvdata.forEach(value => {
-                    const [name, name_en, name_zh, x0, y0, x1, y1] = value
+                    const [name, name_zh, name_en, x0, y0, x1, y1] = value
                     this.regionsInfo[name] = {name, name_en, name_zh, bbox: [parseFloat(x0), parseFloat(y0), parseFloat(x1), parseFloat(y1)]}
                     if (name === 'Russia') this.regionsInfo[name].bbox = [7, 37, -163, 78]
                     else if (name === 'United States of America') this.regionsInfo[name].bbox = [-170, 26, -60, 72]
