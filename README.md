@@ -28,6 +28,9 @@ Build
 yarn build 
 ```
 
+## API
+[API.md](https://github.com/AMinerOpen/covid_dashboard/blob/master/API.md)
+
 ## Data source
 #### Epidemic data
 [WHO Covid situation reports](https://www.who.int/emergencies/diseases/novel-coronavirus-2019/situation-reports)  
