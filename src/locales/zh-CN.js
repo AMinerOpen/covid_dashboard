@@ -2,10 +2,16 @@ export default {
     //header
     "header.map": "智能驾驶舱",
     "header.datasets": "开放数据源",
+    "header.research": "科学研究",
+    "header.kg": "知识图谱",
+    "header.public": "公共服务",
+    "header.policy": "政策地图",
+    "header.timeline": "学术成果时间线",
+    "header.experts": "高关注专家学者",
     "header.tools": "工具",
     "header.selftest": "新冠自测系统",
     "header.more": "疫情专题",
-    "header.subscribe": "订阅",
+    "header.subscribe": "新闻订阅",
 
     //main
     "main.selftest" : "自测系统",

@@ -2,10 +2,16 @@ export default {
     //header
     "header.map": "Dashboard",
     "header.datasets": "Open Datasets",
+    "header.research": "Research",
+    "header.kg": "KnowledgeGraph",
+    "header.public": "Public",
+    "header.policy": "Policy",
+    "header.timeline": "Pubs Timeline",
+    "header.experts": "High Impact Scholars",
     "header.tools": "Tools",
     "header.selftest": "Self-assessment system",
     "header.more": "More",
-    "header.subscribe": "Subscribe",
+    "header.subscribe": "News Subscribe",
 
     //main
     "main.selftest" : "Self Assessment",
