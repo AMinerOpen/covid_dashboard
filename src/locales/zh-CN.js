@@ -66,5 +66,7 @@ export default {
     //event
     "event.nocontent": "无内容",
     "event.download": "下载",
-    "event.source": "来源"
+    "event.source": "来源",
+    "event.events": "事件",
+    "event.entities": "实体"
 }

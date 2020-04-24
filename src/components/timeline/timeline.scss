@@ -1,16 +1,39 @@
+@import "../../global.scss";
+$height: 220px;
+
 .timeline {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: $height;
+    overflow-y: visible;
 
+    .bg {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        background-color: $background;
+    }
     .timeline_pointer {
         position: absolute;
         left: 50%;
-        top: 0;
+        bottom: 0;
         margin-left: -2px;
         width: 4px;
-        height: 100%;
+        height: 60px;
         background-color: #ffe100cc;
+    }
+
+    .timeline_bar {
+        .date {
+            position: absolute;
+            background-color: grey;
+            font-size: 12px;
+            text-align: center;
+            color: white;
+            user-select: none;
+        }
     }
 
     .timeline_container {
@@ -20,61 +43,12 @@
         width: 100%;
         height: 100%;
         overflow-x: scroll;
-        overflow-y: visible;
-
-        .timeline_events {
+        .events {
             position: absolute;
             left: 0;
-            top: 0;
-            height: 100%;
-            
-            .timeline_date_container {
+            top: calc(#{$height} - 50px);
+            .bar {
                 position: absolute;
-                width: 136px;
-                height: calc(100% - 48px);
-                overflow-x: hidden;
-                
-                .timeline_date_list {
-                    position: absolute;
-                    left: 0;
-                    bottom: 0;
-                    width: 150px;
-                    max-height: 100%;
-                    overflow-y: scroll;
-
-                    .timeline_events_item {
-                        position: relative;
-                        user-select: none;
-                        max-width: 100%;
-                        cursor: pointer;
-                        .timeline_news_icon {
-                            position: absolute;
-                            top: 4px;
-                            left: 0;
-                            transform: translateX(-50%);
-                            svg {
-                                width: 18px;
-                                height: 18px;
-                            }
-                        }
-            
-                        .timeline_events_title {
-                            position: absolute;
-                            left: 14px;
-                            top: 0;
-                            max-width: 100%;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                            font-size: 12px;
-                            padding: 2px 6px;
-                            line-height: 20px;
-                            color: rgb(34, 34, 34);
-                            transform-origin: left;
-                            user-select: none;
-                        }
-                    }
-                }
             }
         }
     }

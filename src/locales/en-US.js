@@ -3,7 +3,7 @@ export default {
     "header.map": "Dashboard",
     "header.datasets": "Open Datasets",
     "header.research": "Research",
-    "header.kg": "KnowledgeGraph",
+    "header.kg": "Knowledge Graph",
     "header.public": "Public",
     "header.policy": "Policy",
     "header.timeline": "Pubs Timeline",
@@ -66,5 +66,7 @@ export default {
     //event
     "event.nocontent": "Empty",
     "event.download": "Download",
-    "event.source": "Source"
+    "event.source": "Source",
+    "event.events": "Events",
+    "event.entities": "Entities"
 }

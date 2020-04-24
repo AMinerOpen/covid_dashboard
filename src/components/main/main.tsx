@@ -38,7 +38,7 @@ interface IState {
   events: any[];
   showDataSource: boolean;
   showContributors: boolean;
-  currentEvent: any;
+  panelDate: Date | null;
 }
 
 export default class Main extends React.Component<IProps, IState> {
@@ -53,7 +53,7 @@ export default class Main extends React.Component<IProps, IState> {
       events: [],
       showDataSource: false,
       showContributors: false,
-      currentEvent: null
+      panelDate: null
     };
 
     this.handleLangAllChange = this.handleLangAllChange.bind(this);
@@ -77,12 +77,12 @@ export default class Main extends React.Component<IProps, IState> {
     this.setState({ showContributors: true });
   }
 
-  private handleOpenEventPanel(event: any) {
-    this.setState({ currentEvent: event });
+  private handleOpenEventPanel(date: Date) {
+    this.setState({ panelDate: date });
   }
 
   private handleCloseEventPanel() {
-    this.setState({ currentEvent: null });
+    this.setState({ panelDate: null });
   }
 
   private handleKg() {
@@ -186,7 +186,8 @@ export default class Main extends React.Component<IProps, IState> {
     return (
       <EventPanel
         env={this.props.env}
-        event={this.state.currentEvent}
+        events={this.state.events}
+        date={this.state.panelDate!}
         onClose={this.handleCloseEventPanel}
       />
     );
@@ -207,8 +208,8 @@ export default class Main extends React.Component<IProps, IState> {
     const {
       showForcast,
       showDataSource,
-      currentEvent,
-      showContributors
+      showContributors,
+      panelDate
     } = this.state;
     return (
       <div className="main">
@@ -260,7 +261,7 @@ export default class Main extends React.Component<IProps, IState> {
                   env={env}
                 />
               )}
-              {currentEvent && this.eventPanel()}
+              {panelDate && this.eventPanel()}
             </div>
           </div>
         ) : (
@@ -284,7 +285,7 @@ export default class Main extends React.Component<IProps, IState> {
                   env={env}
                 />
               )}
-              {currentEvent && this.eventPanel()}
+              {panelDate && this.eventPanel()}
             </div>
           </div>
         )}

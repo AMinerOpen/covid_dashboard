@@ -4,29 +4,49 @@ import { IDefaultProps } from '../../global';
 import { FormattedMessage } from 'react-intl'
 import { requestEvent } from '../../utils/requests';
 import EventFlag from '../eventFlag/eventFlag';
+import dateFormat from 'dateformat';
 
 interface IProps extends IDefaultProps {
-    event: any;
+    events: any[];
+    date: Date;
     onClose: () => void;
 }
 
 interface IState {
+    curEvents: any[];
     entities: any[];
     hightlight: string;
     eventDetail: any;
 }
 
 export default class EventPanel extends React.Component<IProps, IState> {
+    private _curEventId: string = "";
+    private _closeLock: boolean = true;
+
     constructor(props: IProps) {
         super(props);
+        let events: any[] = [];
+        if(this.props.events && this.props.events.length) {
+            let obj: any = this.props.events.find(d => this.sameDay(d.date, this.props.date!));
+            if(obj) {
+                events = obj.data;
+            }
+        }
         this.state = {
+            curEvents: events,
             entities: [],
             hightlight: "",
             eventDetail: null
         };
         this.handleMapEntities = this.handleMapEntities.bind(this);
+        this.handleSelectEvent = this.handleSelectEvent.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+    }
 
-        this.requestDetails();
+    public componentDidMount() {
+        setTimeout(() => {
+            this._closeLock = false;
+        }, 1000);
     }
 
     public componentDidUpdate(preProps: IProps, preState: IState) {
@@ -36,17 +56,19 @@ export default class EventPanel extends React.Component<IProps, IState> {
                 div.scrollIntoView();
             }
         }
-        if(!preState.eventDetail && this.state.eventDetail) {
+        if(preState.eventDetail != this.state.eventDetail) {
             this.requestEntities();
         }
     }
 
-    private requestDetails() {
-        requestEvent(this.props.event._id).then(data => {
-            if(data && data.status) {
-                this.setState({eventDetail: data.data});
-            }
-        })
+    private handleClose() {
+        if(!this._closeLock) {
+            this.props.onClose && this.props.onClose();
+        }
+    }
+
+    private sameDay(a: Date, b: Date): boolean {
+        return a.getFullYear() == b.getFullYear() && a.getMonth() == b.getMonth() && a.getDate() == b.getDate();
     }
 
     private requestEntities(): void {
@@ -67,6 +89,19 @@ export default class EventPanel extends React.Component<IProps, IState> {
                     }
                 })
             }
+        }
+    }
+
+    private handleSelectEvent(id: string): void {
+        if(id != this._curEventId) {
+            this._curEventId = id;
+            requestEvent(id).then(data => {
+                if(data && data.status) {
+                    if(this._curEventId == data.data._id) {
+                        this.setState({eventDetail: data.data});
+                    }
+                }
+            })
         }
     }
 
@@ -104,7 +139,7 @@ export default class EventPanel extends React.Component<IProps, IState> {
                         key={index} 
                         onMouseOver={url ? () => this.setState({hightlight: url}) : undefined}
                         onClick={url ? () => this.setState({hightlight: url}) : undefined}
-                        style={url ? {color: 'rgb(215, 385, 70)'} : undefined}>{str}</span>
+                        style={url ? {color: 'darkorange', fontWeight: 'bold'} : undefined}>{str}</span>
             })
         )
     }
@@ -128,7 +163,7 @@ export default class EventPanel extends React.Component<IProps, IState> {
             <div className='content_outter'>
                 { event.content && <div className='paper_line'><span className='paper_content'>{this.format(event.content)}</span></div> }
                 { event.urls && event.urls.length > 0 ? (
-                    <div className='paper_line'><FormattedMessage id='event.source' />: <a className='paper_content' href={event.urls[0]} style={{color: 'lightskyblue'}} target="_blank">{`[${event.source || "Url"}]`}</a></div>
+                    <div className='paper_line'><FormattedMessage id='event.source' />: <a className='paper_content' href={event.urls[0]} style={{color: 'dodgerblue'}} target="_blank">{`[${event.source || "Url"}]`}</a></div>
                 ) : (
                     event.source && <div className='paper_line'><FormattedMessage id='event.source' />: <span className='paper_content'>{`[${event.source}]`}</span></div>
                 )}
@@ -147,12 +182,25 @@ export default class EventPanel extends React.Component<IProps, IState> {
     }
 
     public render() {
-        const { onClose } = this.props;
+        const { date, env } = this.props;
+        const { curEvents, entities } = this.state;
         const event = this.state.eventDetail;
         return (
-            <div className='eventpanel' onClick={() => onClose()}>
-                <div className='panel' style={event && event.type == 'paper' ? {height: '480px'} : {height: '360px'}} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+            <div className='eventpanel' onClick={this.handleClose}>
+                <div className='panel' onClick={(e: React.MouseEvent) => e.stopPropagation()}>
                     <div className='left'>
+                        <div className='events_header'>{`${dateFormat(date, 'yyyy-mm-dd')} (${curEvents.length})`}</div>
+                        <div className='list'>
+                            <div className='list_inner'>
+                            { curEvents.map((value: any, index: number) => {
+                                return (
+                                    <div className='event_title' key={index} onClick={() => this.handleSelectEvent(value._id)}><EventFlag lang={env.lang} type={value.type} category={value.category}/>{value.title}</div>
+                                )
+                            })}
+                            </div>
+                        </div>
+                    </div>
+                    <div className='mid'>
                         {event && this.title()}
                         { event && event.type == 'paper' && this.paperContent() }
                         { event && event.type == 'news' && this.newsContent() }
@@ -166,11 +214,13 @@ export default class EventPanel extends React.Component<IProps, IState> {
                         }
                     </div>
                     <div className='right'>
+                        <div className='events_header'><FormattedMessage id='event.entities' />{` (${entities.length})`}</div>
                         <div className="list">
                             { this.state.entities.map(this.handleMapEntities)}
                         </div>
                     </div>
                 </div>
+
             </div>
         )
     }

@@ -8,14 +8,16 @@ import dateFormat from 'dateformat';
 interface IState {
     tflag: number;
     events: any[];
-    catchEvents: {lang: string, langAll: boolean, events: (JSX.Element|null)[]} | null;
+    timelineData: any[];
+    catchBars: (JSX.Element|null)[] | null;
     catchLine: (JSX.Element|null)[] | null;
+    barHeightRatio: number;
 }
 
 interface IProps extends IDefaultProps {
     langAll: boolean;
     onTflagChange: (tflag: number) => void;
-    onOpenEvent: (event:any) => void;
+    onOpenEvent: (date: Date) => void;
     onLoadNews?: (news: any[]) => void;
     onLoadEvents?: (events: any[]) => void;
     onChangeDate: (date: Date) => void;
@@ -31,12 +33,13 @@ export default class Timeline extends React.Component<IProps, IState> {
     private _container: HTMLDivElement | null;
     private _dates: Date[];
 
-    private _date_circle_radius: number = 18;
     private _date_circle_border_width: number = 4;
     private _date_circle_margin: number = 4;
-    private _date_line_width: number = 120;
-    private _date_line_height: number = 8;
+    private _date_line_width: number = 100;
+    private _date_line_height: number = 26;
     private _date_bottom: number = 42;
+    private _event_bar_width: number = 54;
+    private _bar_height_max: number = 160;
 
     private _dragging: boolean = false;
     private _moveDelay: number = 20;
@@ -46,29 +49,29 @@ export default class Timeline extends React.Component<IProps, IState> {
 
     private _types: any[] = [
         {
-            type: "paper",
-            color: "#d3b933"
-        },
-        {
-            type: "news",
-            color: "#ef5e66"
-        },
-        {
             type: "points",
             color: '#00b7cb'
         },
         {
+            type: "paper",
+            color: "#d3b933"
+        },
+        {
             type: "event",
             color: "#21a985"
+        },
+        {
+            type: "news",
+            color: "#ef5e66"
         }
     ]
 
     constructor(props: IProps) {
         super(props);
 
-        this._rangeStartDate = new Date("2020-01-24");
+        this._rangeStartDate = new Date(2020,1,24,0,0,0);
         this._rangeEndDate = new Date();
-        this._renderStartDate = new Date("2020-01-10");
+        this._renderStartDate = new Date(2020,1,10,0,0,0);
         this._renderEndDate = new Date(this._rangeEndDate.getTime() + 15*this._ms1Day);
         let dates: Date[] = [];
         let date: number = this._renderStartDate.getTime();
@@ -81,20 +84,24 @@ export default class Timeline extends React.Component<IProps, IState> {
         this.state = {
             tflag: 0,
             events: [],
-            catchEvents: null,
-            catchLine: null
+            catchLine: null,
+            catchBars: null,
+            timelineData: [],
+            barHeightRatio: 1
         }
 
         this._container = null;
         this.handleDrawDate = this.handleDrawDate.bind(this);
         this.dateWidth = this.dateWidth.bind(this);
-        this.handleMapEventsDate = this.handleMapEventsDate.bind(this);
         this.handleTouchStart = this.handleTouchStart.bind(this);
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
         this.updateEvents = this.updateEvents.bind(this);
+        this.drawBars = this.drawBars.bind(this);
+        this.handleBar = this.handleBar.bind(this);
+        this.handleDateUp = this.handleDateUp.bind(this);
     }
 
     public componentDidMount() {
@@ -112,15 +119,11 @@ export default class Timeline extends React.Component<IProps, IState> {
     public componentDidUpdate(preProps: IProps, preState: IState) {
         if(!this._dragging && preProps.env.date != this.props.env.date) {
             this.locatTimeline(this.props.env.date);
-        }
-        if(!this.state.catchEvents || preState.events != this.state.events || this.state.catchEvents.lang != this.props.env.lang || this.state.catchEvents.langAll != this.props.langAll) {
-            if(this.state.events.length) {
-                this.setState({catchEvents: {
-                    lang: this.props.env.lang,
-                    langAll: this.props.langAll,
-                    events: this.state.events.map(this.handleMapEventsDate)
-                }})
-            }
+        }   
+        if(preState.timelineData != this.state.timelineData) {
+            this.setState({
+                catchBars: this.drawBars()
+            })
         }
     }
 
@@ -136,8 +139,14 @@ export default class Timeline extends React.Component<IProps, IState> {
     }
 
     private getPointerOffsetX(date: Date): number {
-        let ratio: number = (date.getTime() - this._renderStartDate.getTime()) / this._ms1Day * this.dateWidth() + this._date_circle_radius/2;
+        let ratio: number = (date.getTime() - this._renderStartDate.getTime()) / this._ms1Day * this.dateWidth();
         return ratio;
+    }
+
+    private handleDateUp(date: Date) {
+        if((new Date()).getTime() - this._downTime < 300) {
+            this.props.onOpenEvent && this.props.onOpenEvent(date);
+        }
     }
 
     private handleTouchStart(e: React.TouchEvent): void {
@@ -154,6 +163,7 @@ export default class Timeline extends React.Component<IProps, IState> {
             this.props.onChangeSpeed(0);
         }
         this._dragging = true;
+        this._downTime = (new Date()).getTime();
     }
 
     private handleMouseUp(e: MouseEvent | TouchEvent): void {
@@ -171,7 +181,7 @@ export default class Timeline extends React.Component<IProps, IState> {
     }
 
     private x2Date(x: number): Date {
-        let date: Date = new Date(((x - this._date_circle_radius/2 + this._container!.clientWidth/2) / this.dateWidth() * this._ms1Day) + this._renderStartDate.getTime());
+        let date: Date = new Date(((x + this._container!.clientWidth/2) / this.dateWidth() * this._ms1Day) + this._renderStartDate.getTime());
         return date;
     }
 
@@ -215,22 +225,11 @@ export default class Timeline extends React.Component<IProps, IState> {
                 let datas: any[] = data.data.datas;
                 if(datas.length) {
                     let events: any[] = [...this.state.events];
-                    datas.forEach((d:any) => {
-                        let date: Date = new Date(d.time);
-                        let dateObj: any = events.find(value => this.sameDay(value.date, date));
-                        if(dateObj) {
-                                dateObj.data.splice(0, 0, d);
-                        }
-                    })
-                    if (this.props.onLoadNews) {
-                        const _events = events.map(event => {return {date: event.date, data: event.data.filter((e: any) => {
-                            if (e.type === 'point' || e.type === 'paper') e.category = '学术活动'
-                            return e.geoInfo && e.geoInfo.length > 0
-                        })}})
-                        this.props.onLoadNews(_events)
-                    }
-                    this.props.onLoadEvents && this.props.onLoadEvents(events);
-                    this.setState({events, tflag});
+                    let timelineData: any[] = [...this.state.timelineData];
+                    this.addToEventsAndTimeline(datas, events, timelineData);
+                    this.handleEventsChange(events);
+                    let max = timelineData.reduce((pre, cur) => Math.max(pre, cur.data.total), 0);
+                    this.setState({events, tflag, timelineData, barHeightRatio: this._bar_height_max / max})
                 }else {
                     this.setState({tflag});
                 }
@@ -243,37 +242,85 @@ export default class Timeline extends React.Component<IProps, IState> {
         requestEvents().then(data => {
             let tflag: number = data.tflag;
             let events: any[] = this._dates.map(d => {return {date: d, data:[]}});
-            data.datas.forEach((d:any) => {
-                let date: Date = new Date(d.time);
-                let dateObj: any = events.find(value => this.sameDay(value.date, date));
-                if(dateObj) {
-                    // if(d.type == 'news' && d.lang == 'en') {
-                    //     let t: number = 0;
-                    //     dateObj.data.forEach((a:any) => a.type == 'news' && a.lang == 'en' && t++);
-                    //     if(t < 30) {
-                    //         dateObj.data.splice(Math.floor((Math.random() * 100) % dateObj.data.length), 0, d);
-                    //     }
-                    // }else {
-                        let index: number = Math.floor((Math.random() * 100) % dateObj.data.length);
-                        dateObj.data.splice(index, 0, d);
-                    // }
-                }
-            })
-            if (this.props.onLoadNews) {
-                const _events = events.map(event => {return {date: event.date, data: event.data.filter((e: any) => {
-                    if (e.type === 'point' || e.type === 'paper') e.category = '学术活动'
-                    return e.geoInfo && e.geoInfo.length > 0
-                })}})
-                this.props.onLoadNews(_events)
-            }
-            this.props.onLoadEvents && this.props.onLoadEvents(events);
-            this.setState({events, tflag});
+            let timelineData: any[] = this._dates.map(d => {return {date: d, data:{total: 0}}});
+            this.addToEventsAndTimeline(data.datas, events, timelineData);
+            this.handleEventsChange(events)
+            let max = timelineData.reduce((pre, cur) => Math.max(pre, cur.data.total), 0);
+            this.setState({tflag, events, timelineData, barHeightRatio: this._bar_height_max / max});
             this.props.onTflagChange(tflag);
         })
     }
 
+    private addToEventsAndTimeline(datas: any[], events: any[], timeline: any[]) {
+        datas.forEach((d:any) => {
+            let timeStr: string = d.time.replace(" ", "T");
+            if(timeStr.indexOf("T") >= 0) timeStr += ".000+08:00";
+            let date: Date = new Date(timeStr);
+            let dateObj: any = events.find(value => this.sameDay(value.date, date));
+            if(dateObj) {
+                dateObj.data.splice(0, 0, d);
+            }
+            let timelineObj: any = timeline.find(value => this.sameDay(value.date, date));
+            if(timelineObj) {
+                if(!timelineObj.data[d.type]) {
+                    timelineObj.data[d.type] = 1;
+                }else {
+                    timelineObj.data[d.type] += 1;
+                }
+                timelineObj.data.total += 1;
+            }
+        })
+    }
+
+    private handleEventsChange(events: any[]) {
+        if (this.props.onLoadNews) {
+            const _events = events.map(event => {return {date: event.date, data: event.data.filter((e: any) => {
+                if (e.type === 'point' || e.type === 'paper') e.category = '学术活动'
+                return e.geoInfo && e.geoInfo.length > 0
+            })}})
+            this.props.onLoadNews(_events)
+        }
+        this.props.onLoadEvents && this.props.onLoadEvents(events);
+    }
+
     private dateWidth(): number {
-        return this._date_circle_radius + this._date_circle_margin*2 + this._date_line_width;
+        return this._date_circle_margin + this._date_line_width;
+    }
+
+    private handleBar(value: any, index: number): JSX.Element | null {
+        return (
+            <div 
+                className='bar' 
+                key={index}
+                onMouseUp={() => this.handleDateUp(value.date)}
+                onTouchEnd={() => this.handleDateUp(value.date)}
+                style={{
+                    left: `${index * this.dateWidth() + (this._date_line_width - this._event_bar_width)/2}px`,
+                    bottom: '0px',
+                    opacity: 0.96,
+                    cursor: 'pointer'
+                }}>
+                { this._types.map((d:any, i:number) => {
+                    return (
+                        <div key={d.type} style={{
+                            position: "relative",
+                            width: `${this._event_bar_width}px`,
+                            height: `${(value.data[d.type] || 0) * this.state.barHeightRatio}px`,
+                            backgroundColor: d.color
+                        }} />
+                    )
+                })}
+            </div>
+        );
+    }
+
+    private drawBars(): (JSX.Element|null)[] {
+        let result: (JSX.Element|null)[] = [];
+        const { timelineData } = this.state;
+        if(timelineData && timelineData.length) {
+            result = timelineData.map(this.handleBar);
+        }
+        return result;
     }
 
     private handleDrawDate(value: Date, index: number): JSX.Element {
@@ -286,31 +333,20 @@ export default class Timeline extends React.Component<IProps, IState> {
                 marginRight: `${this._date_circle_margin}px`,
                 userSelect: 'none'
             }}>
-                <div style={{
-                    position: 'absolute',
+                <div
+                    className='date'  
+                    onMouseUp={() => this.handleDateUp(value)}
+                    onTouchEnd={() => this.handleDateUp(value)}
+                    style={{
                     left: 0,
                     top: 0,
-                    width: `${this._date_circle_radius}px`,
-                    height: `${this._date_circle_radius}px`,
-                    borderRadius: `${this._date_circle_radius/2}px`,
-                    border: `${this._date_circle_border_width}px solid #0095ff`,
-                    marginRight: `${this._date_circle_margin}px`
-                }} />
-                <div style={{
-                    position: 'absolute',
-                    left: `${this._date_circle_radius + this._date_circle_margin}px`,
-                    top: `${(this._date_circle_radius - this._date_line_height)/2}px`,
                     width: `${this._date_line_width}px`,
                     height: `${this._date_line_height}px`,
-                    backgroundColor: '#cccccc'
-                }} />
-                <div style={{
-                    position: 'absolute',
-                    left: `${this._date_circle_radius + this._date_circle_margin}px`,
-                    top: `${this._date_circle_radius/2 + this._date_line_height/2}px`,
-                    width: `${this._date_line_width}px`,
-                    color: `#d8d8d8`
-                }}>{dateFormat(value, "yyyy-mm-dd")}</div>
+                    borderRadius: `${this._date_line_height/3}px`,
+                    border: `${this._date_circle_border_width}px solid #0095ff`
+                }} >
+                    {dateFormat(value, "yyyy/mm/dd")}
+                </div>
             </div>
         )
     }
@@ -323,49 +359,6 @@ export default class Timeline extends React.Component<IProps, IState> {
         )
     }
 
-    private handleMapEventsDate(value: any, index: number): JSX.Element | null {
-        let scale: number = 0.8;
-        let offsetX: number = index * this.dateWidth() + this._date_circle_radius/2;
-        const {langAll, env} = this.props;
-        let data: any[] = [...value.data];
-        let showed: number = 0;
-        return (
-            <div key={index} className='timeline_date_container' style={{
-                left: `${offsetX}px`,
-                bottom: `${this._date_bottom + 6}px`
-            }}>
-                <div key={index} className='timeline_date_list'>
-                    { data.map((event: any, dataIndex: number) => {
-                        if(showed <= 20 && (langAll || !event.lang || event.lang == env.lang)) {
-                            showed += 1;
-                            let typeData: any = this._types.find(d => d.type == event.type);
-                            return (
-                                <Tooltip key={dataIndex} title={event.title} placement='topLeft' mouseEnterDelay={1}>
-                                    <div className='timeline_events_item' style={{
-                                        height: `26px`}}
-                                        onMouseDown={() => this._downTime = new Date().getTime()}
-                                        onMouseUp={() => {
-                                            if(new Date().getTime() - this._downTime < 300) this.props.onOpenEvent(event);
-                                        }}>
-                                        <span className='timeline_events_title' style={{
-                                            maxWidth: `${(this._date_line_width - 16) / scale}px`,
-                                            transform: `scale(${scale})`,
-                                            backgroundColor: typeData ? typeData.color : 'green'
-                                        }}>
-                                            { event.title }
-                                        </span>
-                                    </div>
-                                </Tooltip>
-                            )
-                        }else {
-                            return null;
-                        }
-                    }) }
-                </div>
-            </div>
-        )
-    }
-
     private drawPointer() {
         return (
             <div className='timeline_pointer' />
@@ -373,15 +366,16 @@ export default class Timeline extends React.Component<IProps, IState> {
     }
 
     public render() {
-        const { events, catchEvents } = this.state;
+        const { catchBars } = this.state;
         return (
             <div className='timeline'>
+                <div className='bg' />
                 {this.drawPointer()}
                 <div className='timeline_container'
                     ref={r => this._container = r}
-                    onMouseDown={this.handleMouseDown}
+                    onMouseDown={this.props.env.isMobile ? undefined : this.handleMouseDown}
                     onTouchStart={this.handleTouchStart}
-                    onMouseMove={(e: React.MouseEvent) => this.handleMouseMove(e.movementX)}
+                    onMouseMove={this.props.env.isMobile ? undefined : (e: React.MouseEvent) => this.handleMouseMove(e.movementX)}
                     onTouchMove={(e: React.TouchEvent) => {
                         if(e.touches.length) {
                             this.handleMouseMove(e.touches[0].clientX - this._lastTouchX)
@@ -389,11 +383,9 @@ export default class Timeline extends React.Component<IProps, IState> {
                         }}}
                     onWheel={this.handleMouseWheel}>
                         {this.drawLine()}
-                        { !!events.length && catchEvents && (
-                            <div className='timeline_events'>
-                                { catchEvents.events }
-                            </div>
-                        )}
+                        <div className='events'>
+                            { catchBars }
+                        </div>
                 </div>
             </div>
         )

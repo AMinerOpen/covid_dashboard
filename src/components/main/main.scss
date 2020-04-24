@@ -1,3 +1,4 @@
+@import "../../global.scss";
 $main-right-min-width: 300px;
 $main-margin: 6px;
 
@@ -35,13 +36,11 @@ $main-margin: 6px;
                 .main_timeline {
                     position: absolute;
                     bottom: 12px;
-                    height: 20%;
-                    min-height: 200px;
                     max-width: calc(100% - #{$main-right-min-width} - #{$main-margin} * 3);
                     width: calc(80% - #{$main-margin} * 3);
                     margin-left: $main-margin;
-                    background-color: #020E26bb;
                     transition: height linear 0.2s;
+                    overflow-y: visible;
                 }
         
                 .main_controlbar {
@@ -66,14 +65,14 @@ $main-margin: 6px;
                         position: relative;
                         width: 100%;
                         height: 42px;
-                        background-color: #020E26bb;
+                        background-color: $background;
                     }
 
                     .main_infobar {
                         position: relative;
                         width: 100%;
                         margin-top: $main-margin;
-                        background-color: #020E26bb;
+                        background-color: $background;
                     }
         
                     .main_forcast {
@@ -82,7 +81,7 @@ $main-margin: 6px;
                         margin-top: $main-margin;
                         height: 0;
                         flex: 1;
-                        background-color: #020E26bb;
+                        background-color: $background;
                     }
                 }
             }
@@ -112,12 +111,10 @@ $main-margin: 6px;
                     .main_timeline {
                         position: absolute;
                         bottom: 12px;
-                        height: 26%;
                         min-height: 0px;
                         max-width: 100%;
                         width: 100%;
                         margin-left: 0;
-                        background-color: #020E26bb;
                     }
             
                     .main_right {
@@ -143,7 +140,7 @@ $main-margin: 6px;
                                 width: 30px;
                                 height: 30px;
                                 padding: 4px;
-                                background-color: #020E26bb;
+                                background-color: $background;
                                 margin-left: $main-margin;
                                 border-radius: 4px;
                                 svg {
