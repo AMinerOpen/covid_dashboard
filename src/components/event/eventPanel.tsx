@@ -98,6 +98,7 @@ export default class EventPanel extends React.Component<IProps, IState> {
             requestEvent(id).then(data => {
                 if(data && data.status) {
                     if(this._curEventId == data.data._id) {
+                        console.log("detail: ", data.data);
                         this.setState({eventDetail: data.data});
                     }
                 }
@@ -125,7 +126,7 @@ export default class EventPanel extends React.Component<IProps, IState> {
     }
 
     private format(text: string): JSX.Element[] {
-        let entities: any[] = this.state.eventDetail.entities;
+        let entities: any[] = this.state.entities;
         let arr: string[] = [text];
         if(entities && entities.length) {
             entities.forEach((d: any) => text = text.replace(new RegExp(d.label, 'g'), "+++"+d.label+"+++"));
