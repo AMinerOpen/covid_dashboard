@@ -63,6 +63,7 @@ export default class Main extends React.Component<IProps, IState> {
     this.handleClickContributors = this.handleClickContributors.bind(this);
     this.handleKg = this.handleKg.bind(this);
     this.handleDatasets = this.handleDatasets.bind(this);
+    this.handleMarkerClick = this.handleMarkerClick.bind(this);
   }
 
   private handleLangAllChange() {
@@ -79,6 +80,10 @@ export default class Main extends React.Component<IProps, IState> {
 
   private handleOpenEventPanel(date: Date) {
     this.setState({ panelDate: date });
+  }
+
+  private handleMarkerClick(data: any) {
+    this.setState({ panelDate: this.props.env.date });
   }
 
   private handleCloseEventPanel() {
@@ -107,7 +112,7 @@ export default class Main extends React.Component<IProps, IState> {
         epData={this.props.epData}
         theme={this.state.theme}
         news={this.state.news}
-        onEventClick={this.handleOpenEventPanel}
+        onEventClick={this.handleMarkerClick}
         langAll={this.state.langAll}
       />
     );
