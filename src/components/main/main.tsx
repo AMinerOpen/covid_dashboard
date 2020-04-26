@@ -64,6 +64,7 @@ export default class Main extends React.Component<IProps, IState> {
     this.handleKg = this.handleKg.bind(this);
     this.handleDatasets = this.handleDatasets.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
+    this.handleGithub = this.handleGithub.bind(this);
   }
 
   private handleLangAllChange() {
@@ -100,6 +101,11 @@ export default class Main extends React.Component<IProps, IState> {
     window.open(url, "_blank");
   }
 
+  private handleGithub() {
+    let url: string = "https://github.com/AMinerOpen/covid_dashboard";
+    window.open(url, "_blank");
+  }
+
   private map(): JSX.Element {
     return (
       <EpidemicMap
@@ -131,6 +137,7 @@ export default class Main extends React.Component<IProps, IState> {
         theme={this.state.theme}
         onClickSource={this.handleClickDataSource}
         onClickContributors={this.handleClickContributors}
+        onClickGithub={this.handleGithub}
         onSwitchTheme={() =>
           this.setState({
             theme: this.state.theme === "dark" ? "light" : "dark"

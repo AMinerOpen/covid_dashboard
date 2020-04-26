@@ -2,11 +2,10 @@ import * as React from 'react';
 import './toolbar.scss';
 import { Switch, Tooltip } from 'antd';
 import { FormattedMessage } from "react-intl";
-import { IDefaultProps } from '../../global';
-import { ReactComponent as Zh_Svg } from './images/Lang_zh.svg';
-import { ReactComponent as En_Svg } from './images/Lang_en.svg';
+import { IDefaultProps } from '../../global'
 import { ReactComponent as Source_Svg } from './images/source.svg';
 import { ReactComponent as Contributor_Svg } from '../main/images/contributors.svg';
+import { ReactComponent as Github_Svg } from './images/github.svg';
 
 interface IProps extends IDefaultProps {
     langAll: boolean;
@@ -15,6 +14,7 @@ interface IProps extends IDefaultProps {
     onSwitchTheme: () => void;
     onClickSource: () => void;
     onClickContributors: () => void;
+    onClickGithub: () => void;
 }
 
 export default class Toolbar extends React.Component<IProps, any> {
@@ -40,6 +40,9 @@ export default class Toolbar extends React.Component<IProps, any> {
                         env.lang == 'en' ? <En_Svg style={{fill: 'lightgrey'}} /> : <Zh_Svg style={{fill: '#e72620'}}/>
                     }
                 </div> */}
+                <div className='toolbar_source' onClick={() => this.props.onClickGithub()}>
+                    <Github_Svg />
+                </div>
                 <div className='toolbar_source' onClick={() => this.props.onClickSource()}>
                     <Source_Svg />
                 </div>
