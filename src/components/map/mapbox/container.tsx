@@ -42,6 +42,7 @@ interface IProp extends IDefaultProps {
     onChangeEndDate: (date: Date) => void
     news: {date: Date, data: INews[]}[]
     onEventClick: (data: any) => void
+    mapMode: string
 }
 
 interface IState {}
@@ -56,6 +57,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
     private date: string = ''
     private news: {date: Date, data: INews[]}[] = []
     private dailyNews: {[date: string]: {[loc: string]: INews[]}} = {}
+    private mapMode: string = ''
 
     private regionEpidemicData: {[id: string]: IRegionEpidemicData} = {}
 
@@ -65,6 +67,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
         super(props)
         this.langAll = props.langAll;
         this.handle_epidemic_resp = this.handle_epidemic_resp.bind(this);
+        this.mapMode = this.props.mapMode
     }
 
     __getDayEp(ep: IRegionEpidemicData, globalOffset: number, fallback: Partial<IRegionEpidemicDayData>): Partial<IRegionEpidemicDayData> {
@@ -106,7 +109,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
             this.map!.querySourceFeatures('composite', { sourceLayer }).forEach((feature) => {
                 const ep = this.regionEpidemicData[feature.properties!.name]
                 if (ep) {
-                    const dayEp = this.__getDayEp(ep, globalOffset, {display: false, color: '#ffffff'})
+                    const dayEp = this.__getDayEp(ep, globalOffset, {display: false})
                     // current need display and (either next level not displayed or no child display)
                     const opacity = (dayEp.display && ((this.map!.getZoom() <= forceDisplayMinZoom[ep.level]) || (!dayEp.childDisplay))) ? 0.7 : 0
                     const stroke_opacity = (opacity > 0) ? (
@@ -114,7 +117,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
                             sourceLayer === COUNTY_SOURCE_LAYER ? 0.03 : 0.06
                         )
                     ) : 0
-                    const color = (opacity > 0) ? dayEp.color : '#ffffff'
+                    const color = (opacity > 0 && dayEp.colors) ? (dayEp.colors[this.mapMode] || '#ffffff') : '#ffffff'
                     this.map!.setFeatureState({source: 'composite', sourceLayer, id: feature.id}, { color, opacity, stroke_opacity })
                 }
             })
@@ -306,14 +309,6 @@ export default class MapContainer extends React.Component<IProp, IState> {
         }
     }
 
-    onDateChange() {
-        if (this.map && this.date !== this.props.date) {
-            this.date = this.props.date
-            this.reloadEpidemicMap()
-            this.onHover(this.hover_feature)
-        }
-    }
-
     // onThemeChange will trigger reload map
     // TODO: Add alternative style
     // current not working
@@ -336,7 +331,12 @@ export default class MapContainer extends React.Component<IProp, IState> {
         else {
             if (this.lang !== this.props.env.lang) this.onLanguageChange()
             this._syncNews()
-            if (this.date !== this.props.date) this.onDateChange()
+            if (this.map && (this.date !== this.props.date || this.mapMode !== this.props.mapMode)) {
+                this.date = this.props.date
+                this.mapMode = this.props.mapMode
+                this.reloadEpidemicMap()
+                this.onHover(this.hover_feature)
+            }
             this.updateMarkers()
         }
         return <div className="mapbox-layout">

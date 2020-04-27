@@ -7,6 +7,9 @@ import { ReactComponent as Source_Svg } from './images/source.svg';
 import { ReactComponent as Contributor_Svg } from '../main/images/contributors.svg';
 import { ReactComponent as Github_Svg } from './images/github.svg';
 
+import _ from 'lodash'
+import MapModeSelector from '../map/map-mode-selector';
+
 interface IProps extends IDefaultProps {
     langAll: boolean;
     onLangAllChange: () => void;
@@ -15,6 +18,8 @@ interface IProps extends IDefaultProps {
     onClickSource: () => void;
     onClickContributors: () => void;
     onClickGithub: () => void;
+    mapMode: string
+    onSetMapMode: (mapMode: string) => void;
 }
 
 export default class Toolbar extends React.Component<IProps, any> {
@@ -35,6 +40,7 @@ export default class Toolbar extends React.Component<IProps, any> {
                         </Tooltip>
                     )
                 }
+                <MapModeSelector mapMode={this.props.mapMode} onSetMapMode={this.props.onSetMapMode}/>
                 {/* <div className='toolbar_locale' onClick={this.handleClickLocale}>
                     {
                         env.lang == 'en' ? <En_Svg style={{fill: 'lightgrey'}} /> : <Zh_Svg style={{fill: '#e72620'}}/>

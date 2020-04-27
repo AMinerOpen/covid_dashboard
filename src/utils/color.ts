@@ -1,5 +1,6 @@
 import chromajs from 'chroma-js'
 import _ from 'lodash'
+import { IRegionEpidemicData, IRegionEpidemicDayData } from '../models'
 
 function getSeriousLevel(cnt: number): number {
     if (cnt >= 10000) return 5
@@ -21,7 +22,8 @@ function getCuredLevel(cured_rate: number): number {
 
 const LEVELS = 6
 const OrRd = chromajs.scale(['#ffffff', '#ff8924', '#ad0003']).colors(LEVELS)
-const Blues = chromajs.scale(['#ffffff', '#ffffff', 'lawngreen']).colors(LEVELS)
+const Blues = chromajs.scale(['#ffffff', '#568fea', '#0030aa']).colors(LEVELS)
+const Greys = chromajs.scale(['#ffffff', '#6d6060', '#260d0d']).colors(LEVELS)
 const EpColors = _.range(LEVELS).map(idx => chromajs.scale([OrRd[idx], Blues[idx]]).colors(LEVELS))
 
 export function confirmed2color(confirmed?: number | null, cured?: number | null) {
@@ -37,4 +39,26 @@ const RISKINTERVAL = 100 / (LEVELS - 1)
 export function risk2color(risk?: number | null) {
     if (risk === undefined || risk === null) return '#f0f0f0'
     return OrRd[Math.max(Math.min(Math.ceil(risk / RISKINTERVAL), LEVELS), 0)]
+}
+
+function __getColor(colors: string[], denom: number, log?: boolean, value?: number | null, fallback?: string): string {
+    if (fallback === undefined || fallback === null) fallback = '#f0f0f0'
+    if (value === undefined || value === null) return fallback
+    if (log) value = Math.log10(value)
+    value = Math.max(0, Math.min(1, value / denom))
+    if (value === 1) return colors[colors.length - 1]
+    return colors[Math.ceil(value * (colors.length-2))]
+}
+
+export function calcColors(epData: IRegionEpidemicDayData): {[mode: string]: string} {
+    const rr = (epData.cured !== undefined && !!epData.confirmed) ? (epData.cured / epData.confirmed) : undefined
+    const dr = (epData.dead !== undefined && !!epData.confirmed) ? (epData.dead / epData.confirmed) : undefined
+    return {
+        'risk': risk2color(epData.risk),
+        'confirmed': __getColor(OrRd, 6, true, epData.confirmed),
+        'recovered': __getColor(Blues, 4, true, epData.cured),
+        'deceased': __getColor(Greys, 4, true, epData.dead),
+        'recovery rate': __getColor(Blues, 0.85, false, rr),
+        'death rate': __getColor(Greys, 0.15, false, dr),
+    }
 }

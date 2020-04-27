@@ -2,7 +2,7 @@ import * as mapboxgl from 'mapbox-gl'
 import { IEpidemicSeries, IRegionEpidemicData } from '../../../models'
 import _ from 'lodash'
 import { DAYMILLS } from '../../../utils/date'
-import { risk2color } from '../../../utils/color'
+import { risk2color, calcColors } from '../../../utils/color'
 
 export function setMapLanguage(map: mapboxgl.Map, lang: string) {
     if (lang === 'zh') lang = 'zh-Hans'
@@ -51,8 +51,7 @@ export function preprocessRenderData(src: {[id: string]: IEpidemicSeries}): {[id
                 const remain = (confirmed !== null) ? Math.max(confirmed - (cured || 0) - (dead || 0), 0) : null
                 const daydata = {
                     display: data.findIndex(x => x !== undefined && x !== null) >= 0,
-                    childDisplay: false,
-                    color: risk2color(risk), //confirmed2color(confirmed, cured),
+                    childDisplay: false, colors: {},
                     confirmed: n2u(confirmed),      confirmed_delta: delta(confirmed, _confirmed),
                     suspected: n2u(suspected),      suspected_delta: delta(suspected, _suspected),
                     cured: n2u(cured),              cured_delta: delta(cured, _cured),
@@ -61,6 +60,7 @@ export function preprocessRenderData(src: {[id: string]: IEpidemicSeries}): {[id
                     remain: n2u(remain),            remain_delta: delta(remain, _remain),
                     risk: n2u(risk),                risk_delta: delta(risk, _risk),
                 }
+                daydata.colors = calcColors(daydata)
                 _remain = remain
                 return daydata
             })

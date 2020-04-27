@@ -24,6 +24,14 @@ export default {
     "toolbar.showall" : "全部数据",
     "toolbar.showall.tip": "只显示当前语言数据（含全部论文)",
     "toolbar.showall.tip_off": "显示所有语言数据",
+    //toolbar.mapMode
+    "toolbar.mapmode": "地图模式",
+    "toolbar.mapmode.risk": "风险",
+    "toolbar.mapmode.confirmed": "确诊",
+    "toolbar.mapmode.recovered": "治愈",
+    "toolbar.mapmode.deceased": "死亡",
+    "toolbar.mapmode.recovery rate": "治愈率",
+    "toolbar.mapmode.death rate": "死亡率",
 
     //map
     "map.control.confirmed": "确诊人数",
