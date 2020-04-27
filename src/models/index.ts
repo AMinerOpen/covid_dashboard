@@ -107,7 +107,7 @@ export interface IRegionEpidemicDayData {
 
     display: boolean
     childDisplay: boolean
-    color: string
+    colors: {[mode: string]: string}
 }
 
 export interface IRegionEpidemicData {

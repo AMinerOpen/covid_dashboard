@@ -16,6 +16,7 @@ interface IProps extends IDefaultProps  {
     news: any[]
     langAll: boolean
     onEventClick: (event: any) => void
+    mapMode: string
 }
 interface IState {
     region?: IRegionData
@@ -51,6 +52,7 @@ export default class EpidemicMap extends React.Component<IProps, IState> {
                     news={this.props.news}
                     onChangeEndDate={(endDate) => this.setState({endDate})}
                     langAll={this.props.langAll}
+                    mapMode={this.props.mapMode}
                 />
                 <ControlPanel
                     env={this.props.env}

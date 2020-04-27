@@ -1,8 +1,9 @@
 import * as React from 'react';
 import './timeline.scss';
 import { IDefaultProps } from '../../global';
+import dateformat from 'dateformat'
 import { requestEvents, requestEventsUpdate } from '../../utils/requests';
-import dateFormat from 'dateformat';
+import GlobalStorage from '../../utils/global-storage';
 
 interface IState {
     tflag: number;
@@ -119,7 +120,7 @@ export default class Timeline extends React.Component<IProps, IState> {
     public componentDidUpdate(preProps: IProps, preState: IState) {
         if(!this._dragging && preProps.env.date != this.props.env.date) {
             this.locatTimeline(this.props.env.date);
-        }   
+        }
         if(preState.timelineData != this.state.timelineData) {
             this.setState({
                 catchBars: this.drawBars()
@@ -240,6 +241,7 @@ export default class Timeline extends React.Component<IProps, IState> {
 
     private requestEvents() {
         requestEvents().then(data => {
+            data.datas.forEach((event: any) => { GlobalStorage.events[event._id] = {...event, time: new Date(event.time), date: dateformat(new Date(event.time), 'yyyy-mm-dd') } })
             let tflag: number = data.tflag;
             let events: any[] = this._dates.map(d => {return {date: d, data:[]}});
             let timelineData: any[] = this._dates.map(d => {return {date: d, data:{total: 0}}});
@@ -289,8 +291,8 @@ export default class Timeline extends React.Component<IProps, IState> {
 
     private handleBar(value: any, index: number): JSX.Element | null {
         return (
-            <div 
-                className='bar' 
+            <div
+                className='bar'
                 key={index}
                 onMouseUp={() => this.handleDateUp(value.date)}
                 onTouchEnd={() => this.handleDateUp(value.date)}
@@ -334,7 +336,7 @@ export default class Timeline extends React.Component<IProps, IState> {
                 userSelect: 'none'
             }}>
                 <div
-                    className='date'  
+                    className='date'
                     onMouseUp={() => this.handleDateUp(value)}
                     onTouchEnd={() => this.handleDateUp(value)}
                     style={{
@@ -345,7 +347,7 @@ export default class Timeline extends React.Component<IProps, IState> {
                     borderRadius: `${this._date_line_height/3}px`,
                     border: `${this._date_circle_border_width}px solid #0095ff`
                 }} >
-                    {dateFormat(value, "yyyy/mm/dd")}
+                    {dateformat(value, "yyyy/mm/dd")}
                 </div>
             </div>
         )

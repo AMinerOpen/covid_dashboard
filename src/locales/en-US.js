@@ -12,6 +12,7 @@ export default {
     "header.selftest": "Self-assessment system",
     "header.more": "More",
     "header.subscribe": "News Subscribe",
+    "header.ef": "Forecast Map of COVID-19",
 
     //main
     "main.selftest" : "Self Assessment",
@@ -24,6 +25,14 @@ export default {
     "toolbar.showall" : "Show all",
     "toolbar.showall.tip": "Only show current language data",
     "toolbar.showall.tip_off": "Show all language data",
+    //toolbar.mapMode
+    "toolbar.mapmode": "Map Mode",
+    "toolbar.mapmode.risk": "Risk",
+    "toolbar.mapmode.confirmed": "Confirmed",
+    "toolbar.mapmode.recovered": "Recovered",
+    "toolbar.mapmode.deceased": "Deceased",
+    "toolbar.mapmode.recovery rate": "Recovery Rate",
+    "toolbar.mapmode.death rate": "Death Rate",
 
     //map
     "map.control.confirmed": "Confirmed",
@@ -68,5 +77,6 @@ export default {
     "event.download": "Download",
     "event.source": "Source",
     "event.events": "Events",
-    "event.entities": "Entities"
+    "event.entities": "Entities",
+    "event.related_events": "Related Events",
 }

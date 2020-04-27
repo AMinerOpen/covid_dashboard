@@ -39,6 +39,7 @@ export default class Header extends React.Component<IProps, IState> {
         this.handlePolicy = this.handlePolicy.bind(this);
         this.handleTimeline = this.handleTimeline.bind(this);
         this.handleExperts = this.handleExperts.bind(this);
+        this.handleEf = this.handleEf.bind(this);
     }
 
     private handleSelftest() {
@@ -108,6 +109,14 @@ export default class Header extends React.Component<IProps, IState> {
         window.open("https://2019-ncov.aminer.cn", "_blank");
     }
 
+    private handleEf() {
+        if(this.props.lang == 'zh') {
+            window.open('http://covid19-report.com/#/forecasting_cn', "_blank");
+        }else {
+            window.open('http://covid19-report.com/#/', "_blank");
+        }
+    }
+
     public render() {
         let lang: string = this.props.lang;
         return (
@@ -143,6 +152,7 @@ export default class Header extends React.Component<IProps, IState> {
                     <div className='inner' style={{left: this.state.subtabX}}>
                         {this.state.tabHover == 'tools' && <div className='subtab' onClick={this.handleSelftest}><FormattedMessage id='header.selftest' /></div>}
                         {this.state.tabHover == 'tools' && <div className='subtab' onClick={this.handleSubscribe}><FormattedMessage id='header.subscribe' /></div>}
+                        {this.state.tabHover == 'tools' && <div className='subtab' onClick={this.handleEf}><FormattedMessage id='header.ef' /></div>}
                         {this.state.tabHover == 'research' && <div className='subtab' onClick={this.handleDatasets}><FormattedMessage id='header.datasets' /></div>}
                         {this.state.tabHover == 'research' && <div className='subtab' onClick={this.handleKg}><FormattedMessage id='header.kg' /></div>}
                         {this.state.tabHover == 'research' && <div className='subtab' onClick={this.handleTimeline}><FormattedMessage id='header.timeline' /></div>}
@@ -165,6 +175,7 @@ export default class Header extends React.Component<IProps, IState> {
                             <div className='item' ><FormattedMessage id='header.tools' /></div>
                             <div className='item sub' onClick={this.handleSelftest} ><FormattedMessage id='header.selftest' /></div>
                             <div className='item sub' onClick={this.handleSubscribe}><FormattedMessage id='header.subscribe' /></div>
+                            <div className='item sub' onClick={this.handleEf}><FormattedMessage id='header.ef' /></div>
                             <div className='item' onClick={() => window.open('https://covid-19.aminer.cn', '_blank')}><FormattedMessage id='header.more' /></div>
                             <div className='item' onClick={this.handleLangClick}>{lang == 'zh' ? "English" : "中文"}</div>
                         </div>

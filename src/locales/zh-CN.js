@@ -12,6 +12,7 @@ export default {
     "header.selftest": "新冠自测系统",
     "header.more": "疫情专题",
     "header.subscribe": "新闻订阅",
+    "header.ef": "全球新冠肺炎疫情预测地图",
 
     //main
     "main.selftest" : "自测系统",
@@ -24,6 +25,14 @@ export default {
     "toolbar.showall" : "全部数据",
     "toolbar.showall.tip": "只显示当前语言数据（含全部论文)",
     "toolbar.showall.tip_off": "显示所有语言数据",
+    //toolbar.mapMode
+    "toolbar.mapmode": "地图模式",
+    "toolbar.mapmode.risk": "风险",
+    "toolbar.mapmode.confirmed": "确诊",
+    "toolbar.mapmode.recovered": "治愈",
+    "toolbar.mapmode.deceased": "死亡",
+    "toolbar.mapmode.recovery rate": "治愈率",
+    "toolbar.mapmode.death rate": "死亡率",
 
     //map
     "map.control.confirmed": "确诊人数",
@@ -68,5 +77,6 @@ export default {
     "event.download": "下载",
     "event.source": "来源",
     "event.events": "事件",
-    "event.entities": "实体"
+    "event.entities": "实体",
+    "event.related_events": "相关事件",
 }
