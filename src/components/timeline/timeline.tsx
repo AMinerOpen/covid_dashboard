@@ -1,7 +1,6 @@
 import * as React from 'react';
 import './timeline.scss';
 import { IDefaultProps } from '../../global';
-import { Tooltip } from 'antd';
 import { requestEvents, requestEventsUpdate } from '../../utils/requests';
 import dateFormat from 'dateformat';
 
