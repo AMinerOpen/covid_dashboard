@@ -5,9 +5,13 @@ import { FormattedMessage } from 'react-intl'
 import { requestEvent } from '../../utils/requests';
 import EventFlag from '../eventFlag/eventFlag';
 import dateFormat from 'dateformat';
+import GlobalStorage from '../../utils/global-storage';
+import _ from 'lodash'
+import { getEventColor } from '../eventFlag/utils';
 
 interface IProps extends IDefaultProps {
     events: any[];
+    focusEvent?: any;
     date: Date;
     onClose: () => void;
 }
@@ -17,6 +21,7 @@ interface IState {
     entities: any[];
     hightlight: string;
     eventDetail: any;
+    date: Date;
 }
 
 export default class EventPanel extends React.Component<IProps, IState> {
@@ -36,11 +41,13 @@ export default class EventPanel extends React.Component<IProps, IState> {
             curEvents: events,
             entities: [],
             hightlight: "",
-            eventDetail: null
+            eventDetail: null,
+            date: this.props.date
         };
         this.handleMapEntities = this.handleMapEntities.bind(this);
         this.handleSelectEvent = this.handleSelectEvent.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        if (this.props.focusEvent) this.handleSelectEvent(this.props.focusEvent._id)
     }
 
     public componentDidMount() {
@@ -98,7 +105,6 @@ export default class EventPanel extends React.Component<IProps, IState> {
             requestEvent(id).then(data => {
                 if(data && data.status) {
                     if(this._curEventId == data.data._id) {
-                        console.log("detail: ", data.data);
                         this.setState({eventDetail: data.data});
                     }
                 }
@@ -136,8 +142,8 @@ export default class EventPanel extends React.Component<IProps, IState> {
             arr.map((str: string, index: number) => {
                     let entity: any = entities.find((d:any) => d.label == str);
                     let url: string = entity ? entity.url : "";
-                    return <span 
-                        key={index} 
+                    return <span
+                        key={index}
                         onMouseOver={url ? () => this.setState({hightlight: url}) : undefined}
                         onClick={url ? () => this.setState({hightlight: url}) : undefined}
                         style={url ? {color: 'darkorange', fontWeight: 'bold'} : undefined}>{str}</span>
@@ -182,10 +188,24 @@ export default class EventPanel extends React.Component<IProps, IState> {
         }
     }
 
+    redirectToRelatedEvent(id: string) {
+        const event = GlobalStorage.events[id]
+        if (!event) return
+        const date = event.date
+        const curEvents = GlobalStorage.getEventsByDate(event.date)
+        this.setState({date: new Date(date), curEvents})
+        this.handleSelectEvent(id)
+    }
+
     public render() {
-        const { date, env } = this.props;
-        const { curEvents, entities } = this.state;
+        const { env } = this.props;
+        const { curEvents, entities, date } = this.state;
         const event = this.state.eventDetail;
+
+        // calc related events
+        const related_events = _.filter(((event || {}).related_events || []).map((re: any) => GlobalStorage.events[re.id]))
+        related_events.sort((a, b) => { return b.time - a.time })
+
         return (
             <div className='eventpanel' onClick={this.handleClose}>
                 <div className='panel' onClick={(e: React.MouseEvent) => e.stopPropagation()}>
@@ -205,13 +225,23 @@ export default class EventPanel extends React.Component<IProps, IState> {
                         {event && this.title()}
                         { event && event.type == 'paper' && this.paperContent() }
                         { event && event.type == 'news' && this.newsContent() }
-                        { 
+                        {
                             event && event.type != 'paper' && event.type != 'news' && event.content && (
                                 <div className='content_outter' >
                                     <div className='content' >{this.format(event.content)}</div>
                                     <div style={{width: '100%', height: '80px'}}></div>
                                 </div>
                             )
+                        }
+                        { event && related_events && related_events.length > 0 &&
+                            <div className="content_related_events" style={{marginTop: 20}}>
+                                <div className='events_header'><FormattedMessage id='event.related_events'/></div>
+                                {related_events.map((ev, idx) => <div key={idx} className="related-event" onClick={() => this.redirectToRelatedEvent(ev._id)}>
+                                    <span className="date">{dateFormat(ev.time, 'yyyy-mm-dd')}</span>
+                                    <span className="type" style={{background: getEventColor(ev.type)}}>{_.capitalize(ev.type || '')}</span>
+                                    <span className="title">{ev.title}</span>
+                                </div>)}
+                            </div>
                         }
                     </div>
                     <div className='right'>

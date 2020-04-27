@@ -76,5 +76,6 @@ export default {
     "event.download": "下载",
     "event.source": "来源",
     "event.events": "事件",
-    "event.entities": "实体"
+    "event.entities": "实体",
+    "event.related_events": "相关事件",
 }

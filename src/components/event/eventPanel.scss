@@ -9,6 +9,17 @@
     background-color: #ffffff01;
     z-index: 200;
 
+    .events_header {
+        color: $background;
+        font-size: 14px;
+        line-height: 36px;
+        padding-left: 8px;
+        font-weight: bold;
+        height: 36px;
+        width: 100%;
+        border-bottom: 1px solid grey;
+    }
+
     .panel {
         position: absolute;
         left: 40%;
@@ -28,16 +39,6 @@
             display: flex;
             flex-direction: column;
             user-select: none;
-            .events_header {
-                color: $background;
-                font-size: 14px;
-                line-height: 36px;
-                padding-left: 8px;
-                font-weight: bold;
-                height: 36px;
-                width: 100%;
-                border-bottom: 1px solid grey;
-            }
             .list {
                 width: 100%;
                 flex: 1;
@@ -109,6 +110,29 @@
                     }
                 }
             }
+
+            .related-event {
+                padding: 3px 10px;
+                .title {
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+                .date {
+                    font-size: 14px;
+                    font-weight: 500;
+                    margin-right: 5px;
+                }
+                .type {
+                    font-size: 12px;
+                    font-weight: 500;
+                    padding: 2px 3px;
+                    border-radius: 5px;
+                }
+                &:hover {
+                    background: #ffffff80;
+                    cursor: pointer;
+                }
+            }
         }
 
         .right {
@@ -120,16 +144,6 @@
             display: flex;
             flex-direction: column;
 
-            .events_header {
-                color: $background;
-                font-size: 14px;
-                line-height: 36px;
-                padding-left: 8px;
-                font-weight: bold;
-                height: 36px;
-                width: 100%;
-                border-bottom: 1px solid grey;
-            }
             .list {
                 width: 100%;
                 flex: 1;
@@ -153,7 +167,7 @@
                         max-height: 116px;
                         overflow-y: hidden;
                         text-overflow: ellipsis;
-                        
+
                         a {
                             color: black;
                             pointer-events: none;
@@ -232,7 +246,7 @@
                 flex-direction: column;
                 overflow-x: hidden;
                 border-left: 2px solid grey;
-    
+
                 .title {
                     font-size: 16px;
                     line-height: 24px;
@@ -240,7 +254,7 @@
                     padding: 12px 12px;
                     color: $background;
                 }
-    
+
                 .content_outter {
                     position: relative;
                     flex: 1;
@@ -273,7 +287,7 @@
                     }
                 }
             }
-    
+
             .right {
                 position: absolute;
                 right: 0;
@@ -283,7 +297,7 @@
                 border-left: 2px solid grey;
                 display: flex;
                 flex-direction: column;
-    
+
                 .events_header {
                     color: $background;
                     font-size: 14px;
@@ -318,7 +332,7 @@
                             max-height: 116px;
                             overflow-y: hidden;
                             text-overflow: ellipsis;
-                            
+
                             a {
                                 color: black;
                                 pointer-events: none;

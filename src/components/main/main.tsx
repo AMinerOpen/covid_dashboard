@@ -41,6 +41,7 @@ interface IState {
   showContributors: boolean;
   panelDate: Date | null;
   mapMode: string;
+  focusEvent?: any;
 }
 
 export default class Main extends React.Component<IProps, IState> {
@@ -87,7 +88,7 @@ export default class Main extends React.Component<IProps, IState> {
   }
 
   private handleMarkerClick(data: any) {
-    this.setState({ panelDate: this.props.env.date });
+    this.setState({ panelDate: this.props.env.date, focusEvent: data });
   }
 
   private handleCloseEventPanel() {
@@ -207,6 +208,7 @@ export default class Main extends React.Component<IProps, IState> {
         events={this.state.events}
         date={this.state.panelDate!}
         onClose={this.handleCloseEventPanel}
+        focusEvent={this.state.focusEvent}
       />
     );
   }
