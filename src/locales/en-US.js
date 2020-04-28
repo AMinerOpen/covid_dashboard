@@ -26,7 +26,7 @@ export default {
     "toolbar.showall.tip": "Only show current language data",
     "toolbar.showall.tip_off": "Show all language data",
     //toolbar.mapMode
-    "toolbar.mapmode": "Map Mode",
+    "toolbar.mapmode": "Mode",
     "toolbar.mapmode.risk": "Risk",
     "toolbar.mapmode.confirmed": "Confirmed",
     "toolbar.mapmode.recovered": "Recovered",

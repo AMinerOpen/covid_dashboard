@@ -48,5 +48,15 @@
                 "zh": "智谱.AI 团队"
             }
         ]
+    },
+    {
+        "system_zh": "全球新冠肺炎疫情预测地图",
+        "system_en": "Forecast Map of Global Coronavirus Epidemic",
+        "teams": [
+            {
+                "en": "BIGSCity Lab in Beihang University",
+                "zh": "北航计算机学院智慧城市课题组"
+            }
+        ]
     }
 ]

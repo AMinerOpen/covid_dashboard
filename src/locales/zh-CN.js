@@ -26,7 +26,7 @@ export default {
     "toolbar.showall.tip": "只显示当前语言数据（含全部论文)",
     "toolbar.showall.tip_off": "显示所有语言数据",
     //toolbar.mapMode
-    "toolbar.mapmode": "地图模式",
+    "toolbar.mapmode": "模式",
     "toolbar.mapmode.risk": "风险",
     "toolbar.mapmode.confirmed": "确诊",
     "toolbar.mapmode.recovered": "治愈",
