@@ -8,6 +8,7 @@ import dateFormat from 'dateformat';
 import GlobalStorage from '../../utils/global-storage';
 import _ from 'lodash'
 import { getEventColor } from '../eventFlag/utils';
+import { str2Date } from '../../utils/date';
 
 interface IProps extends IDefaultProps {
     events: any[];
@@ -74,7 +75,9 @@ export default class EventPanel extends React.Component<IProps, IState> {
         }
     }
 
-    private sameDay(a: Date, b: Date): boolean {
+    private sameDay(a: Date | string, b: Date | string): boolean {
+        if (typeof a === 'string') a = str2Date(a)
+        if (typeof b === 'string') b = str2Date(b)
         return a.getFullYear() == b.getFullYear() && a.getMonth() == b.getMonth() && a.getDate() == b.getDate();
     }
 
@@ -199,8 +202,10 @@ export default class EventPanel extends React.Component<IProps, IState> {
 
     public render() {
         const { env } = this.props;
-        const { curEvents, entities, date } = this.state;
+        const { entities, date } = this.state;
         const event = this.state.eventDetail;
+
+        const curEvents = this.state.curEvents || this.props.events
 
         // calc related events
         const related_events = _.filter(((event || {}).related_events || []).map((re: any) => GlobalStorage.events[re.id]))

@@ -16,6 +16,7 @@ import Contributors from "../contributors/contributors";
 import Header from "../header/header";
 import Infobar from "../infobar/infobar";
 import MapModeSelector from "../map/map-mode-selector";
+import SearchBox from "../searchbox";
 
 interface IProps extends IDefaultProps {
   frame: boolean;
@@ -290,7 +291,10 @@ export default class Main extends React.Component<IProps, IState> {
               <div className="main_map">{this.map()}</div>
               <div className="main_upper">
                 <div className="main_timeline">{this.timeline()}</div>
-                <div className="main_controlbar">{this.controlBar()}</div>
+                <div className="main_controlbar">
+                  {this.controlBar()}
+                  <SearchBox onClickEvent={(focusEvent, panelDate) => {this.setState({focusEvent, panelDate})}}/>
+                </div>
                 <div className="main_right">
                   <div className="main_toolbar">{this.toolbar()}</div>
                   <div className="main_infobar">{this.infobar()}</div>

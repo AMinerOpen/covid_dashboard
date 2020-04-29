@@ -28,3 +28,8 @@ export async function requestEvent(id: string) {
     const resp = await axios.get(process.env.REACT_APP_API_URL + '/event/' + id, { headers: {'Cache-Control': 'no-cache'} })
     return resp.data as any
 }
+
+export async function requestSearchEvent(text: string) {
+    const resp = await axios.get(process.env.REACT_APP_API_URL + '/events/search', { params: { q: text } })
+    return resp.data as any
+}

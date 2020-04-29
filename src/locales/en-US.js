@@ -79,4 +79,6 @@ export default {
     "event.events": "Events",
     "event.entities": "Entities",
     "event.related_events": "Related Events",
+
+    "search.placeholder": "Event Keywords, e.g., Remdesivir",
 }
