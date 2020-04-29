@@ -239,9 +239,15 @@ export default class Timeline extends React.Component<IProps, IState> {
         })
     }
 
+    private toDate(str: string): Date {
+        let timeStr: string = str.replace(" ", "T");
+        if(timeStr.indexOf("T") >= 0) timeStr += ".000+08:00";
+        return new Date(timeStr);
+    }
+
     private requestEvents() {
         requestEvents().then(data => {
-            data.datas.forEach((event: any) => { GlobalStorage.events[event._id] = {...event, time: new Date(event.time), date: dateformat(new Date(event.time), 'yyyy-mm-dd') } })
+            data.datas.forEach((event: any) => { GlobalStorage.events[event._id] = {...event, time: this.toDate(event.time), date: dateformat(this.toDate(event.time), 'yyyy-mm-dd') } })
             let tflag: number = data.tflag;
             let events: any[] = this._dates.map(d => {return {date: d, data:[]}});
             let timelineData: any[] = this._dates.map(d => {return {date: d, data:{total: 0}}});
@@ -255,9 +261,7 @@ export default class Timeline extends React.Component<IProps, IState> {
 
     private addToEventsAndTimeline(datas: any[], events: any[], timeline: any[]) {
         datas.forEach((d:any) => {
-            let timeStr: string = d.time.replace(" ", "T");
-            if(timeStr.indexOf("T") >= 0) timeStr += ".000+08:00";
-            let date: Date = new Date(timeStr);
+            let date: Date = this.toDate(d.time);
             let dateObj: any = events.find(value => this.sameDay(value.date, date));
             if(dateObj) {
                 dateObj.data.splice(0, 0, d);
