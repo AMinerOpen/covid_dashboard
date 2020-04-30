@@ -13,7 +13,7 @@ import { ReactComponent as Contributors_Svg } from "./images/contributors.svg";
 import Source from "../source/source";
 import EventPanel from "../event/eventPanel";
 import Contributors from "../contributors/contributors";
-import Header from "../header/header";
+import { Header } from "covid-header";
 import Infobar from "../infobar/infobar";
 import MapModeSelector from "../map/map-mode-selector";
 import SearchBox from "../searchbox";
