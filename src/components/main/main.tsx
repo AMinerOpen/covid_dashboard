@@ -14,6 +14,7 @@ import Source from "../source/source";
 import EventPanel from "../event/eventPanel";
 import Contributors from "../contributors/contributors";
 import { Header } from "covid-header";
+import 'covid-header/dist/index.css';
 import Infobar from "../infobar/infobar";
 import MapModeSelector from "../map/map-mode-selector";
 import SearchBox from "../searchbox";
@@ -215,7 +216,7 @@ export default class Main extends React.Component<IProps, IState> {
   }
 
   private header(): JSX.Element {
-    return <Header lang={this.props.env.lang} onSwitchLang={this.props.onSwitchLocale}/>;
+    return <Header lang={this.props.env.lang} onSwitchLang={this.props.onSwitchLocale} tab="map"/>;
   }
 
   private infobar(): JSX.Element {
