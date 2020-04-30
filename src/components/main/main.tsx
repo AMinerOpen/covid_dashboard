@@ -12,9 +12,7 @@ import { ReactComponent as Source_Svg } from "../toolbar/images/source.svg";
 import { ReactComponent as Contributors_Svg } from "./images/contributors.svg";
 import Source from "../source/source";
 import EventPanel from "../event/eventPanel";
-import Contributors from "../contributors/contributors";
 import { Header } from "covid-header";
-import 'covid-header/dist/index.css';
 import Infobar from "../infobar/infobar";
 import MapModeSelector from "../map/map-mode-selector";
 import SearchBox from "../searchbox";
@@ -40,7 +38,6 @@ interface IState {
   news: any[];
   events: any[];
   showDataSource: boolean;
-  showContributors: boolean;
   panelDate: Date | null;
   mapMode: string;
   focusEvent?: any;
@@ -57,7 +54,6 @@ export default class Main extends React.Component<IProps, IState> {
       news: [],
       events: [],
       showDataSource: false,
-      showContributors: false,
       panelDate: null,
       mapMode: 'risk'
     };
@@ -66,7 +62,6 @@ export default class Main extends React.Component<IProps, IState> {
     this.handleClickDataSource = this.handleClickDataSource.bind(this);
     this.handleOpenEventPanel = this.handleOpenEventPanel.bind(this);
     this.handleCloseEventPanel = this.handleCloseEventPanel.bind(this);
-    this.handleClickContributors = this.handleClickContributors.bind(this);
     this.handleKg = this.handleKg.bind(this);
     this.handleDatasets = this.handleDatasets.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
@@ -79,10 +74,6 @@ export default class Main extends React.Component<IProps, IState> {
 
   private handleClickDataSource() {
     this.setState({ showDataSource: !this.state.showDataSource });
-  }
-
-  private handleClickContributors() {
-    this.setState({ showContributors: true });
   }
 
   private handleOpenEventPanel(date: Date) {
@@ -145,7 +136,6 @@ export default class Main extends React.Component<IProps, IState> {
         mapMode={this.state.mapMode}
         onSetMapMode={(mapMode: string) => this.setState({mapMode})}
         onClickSource={this.handleClickDataSource}
-        onClickContributors={this.handleClickContributors}
         onClickGithub={this.handleGithub}
         onSwitchTheme={() =>
           this.setState({
@@ -230,7 +220,6 @@ export default class Main extends React.Component<IProps, IState> {
     const {
       showForcast,
       showDataSource,
-      showContributors,
       panelDate
     } = this.state;
     return (
@@ -261,12 +250,6 @@ export default class Main extends React.Component<IProps, IState> {
                     >
                       <Source_Svg />
                     </div>
-                    <div
-                      className="btn_svg"
-                      onClick={this.handleClickContributors}
-                    >
-                      <Contributors_Svg />
-                    </div>
                     <MapModeSelector mapMode={this.state.mapMode} onSetMapMode={(mapMode) => this.setState({mapMode})}/>
                   </div>
                 </div>
@@ -276,12 +259,6 @@ export default class Main extends React.Component<IProps, IState> {
                 <div className="main_forcast">{this.forcast()}</div>
               )}
               {showDataSource && <div>{this.source()}</div>}
-              {showContributors && (
-                <Contributors
-                  onClose={() => this.setState({ showContributors: false })}
-                  env={env}
-                />
-              )}
               {panelDate && this.eventPanel()}
             </div>
           </div>
@@ -303,12 +280,6 @@ export default class Main extends React.Component<IProps, IState> {
                 </div>
               </div>
               {showDataSource && <div>{this.source()}</div>}
-              {showContributors && (
-                <Contributors
-                  onClose={() => this.setState({ showContributors: false })}
-                  env={env}
-                />
-              )}
               {panelDate && this.eventPanel()}
             </div>
           </div>

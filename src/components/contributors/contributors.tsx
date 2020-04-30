@@ -1,62 +1,71 @@
 import * as React from 'react';
-import './contributors.scss';
-import { FormattedMessage } from 'react-intl'
-import { IEnv } from '../../global';
+import "./contributors.scss";
+import { Header } from 'covid-header';
+import { FormattedMessage } from 'react-intl';
 
 interface IProps {
-    env: IEnv;
-    onClose: () => void;
+  lang: 'zh' | 'en';
+  onSwitchLang: () => void;
 }
 
 interface IState {
-    data: any[];
+  data: any[];
 }
 
 export default class Contributors extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
-        super(props);
-        this.state = {
-            data: []
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      data: []
+    }
+  }
+
+  componentDidMount() {
+    this.requestData();
+  }
+
+  private requestData() {
+    let url: string = process.env.PUBLIC_URL + '/data/contributors.json';
+    fetch(url).then(response => response.json()).then(data => {
+        if(data && data.length) {
+            this.setState({data})
         }
+    })
+  }
+  
 
-        this.initData();
-    }
-
-    private initData() {
-        let url: string = process.env.PUBLIC_URL + '/data/contributors.json';
-        fetch(url).then(response => response.json()).then(data => {
-            if(data && data.length) {
-                this.setState({data})
-            }
-        })
-    }
-
-    private drawData(): JSX.Element[] {
-        let result:JSX.Element[] = [];
-        let lang: 'zh' | 'en' = this.props.env.lang;
-        if(this.state.data.length) {
-            this.state.data.forEach((d, i) => {
-                result.push(
-                    <div key={i}>
-                        <div className='system'>{d[`system_${lang}`]}</div>
-                        {
-                            d.teams.map((t: any, ti: number) => <div className='content' key={ti}>{t[lang]}</div>)
-                        }
-                    </div>
-                )
-            })
-        }
-        return result;
-    }
-
-    public render() {
-        return (
-            <div className='contributors' onClick={() => this.props.onClose()}>
-                <div className='panel' onClick={e => e.stopPropagation()}>
-                    <div className='title'><FormattedMessage id='main.contributors' /></div>
-                    {this.drawData()}
+  render() {
+    const { lang, onSwitchLang } = this.props;
+    const { data } = this.state;
+    return (
+      <div className='contributors'>
+        <Header lang={lang} onSwitchLang={onSwitchLang} tab="contributors" />
+        <div className='content'>
+          <div className='title'><FormattedMessage id='contributors.title' /></div>
+          <span className='subtitle'><FormattedMessage id='contributors.subtitle' /></span>
+          <div className='list'>
+            { data.map((org:any, index: number) => {
+              return (
+                <div className='org' key={index}>
+                  <div className='org_name'>{lang == 'zh' ? org.name_zh : org.name_en }</div>
+                  <div className='members'>
+                    {org.members.map((member: any, i: number) => {
+                      return (
+                        <div className='member' key={i}>
+                          <div className='member_avatar'>
+                            <img src={member.avatar || "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/default.jpg"} />
+                          </div>
+                          <div className='member_name'>{lang=='zh' ? member.name_zh : member.name_en}</div>
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
-            </div>
-        )
-    }
+              )
+            })}
+          </div>
+        </div>
+      </div>
+    )
+  }
 }

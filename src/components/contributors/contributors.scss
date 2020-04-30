@@ -1,75 +1,161 @@
-.contributors {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: 0xffffff01;
-    .panel {
-        position: absolute;
-        left: 40%;
-        top: 0;
-        width: 480px;
-        height: 60%;
-        margin-left: -240px;
-        margin-top: 6%;
-        border-radius: 10px;
-        background-color: #020E26dd;
-        color: white;
-        padding: 24px 32px;
+$avatar-width: 140px;
 
-        .title {
-            font-size: 24px;
-            font-weight: bold;
-            width: 100%;
-            border-bottom: 1px solid lightgrey;
-            margin-bottom: 24px;
-        }   
-        .system {
-            font-size: 16px;
-            color: rgb(192, 192, 192)
-        }
-        .content {
-            width: 100%;
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 24px;
-        }
+.contributors {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+
+  .content {
+    position: relative;
+    width: 68%;
+    min-width: 720px;
+    margin: 0 auto;
+    padding: 0 12px;
+
+    .title {
+      font-size: 42px;
+      font-weight: bold;
+      margin: 48px 0 0px 0;
+      line-height: 52px;
+      color: black;
     }
+
+    .subtitle {
+      font-size: 14px;
+    }
+
+    .list {
+      margin-top: 42px;
+
+      .org {
+        margin-top: 12px;
+
+        .org_name {
+          padding-left: 12px;
+          font-size: 22px;
+          width: 100%;
+          padding-bottom: 8px;
+          border-bottom: 1px solid lightgrey;
+        }
+
+        .members {
+          width: 100%;
+          margin-top: 24px;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+
+          .member {
+            margin: 0 12px;
+            width: 180px;
+            height: 214px;
+
+            .member_avatar {
+              width: $avatar-width;
+              height: $avatar-width;
+              overflow: hidden;
+              border-radius: $avatar-width;
+              margin: 0 auto;
+              border: 2px solid lightgrey;
+
+              img {
+                width: 100%;
+              }
+            }
+
+            .member_name {
+              width: 100%;
+              text-align: center;
+              font-size: 16px;
+              margin-top: 6px;
+              color: #020e25;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 560px) {
-    .contributors {
-        .panel {
-            position: absolute;
-            left: 0;
-            top: unset;
-            bottom: 0;
-            width: 100%;
-            height: 520px;
-            margin-left: 0;
-            margin-top: unset;
-            border-radius: 0;
-            background-color: #020E26dd;
-            color: white;
-            padding: 24px 24px;
+  $avatar-width: 90px;
 
-            .title {
-                font-size: 24px;
-                font-weight: bold;
+  .contributors {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+
+    .content {
+      position: relative;
+      width: 100%;
+      min-width: unset;
+      margin: 0 auto;
+      padding: 0 12px;
+
+      .title {
+        font-size: 32px;
+        font-weight: bold;
+        margin: 32px 0 0px 0;
+        line-height: 36px;
+        color: black;
+      }
+
+      .subtitle {
+        font-size: 12px;
+      }
+
+      .list {
+        margin-top: 32px;
+
+        .org {
+          margin-top: 8px;
+          .org_name {
+            padding-left: 8px;
+            font-size: 16px;
+            width: 100%;
+            padding-bottom: 8px;
+            border-bottom: 1px solid lightgrey;
+          }
+
+          .members {
+            width: 100%;
+            margin-top: 24px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+            .member {
+              margin: 0 12px;
+              width: 140px;
+              height: 154px;
+
+              .member_avatar {
+                width: $avatar-width;
+                height: $avatar-width;
+                overflow: hidden;
+                border-radius: $avatar-width;
+                margin: 0 auto;
+                border: 2px solid lightgrey;
+
+                img {
+                  width: 100%;
+                }
+              }
+
+              .member_name {
                 width: 100%;
-                border-bottom: 1px solid lightgrey;
-                margin-bottom: 12px;
-            }   
-            .system {
+                text-align: center;
                 font-size: 16px;
+                margin-top: 6px;
+                color: #020e25;
+              }
             }
-            .content {
-                width: 100%;
-                font-size: 16px;
-                font-weight: bold;
-                margin-bottom: 12px;
-            }
+          }
         }
+      }
     }
+  }
 }

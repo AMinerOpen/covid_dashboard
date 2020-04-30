@@ -4,7 +4,6 @@ import { Switch, Tooltip } from 'antd';
 import { FormattedMessage } from "react-intl";
 import { IDefaultProps } from '../../global'
 import { ReactComponent as Source_Svg } from './images/source.svg';
-import { ReactComponent as Contributor_Svg } from '../main/images/contributors.svg';
 import { ReactComponent as Github_Svg } from './images/github.svg';
 
 import _ from 'lodash'
@@ -16,7 +15,6 @@ interface IProps extends IDefaultProps {
     theme: string;
     onSwitchTheme: () => void;
     onClickSource: () => void;
-    onClickContributors: () => void;
     onClickGithub: () => void;
     mapMode: string
     onSetMapMode: (mapMode: string) => void;
@@ -51,9 +49,6 @@ export default class Toolbar extends React.Component<IProps, any> {
                 </div>
                 <div className='toolbar_source' onClick={() => this.props.onClickSource()}>
                     <Source_Svg />
-                </div>
-                <div className='toolbar_source' onClick={() => this.props.onClickContributors()}>
-                    <Contributor_Svg />
                 </div>
                 {/* <div className='toolbar_source' onClick={() => this.props.onClickSelftest()}>
                     <Selftest_Svg />

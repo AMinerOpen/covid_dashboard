@@ -1,61 +1,92 @@
 [
     {
-        "system_zh": "新冠自测系统",
-        "system_en": "Self-assessment system",
-        "teams": [
+        "name_zh": "清华大学人工智能研究院",
+        "name_en": "Institute for Artificial Intelligence of Tsinghua University",
+        "members": [
             {
-                "en": "Prof. Bin Yang Team, Tsinghua University",
-                "zh": "杨斌教授团队，清华大学"
+                "name_zh": "杨斌 教授",
+                "name_en": "Prof. Bin Yang",
+                "avatar": ""
             }
         ]
     },
     {
-        "system_zh": "疫情数据预测",
-        "system_en": "Data forecast",
-        "teams": [
+        "name_zh": "清华大学计算机科学与技术系",
+        "name_en": "Department of Computer Science and Technology of Tsinghua University",
+        "members": [
             {
-                "en": "Prof. Yiqun Liu Team, Tsinghua University",
-                "zh": "刘奕群教授团队，清华大学"
+                "name_zh": "刘奕群 教授",
+                "name_en": "Prof. Yiqun Liu",
+                "avatar": ""
+            }, {
+                "name_zh": "叶子逸 博士",
+                "name_en": "Phd. Ziyi Ye",
+                "avatar": ""
             }
         ]
     },
     {
-        "system_zh": "新冠图谱",
-        "system_en": "COKG-19",
-        "teams": [
+        "name_zh": "清华大学医学院",
+        "name_en": "School of Medicine of Tsinghua University",
+        "members": [
             {
-                "en": "Dr. Panpan Zhou, Dr. Bing Zou, Tsinghua University",
-                "zh": "周盼盼博士，邹兵博士，清华大学"
+                "name_zh": "周盼盼 博士",
+                "name_en": "Dr. Panpan Zhou",
+                "avatar": ""
+            }, {
+                "name_zh": "邹兵 博士",
+                "name_en": "Phd. Bing Zou",
+                "avatar": ""
             }
         ]
     },
     {
-        "system_zh": "系统",
-        "system_en": "System",
-        "teams": [
+        "name_zh": "北航计算机学院智慧城市实验室",
+        "name_en": "BIGSCity Lab in Beihang University",
+        "members": [
             {
-                "en": "Da Yin, Aohan Zeng, Tsinghua University",
-                "zh": "殷达，曾奥涵，清华大学"
+                "name_zh": "王静远 副教授",
+                "name_en": "A.Prof. Jingyuan Wang",
+                "avatar": ""
+            }, {
+                "name_zh": "邹兵 博士",
+                "name_en": "Phd. Bing Zou",
+                "avatar": ""
             }
         ]
     },
     {
-        "system_zh": "数据",
-        "system_en": "Data",
-        "teams": [
+        "name_zh": "智谱·AI",
+        "name_en": "Zhipu.AI",
+        "members": [
             {
-                "en": "Zhipu.AI Team",
-                "zh": "智谱.AI 团队"
-            }
-        ]
-    },
-    {
-        "system_zh": "全球新冠肺炎疫情预测地图",
-        "system_en": "Forecast Map of Global Coronavirus Epidemic",
-        "teams": [
-            {
-                "en": "BIGSCity Lab in Beihang University",
-                "zh": "北航计算机学院智慧城市课题组"
+                "name_zh": "杜冀中",
+                "name_en": "Jizhong Du",
+                "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/dujizhong.png"
+            }, {
+                "name_zh": "论兵",
+                "name_en": "Bing Lun",
+                "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/lunbing.jpg"
+            }, {
+                "name_zh": "乔佳苗",
+                "name_en": "Jiamiao Qiao",
+                "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/qiaojiamiao.png"
+            }, {
+                "name_zh": "史小文",
+                "name_en": "Xiaowen Shi",
+                "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/shixiaowen.png"
+            }, {
+                "name_zh": "苏平",
+                "name_en": "Ping Su",
+                "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/suping.jpg"
+            }, {
+                "name_zh": "袁永强",
+                "name_en": "Yongqiang Yuan",
+                "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/yuanyongqiang.jpg"
+            }, {
+                "name_zh": "王笑尘",
+                "name_en": "Xiaochen Wang",
+                "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/wangxiaochen.jpg"
             }
         ]
     }

@@ -81,4 +81,8 @@ export default {
     "event.related_events": "Related Events",
 
     "search.placeholder": "Event Keywords, e.g., Remdesivir",
+
+    //contributors
+    "contributors.title": "Contributors",
+    "contributors.subtitle": "(Members are in alphabetical order by last name)"
 }

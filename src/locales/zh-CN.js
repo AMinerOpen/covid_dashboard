@@ -81,4 +81,8 @@ export default {
     "event.related_events": "相关事件",
 
     "search.placeholder": "事件关键词，如：瑞德西韦",
+
+    //contributors
+    "contributors.title": "合作者",
+    "contributors.subtitle": "(组织成员按姓氏首字母排序)"
 }
