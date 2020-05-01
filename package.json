@@ -45,7 +45,7 @@
     "camelcase": "^5.3.1",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "chroma-js": "^2.1.0",
-    "covid-header": "git+https://dev.aminer.cn/open-source/covid-header.git",
+    "covid-header": "^1.0.0",
     "css-loader": "3.4.2",
     "csv-parse": "^4.8.8",
     "dateformat": "^3.0.3",
