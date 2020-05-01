@@ -15,7 +15,6 @@ interface IProps extends IDefaultProps {
     theme: string;
     onSwitchTheme: () => void;
     onClickSource: () => void;
-    onClickGithub: () => void;
     mapMode: string
     onSetMapMode: (mapMode: string) => void;
 }
@@ -44,9 +43,6 @@ export default class Toolbar extends React.Component<IProps, any> {
                         env.lang == 'en' ? <En_Svg style={{fill: 'lightgrey'}} /> : <Zh_Svg style={{fill: '#e72620'}}/>
                     }
                 </div> */}
-                <div className='toolbar_source' onClick={() => this.props.onClickGithub()}>
-                    <Github_Svg />
-                </div>
                 <div className='toolbar_source' onClick={() => this.props.onClickSource()}>
                     <Source_Svg />
                 </div>

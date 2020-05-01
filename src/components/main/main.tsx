@@ -65,7 +65,6 @@ export default class Main extends React.Component<IProps, IState> {
     this.handleKg = this.handleKg.bind(this);
     this.handleDatasets = this.handleDatasets.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
-    this.handleGithub = this.handleGithub.bind(this);
   }
 
   private handleLangAllChange() {
@@ -95,11 +94,6 @@ export default class Main extends React.Component<IProps, IState> {
 
   private handleDatasets() {
     let url: string = "http://aminer.cn/data-covid19";
-    window.open(url, "_blank");
-  }
-
-  private handleGithub() {
-    let url: string = "https://github.com/AMinerOpen/covid_dashboard";
     window.open(url, "_blank");
   }
 
@@ -136,7 +130,6 @@ export default class Main extends React.Component<IProps, IState> {
         mapMode={this.state.mapMode}
         onSetMapMode={(mapMode: string) => this.setState({mapMode})}
         onClickSource={this.handleClickDataSource}
-        onClickGithub={this.handleGithub}
         onSwitchTheme={() =>
           this.setState({
             theme: this.state.theme === "dark" ? "light" : "dark"
