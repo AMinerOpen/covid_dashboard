@@ -25,7 +25,7 @@ export default class Contributors extends React.Component<IProps, IState> {
   }
 
   private requestData() {
-    let url: string = process.env.PUBLIC_URL + '/data/contributors.json';
+    let url: string = 'https://originalstatic.aminer.cn/misc/ncov/homepage/contributors.json';
     fetch(url).then(response => response.json()).then(data => {
         if(data && data.length) {
             this.setState({data})
