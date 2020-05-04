@@ -17,3 +17,28 @@ export function str2Date(str: string): Date {
     if(timeStr.indexOf("T") >= 0) timeStr += ".000+08:00";
     return new Date(timeStr);
 }
+
+const _date2idx: {[date: string]: number} = {}
+const _idx2date: {[idx: number]: string} = {}
+{
+    let d = str2Date('2019/12/01')
+    const endDate = new Date()
+    let i = 0
+    while (d <= endDate) {
+        const dateStr = dateformat(d, 'yyyy-mm-dd')
+        _idx2date[i] = dateStr
+        _date2idx[dateStr] = i++
+        d.setDate(d.getDate()+1)
+    }
+}
+
+export function date2idx(date: string | Date): number {
+    if (typeof(date) !== 'string') date = dateformat(date, 'yyyy-mm-dd')
+    return _date2idx[date] || -1
+}
+
+export function idx2date(idx: number): string {
+    return _idx2date[idx] || ''
+}
+
+export const maxDateIdx = date2idx(new Date)

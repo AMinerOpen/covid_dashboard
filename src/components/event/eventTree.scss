@@ -1,0 +1,58 @@
+.event-tree {
+    z-index: 1000;
+    position: absolute;
+    max-height: 500px;
+    .node-circle:hover {
+        cursor: pointer;
+    }
+    .node-event-box {
+        position: absolute;
+        transform: translate(-50%, -100%);
+        .node-event-box-arrow {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            bottom: 0%; /* At the bottom of the tooltip */
+            left: 50%;
+            margin-left: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: black transparent transparent transparent;
+        }
+        .node-event-box-bottom-padding {
+            width: 100%;
+            height: 20px;
+        }
+    }
+    .svg-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: scroll;
+        .name-bg {
+            z-index: -1;
+            position: absolute;
+            top: 0;
+            span {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                white-space: nowrap;
+            }
+        }
+    }
+    .node {
+        stroke: black;
+        stroke-width: 2px;
+    }
+    .node-line {
+        stroke: black;
+        stroke-width: 2px;
+        fill: none;
+        &:hover {
+            stroke: white;
+            stroke-width: 3px;
+            cursor: pointer;
+        }
+    }
+}

@@ -31,5 +31,13 @@ export async function requestEvent(id: string) {
 
 export async function requestSearchEvent(text: string) {
     const resp = await axios.get(process.env.REACT_APP_API_URL + '/events/search', { params: { q: text } })
+    const items = (resp.data as any).data
+    console.log('items', items)
+    items.sort((a: any, b: any) => b.time.localeCompare(a.time))
+    return items
+}
+
+export async function requestEventsTree() {
+    const resp = await axios.get(process.env.REACT_APP_API_URL + '/dist/events-tree.json', { headers: {'Cache-Control': 'no-cache' }})
     return resp.data as any
 }

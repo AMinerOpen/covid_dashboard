@@ -37,7 +37,7 @@ class SearchBox extends React.Component<IProps, IState> {
         }
         this.setState({items: [], loading: true})
         requestSearchEvent(text).then(resp => {
-            this.setState({items: resp.data, loading: false})
+            this.setState({items: resp, loading: false})
         }).catch(err => {
             console.warn('Search Error:', err)
             this.setState({items: [], loading: false})

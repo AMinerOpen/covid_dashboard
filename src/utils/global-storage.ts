@@ -1,11 +1,12 @@
 import _ from 'lodash'
 
-interface IEvent {
+export interface IEvent {
     related_events?: string[]
     time: Date
     date: string
+    title: string
 }
-interface IEvents {
+export interface IEvents {
     [id: string]: IEvent
 }
 

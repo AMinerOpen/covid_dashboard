@@ -16,6 +16,7 @@ import { Header } from "covid-header";
 import Infobar from "../infobar/infobar";
 import MapModeSelector from "../map/map-mode-selector";
 import SearchBox from "../searchbox";
+import EventTree from "../event/eventTree";
 
 interface IProps extends IDefaultProps {
   frame: boolean;
@@ -261,6 +262,7 @@ export default class Main extends React.Component<IProps, IState> {
             <div className="main_content">
               <div className="main_map">{this.map()}</div>
               <div className="main_upper">
+                <EventTree/>
                 <div className="main_timeline">{this.timeline()}</div>
                 <div className="main_controlbar">
                   {this.controlBar()}
