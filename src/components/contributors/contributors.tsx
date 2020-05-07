@@ -33,7 +33,6 @@ export default class Contributors extends React.Component<IProps, IState> {
     })
   }
 
-
   render() {
     const { lang, onSwitchLang } = this.props;
     const { data } = this.state;

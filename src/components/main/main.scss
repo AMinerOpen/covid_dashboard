@@ -42,6 +42,13 @@ $main-margin: 6px;
                     position: absolute;
                 }
 
+                .main_hotbar {
+                    position: absolute;
+                    left: 0px;
+                    top: 100px;
+                    height: 50%;
+                }
+
                 .main_timeline {
                     position: absolute;
                     bottom: 12px;

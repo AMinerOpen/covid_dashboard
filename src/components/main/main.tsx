@@ -17,6 +17,7 @@ import Infobar from "../infobar/infobar";
 import MapModeSelector from "../map/map-mode-selector";
 import SearchBox from "../searchbox";
 import EventTree from "../event/eventTree";
+import Hotbar from "../hotbar/hotbar";
 
 interface IProps extends IDefaultProps {
   frame: boolean;
@@ -159,6 +160,16 @@ export default class Main extends React.Component<IProps, IState> {
     );
   }
 
+  private hotbar(): JSX.Element {
+    return (
+      <Hotbar 
+        lang={this.props.env.lang} 
+        date={this.props.env.date} 
+        events={this.state.events}
+        onOpenEvent={this.handleOpenEventPanel}/>
+    )
+  }
+
   private forcast(): JSX.Element {
     return (
       <Forcast
@@ -263,6 +274,7 @@ export default class Main extends React.Component<IProps, IState> {
               <div className="main_map">{this.map()}</div>
               <div className="main_upper">
                 {/* <EventTree/> */}
+                <div className='main_hotbar'>{this.hotbar()}</div>
                 <div className="main_timeline">{this.timeline()}</div>
                 <div className="main_controlbar">
                   {this.controlBar()}
