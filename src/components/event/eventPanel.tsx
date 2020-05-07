@@ -9,6 +9,7 @@ import GlobalStorage from '../../utils/global-storage';
 import _ from 'lodash'
 import { getEventColor } from '../eventFlag/utils';
 import { str2Date } from '../../utils/date';
+import EntityFlag from '../entityFlag/entityFlag';
 
 interface IProps extends IDefaultProps {
     events: any[];
@@ -128,8 +129,7 @@ export default class EventPanel extends React.Component<IProps, IState> {
     private handleMapEntities(entity: any, index: number): JSX.Element {
         return (
             <div key={index} id={entity.url} className='entity' style={entity.url == this.state.hightlight ? {border: '4px solid #ffe100'} : undefined}>
-                <div className='label'>{entity.label}</div>
-                <div className='content' dangerouslySetInnerHTML={{__html: this.entityContent(entity)}}></div>
+                {entity.label}<div className='entityflag'><EntityFlag source={entity.source} /></div>
             </div>
         )
     }
@@ -215,7 +215,7 @@ export default class EventPanel extends React.Component<IProps, IState> {
             <div className='eventpanel' onClick={this.handleClose}>
                 <div className='panel' onClick={(e: React.MouseEvent) => e.stopPropagation()}>
                     <div className='left'>
-                        <div className='events_header'>{`${dateFormat(date, 'yyyy-mm-dd')} (${curEvents.length})`}</div>
+                        <div className='events_header'>{`Events ${dateFormat(date, 'yyyy-mm-dd')} (${curEvents.length})`}</div>
                         <div className='list'>
                             <div className='list_inner'>
                             { curEvents.map((value: any, index: number) => {
@@ -238,22 +238,26 @@ export default class EventPanel extends React.Component<IProps, IState> {
                                 </div>
                             )
                         }
-                        { event && related_events && related_events.length > 0 &&
-                            <div className="content_related_events" style={{marginTop: 20}}>
-                                <div className='events_header'><FormattedMessage id='event.related_events'/></div>
-                                {related_events.map((ev, idx) => <div key={idx} className="related-event" onClick={() => this.redirectToRelatedEvent(ev._id)}>
-                                    <span className="date">{dateFormat(ev.time, 'yyyy-mm-dd')}</span>
-                                    <span className="type" style={{background: getEventColor(ev.type)}}>{_.capitalize(ev.type || '')}</span>
-                                    <span className="title">{ev.title}</span>
-                                </div>)}
-                            </div>
-                        }
                     </div>
                     <div className='right'>
                         <div className='events_header'><FormattedMessage id='event.entities' />{` (${entities.length})`}</div>
                         <div className="list">
+                            <div className='entities' >
                             { this.state.entities.map(this.handleMapEntities)}
+                            </div>
                         </div>
+                        { event && related_events && related_events.length > 0 &&
+                            <div className="related-events">
+                                <div className='events_header'><FormattedMessage id='event.related_events'/></div>
+                                <div className='list'>
+                                    {related_events.map((ev, idx) => <div key={idx} className="related-event" onClick={() => this.redirectToRelatedEvent(ev._id)}>
+                                        <span className="date">{dateFormat(ev.time, 'yyyy-mm-dd')}</span>
+                                        <span className="type" style={{background: getEventColor(ev.type)}}>{_.capitalize(ev.type || '')}</span>
+                                        <span className="title">{ev.title}</span>
+                                    </div>)}
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
 

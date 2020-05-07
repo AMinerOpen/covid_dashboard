@@ -110,29 +110,6 @@
                     }
                 }
             }
-
-            .related-event {
-                padding: 3px 10px;
-                .title {
-                    font-size: 14px;
-                    font-weight: 500;
-                }
-                .date {
-                    font-size: 14px;
-                    font-weight: 500;
-                    margin-right: 5px;
-                }
-                .type {
-                    font-size: 12px;
-                    font-weight: 500;
-                    padding: 2px 3px;
-                    border-radius: 5px;
-                }
-                &:hover {
-                    background: #ffffff80;
-                    cursor: pointer;
-                }
-            }
         }
 
         .right {
@@ -143,35 +120,74 @@
             border-left: 2px solid grey;
             display: flex;
             flex-direction: column;
-
             .list {
+                position: relative;
                 width: 100%;
                 flex: 1;
                 height: 0;
                 overflow-y: scroll;
-                .entity {
-                    margin-top: 4px;
-                    margin-bottom: 4px;
-                    background-color: rgb(186, 236, 252);
-                    border-radius: 6px;
-                    box-sizing: border-box;
-                    .label {
-                        padding: 4px;
-                        font-size: 16px;
-                        font-weight: bold;
-                        width: 100%;
+                .entities {
+                    position: relative;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    .entity {
+                        position: relative;
+                        font-size: 14px;
+                        overflow: hidden;
+                        text-align: left;
+                        padding: 2px 6px;
+                        padding-right: 36px;
+                        width: fit-content;
+                        margin: 4px 0 4px 6px;
+                        background-color: rgb(186, 236, 252);
+                        border-radius: 6px;
+                        user-select: none;
+                        cursor: pointer;
+                        .entityflag {
+                            position: absolute;
+                            right: -6px;
+                            top: 3px;
+                        }
                     }
-                    .content {
-                        padding: 4px;
-                        font-size: 12px;
-                        max-height: 116px;
-                        overflow-y: hidden;
-                        text-overflow: ellipsis;
-
-                        a {
-                            color: black;
-                            pointer-events: none;
-                            touch-action: none;
+                }
+                
+            }
+            .related-events {
+                position: relative;
+                width: 100%;
+                height: 50%;
+                padding: 2px 0px;
+                margin-top: 4px;
+                border-top: 1px solid grey;
+                display: flex;
+                flex-direction: column;
+                .list {
+                    flex: 1;
+                    width: 100%;
+                    height: 0;
+                    overflow-y: scroll;
+                    padding: 0 8px;
+                    .related-event {
+                        .title {
+                            font-size: 14px;
+                            font-weight: 500;
+                        }
+                        .date {
+                            font-size: 14px;
+                            font-weight: 500;
+                            margin-right: 5px;
+                        }
+                        .type {
+                            font-size: 12px;
+                            font-weight: 500;
+                            padding: 2px 3px;
+                            border-radius: 5px;
+                        }
+                        &:hover {
+                            background: #ffffff80;
+                            cursor: pointer;
                         }
                     }
                 }
@@ -189,7 +205,7 @@
             bottom: 0;
             transform: translate(0, 0);
             width: 100%;
-            height: 80%;
+            height: 86%;
             border-radius: 0px;
             background-color: rgba(202, 212, 226, 0.945);
             display: block;
@@ -207,10 +223,10 @@
                 .events_header {
                     color: $background;
                     font-size: 14px;
-                    line-height: 36px;
+                    line-height: 32px;
                     padding-left: 8px;
                     font-weight: bold;
-                    height: 36px;
+                    height: 32px;
                     width: 100%;
                     border-bottom: 1px solid grey;
                 }
@@ -240,7 +256,7 @@
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: 60%;
+                width: 54%;
                 height: 60%;
                 display: flex;
                 flex-direction: column;
@@ -292,7 +308,7 @@
                 position: absolute;
                 right: 0;
                 top: 0;
-                width: 40%;
+                width: 46%;
                 height: 60%;
                 border-left: 2px solid grey;
                 display: flex;
@@ -301,10 +317,10 @@
                 .events_header {
                     color: $background;
                     font-size: 14px;
-                    line-height: 36px;
+                    line-height: 28px;
                     padding-left: 8px;
                     font-weight: bold;
-                    height: 36px;
+                    height: 28px;
                     width: 100%;
                     border-bottom: 1px solid grey;
                 }

@@ -1,0 +1,23 @@
+@import "../../global.scss";
+
+.entityflag {
+  display: inline-block;
+  font-size: 12px;
+  border-radius: 4px;
+  padding: 0 2px;
+  width: 42px;
+  text-align: center;
+  transform: scale(0.8);
+  transform-origin: left;
+  color: white;
+  font-weight: bold;
+  user-select: none;
+}
+.kg {
+  background-color: $blue;
+  border: 1px solid $blue;
+}
+.xlink {
+  background-color: orange;
+  border: 1px solid orange;
+}
