@@ -14,6 +14,8 @@ interface IProps {
 interface IState {
   hotEvents: any[];
   hotEntities: any[];
+  entitiesExpand: boolean;
+  eventsExpand: boolean;
 }
 
 export default class Hotbar extends React.Component<IProps, IState> {
@@ -22,7 +24,9 @@ export default class Hotbar extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       hotEntities: [], 
-      hotEvents: []
+      hotEvents: [],
+      entitiesExpand: true,
+      eventsExpand: true
     }
   }
 
@@ -70,45 +74,53 @@ export default class Hotbar extends React.Component<IProps, IState> {
 
   render() {
     const { lang } = this.props;
-    const { hotEvents, hotEntities} = this.state;
+    const { hotEvents, hotEntities, eventsExpand, entitiesExpand} = this.state;
     return <div className="hotbar">
       <div className='hot'>
-        <div className='bar'>
+        <div className='bar' onClick={() => this.setState({entitiesExpand: !entitiesExpand})}>
           <div className='title'><FormattedMessage id='hot.entities'/></div>
         </div>
-        <div className='con'>
-          <div className='con_inner'>
-            <div className='entities'>
-              {
-                hotEntities.map((entity: any, index: number) => {
-                  return (
-                    <div className='entity' key={index}>
-                      <span className='label'>{`${entity.label}(${entity.count || 0})`}</span>
-                    </div>
-                  )
-                })
-              }
+        { 
+          entitiesExpand && (
+            <div className='con'>
+              <div className='con_inner'>
+                <div className='entities'>
+                  {
+                    hotEntities.map((entity: any, index: number) => {
+                      return (
+                        <div className='entity' key={index}>
+                          <span className='label'>{`${entity.label}(${entity.count || 0})`}</span>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          )
+        }
       </div>
       <div className='hot'>
-        <div className='bar'>
+        <div className='bar' onClick={() => this.setState({eventsExpand: !eventsExpand})}>
           <div className='title'><FormattedMessage id='hot.events'/></div>
         </div>
-        <div className='con'>
-          <div className='con_inner'>
-            {
-              hotEvents.map((event: any, index: number) => {
-                return (
-                  <div className='event' key={index} onClick={() => this.props.onOpenEvent && this.props.onOpenEvent(this.props.date)}>
-                    <EventFlag lang={lang} type={event.type} category={event.category}/><span className='title'>{event.title}</span>
-                  </div>
-                )
-              })
-            }
-          </div>
-        </div>
+        {
+          eventsExpand && (
+            <div className='con'>
+              <div className='con_inner'>
+                {
+                  hotEvents.map((event: any, index: number) => {
+                    return (
+                      <div className='event' key={index} onClick={() => this.props.onOpenEvent && this.props.onOpenEvent(this.props.date)}>
+                        <EventFlag lang={lang} type={event.type} category={event.category}/><span className='title'>{event.title}</span>
+                      </div>
+                    )
+                  })
+                }
+              </div>
+            </div>
+          )
+        }
       </div>
     </div>
   }
