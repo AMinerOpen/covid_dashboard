@@ -84,6 +84,12 @@ export default {
     "hot.entities": "Hot Entities",
     "hot.events": "Hot Events",
 
+    //entityPanel
+    "entitypanel.events": "Related Events",
+    "entitypanel.desc": "Desc",
+    "entitypanel.relations": "Relations",
+    "entitypanel.properties": "Properties",
+
     "search.placeholder": "Event Keywords, e.g., Remdesivir",
 
     //contributors

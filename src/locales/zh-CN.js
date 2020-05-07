@@ -84,6 +84,12 @@ export default {
     "hot.entities": "热点实体",
     "hot.events": "热点事件",
 
+    //entityPanel
+    "entitypanel.events": "相关事件",
+    "entitypanel.desc": "描述",
+    "entitypanel.relations": "关系",
+    "entitypanel.properties": "属性",
+
     "search.placeholder": "事件关键词，如：瑞德西韦",
 
     //contributors

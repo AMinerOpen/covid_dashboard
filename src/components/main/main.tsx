@@ -18,6 +18,7 @@ import MapModeSelector from "../map/map-mode-selector";
 import SearchBox from "../searchbox";
 import EventTree from "../event/eventTree";
 import Hotbar from "../hotbar/hotbar";
+import EntityPanel from "../entityPanel/entityPanel";
 
 interface IProps extends IDefaultProps {
   frame: boolean;
@@ -41,6 +42,8 @@ interface IState {
   events: any[];
   showDataSource: boolean;
   panelDate: Date | null;
+  entity: any;
+  entityDate: Date | null;
   mapMode: string;
   focusEvent?: any;
 }
@@ -55,6 +58,8 @@ export default class Main extends React.Component<IProps, IState> {
       showForcast: false,
       news: [],
       events: [],
+      entity: null,
+      entityDate: null,
       showDataSource: false,
       panelDate: null,
       mapMode: 'risk'
@@ -67,6 +72,8 @@ export default class Main extends React.Component<IProps, IState> {
     this.handleKg = this.handleKg.bind(this);
     this.handleDatasets = this.handleDatasets.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
+    this.handleOpenEntityPanel = this.handleOpenEntityPanel.bind(this);
+    this.handleCloseEntityPanel = this.handleCloseEntityPanel.bind(this);
   }
 
   private handleLangAllChange() {
@@ -78,7 +85,11 @@ export default class Main extends React.Component<IProps, IState> {
   }
 
   private handleOpenEventPanel(date: Date) {
-    this.setState({ panelDate: date });
+    this.setState({ panelDate: date, entity: null });
+  }
+
+  private handleOpenEntityPanel(entity: any, entityDate?: Date) {
+    this.setState({ panelDate: null, entity, entityDate: entityDate||null })
   }
 
   private handleMarkerClick(data: any) {
@@ -87,6 +98,10 @@ export default class Main extends React.Component<IProps, IState> {
 
   private handleCloseEventPanel() {
     this.setState({ panelDate: null });
+  }
+
+  private handleCloseEntityPanel() {
+    this.setState({entity: null})
   }
 
   private handleKg() {
@@ -166,7 +181,8 @@ export default class Main extends React.Component<IProps, IState> {
         lang={this.props.env.lang} 
         date={this.props.env.date} 
         events={this.state.events}
-        onOpenEvent={this.handleOpenEventPanel}/>
+        onOpenEvent={this.handleOpenEventPanel}
+        onOpenEntity={this.handleOpenEntityPanel}/>
     )
   }
 
@@ -206,8 +222,22 @@ export default class Main extends React.Component<IProps, IState> {
         date={this.state.panelDate!}
         onClose={this.handleCloseEventPanel}
         focusEvent={this.state.focusEvent}
+        onOpenEntity={this.handleOpenEntityPanel}
       />
     );
+  }
+
+  private entityPanel(): JSX.Element {
+    return (
+      <EntityPanel 
+        env={this.props.env} 
+        events={this.state.events}
+        date={this.state.entityDate}
+        data={this.state.entity} 
+        onOpenEvent={this.handleOpenEventPanel}
+        onOpenEntity={this.handleOpenEntityPanel}
+        onClose={this.handleCloseEntityPanel}/>
+    )
   }
 
   private header(): JSX.Element {
@@ -225,7 +255,8 @@ export default class Main extends React.Component<IProps, IState> {
     const {
       showForcast,
       showDataSource,
-      panelDate
+      panelDate,
+      entity
     } = this.state;
     return (
       <div className="main">
@@ -288,6 +319,7 @@ export default class Main extends React.Component<IProps, IState> {
               </div>
               {showDataSource && <div>{this.source()}</div>}
               {panelDate && this.eventPanel()}
+              {entity && this.entityPanel()}
             </div>
           </div>
         )}

@@ -1,0 +1,168 @@
+@import "../../global.scss";
+.entitypanel {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff01;
+  z-index: 200;
+  .panel {
+    position: absolute;
+    left: 40%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 50%;
+    height: 60%;
+    border-radius: 4px;
+    background-color: rgba(202, 212, 226, 0.945);
+    display: flex;
+    border: 4px solid $background;
+    flex-direction: row;
+    .left {
+      position: relative;
+      width: 64%;
+      height: 100%;
+      padding: 0 8px;
+      display: flex;
+      flex-direction: column;
+      .title {
+        color: $font-color;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 4px 0px;
+        border-bottom: 1px solid grey;
+      }
+      .content {
+        position: relative;
+        flex: 1;
+        height: 0;
+        width: 100%;
+        overflow-y: scroll;
+        .head {
+          font-size: 14px;
+          font-weight: bold;
+          margin-bottom: 6px;
+          margin-top: 6px;
+        }
+        .desc {
+          color: $font-color;
+          font-style: italic;
+          a {
+            color: $font-color;
+            pointer-events: none;
+          }
+        }
+        .relations {
+          position: relative;
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          .relation {
+            position: relative;
+            width: 48%;
+            height: 36px;
+            margin-right: 1%;
+            margin-bottom: 6px;
+            border-radius: 4px;
+            background-color: #00000020;
+            display: flex;
+            flex-direction: row;
+            padding: 2px 6px;
+            .name {
+              flex: 1;
+              width: 0;
+              line-height: 32px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+            .direction {
+              width: 28px;
+              height: 28px;
+              margin: 2px 2px;
+              svg {
+                width: 100%;
+                height: 100%;
+              }
+            }
+            .label {
+              position: relative;
+              flex: 1;
+              width: 0;
+              .label_inner {
+                position: absolute;
+                right: 0;
+                top: 1px;
+                max-width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                padding: 4px 4px;
+                background-color: lightsalmon;
+                border-radius: 4px;
+                .line {
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 3px;
+                  background-color: brown;
+                }
+              }
+            }
+          }
+        }
+        .property {
+          margin-bottom: 4px;
+          .key {
+            font-size: 12px;
+            font-weight: bold;
+            padding: 2px 4px;
+            margin-right: 4px;
+            background-color: pink;
+            border-radius: 4px;
+          }
+        }
+      }
+    }
+    .right {
+      position: relative;
+      width: 36%;
+      height: 100%;
+      padding: 0 8px;
+      border-left: 2px solid grey;
+      display: flex;
+      flex-direction: column;
+      .title {
+        color: $font-color;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 4px 0px;
+        border-bottom: 1px solid grey;
+      }
+      .list {
+        flex: 1;
+        margin-top: 6px;
+        height: 0;
+        width: 100%;
+        overflow-y: scroll;
+        .event {
+          margin-bottom: 6px;
+          user-select: none;
+          cursor: pointer;
+          &:hover {
+            background-color: lightgrey;
+          }
+          .title {
+            font-size: 14px;
+            color: $font-color;
+            font-weight: normal;
+            border: none;
+          }
+        }
+      }
+    }
+  }
+}

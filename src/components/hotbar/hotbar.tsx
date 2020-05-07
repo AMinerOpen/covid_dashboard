@@ -9,6 +9,7 @@ interface IProps {
   lang: 'zh' | 'en';
   date: Date;
   onOpenEvent: (date: Date) => void;
+  onOpenEntity: (entity: any, date: Date) => void;
 }
 
 interface IState {
@@ -73,7 +74,7 @@ export default class Hotbar extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { lang } = this.props;
+    const { lang, onOpenEntity, onOpenEvent, date } = this.props;
     const { hotEvents, hotEntities, eventsExpand, entitiesExpand} = this.state;
     return <div className="hotbar">
       <div className='hot'>
@@ -88,7 +89,7 @@ export default class Hotbar extends React.Component<IProps, IState> {
                   {
                     hotEntities.map((entity: any, index: number) => {
                       return (
-                        <div className='entity' key={index}>
+                        <div className='entity' key={index} onClick={() => onOpenEntity && onOpenEntity(entity, date)}>
                           <span className='label'>{`${entity.label}(${entity.count || 0})`}</span>
                         </div>
                       )
@@ -111,7 +112,7 @@ export default class Hotbar extends React.Component<IProps, IState> {
                 {
                   hotEvents.map((event: any, index: number) => {
                     return (
-                      <div className='event' key={index} onClick={() => this.props.onOpenEvent && this.props.onOpenEvent(this.props.date)}>
+                      <div className='event' key={index} onClick={() => onOpenEvent && onOpenEvent(this.props.date)}>
                         <EventFlag lang={lang} type={event.type} category={event.category}/><span className='title'>{event.title}</span>
                       </div>
                     )

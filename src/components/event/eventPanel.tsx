@@ -2,7 +2,7 @@ import * as React from 'react';
 import './eventPanel.scss';
 import { IDefaultProps } from '../../global';
 import { FormattedMessage } from 'react-intl'
-import { requestEvent } from '../../utils/requests';
+import { requestEvent, requestEntities } from '../../utils/requests';
 import EventFlag from '../eventFlag/eventFlag';
 import dateFormat from 'dateformat';
 import GlobalStorage from '../../utils/global-storage';
@@ -16,6 +16,7 @@ interface IProps extends IDefaultProps {
     focusEvent?: any;
     date: Date;
     onClose: () => void;
+    onOpenEntity: (entity: any, date: Date) => void;
 }
 
 interface IState {
@@ -92,9 +93,8 @@ export default class EventPanel extends React.Component<IProps, IState> {
                 }
             })
             if(exists.length) {
-                let urls:string = encodeURI('[' + exists.map((d: any) => "\"" + d.url + "\"").join(',') + ']');
-                let url: string = "https://covid19.aminer.cn/getEntities?urls=" + urls;
-                fetch(url).then(response => response.json()).then(data => {
+                let urls: string[] = exists.map(d => d.url);
+                requestEntities(urls).then(data => {
                     if(data && data.length) {
                         this.setState({entities: data});
                     }
@@ -128,7 +128,12 @@ export default class EventPanel extends React.Component<IProps, IState> {
 
     private handleMapEntities(entity: any, index: number): JSX.Element {
         return (
-            <div key={index} id={entity.url} className='entity' style={entity.url == this.state.hightlight ? {border: '4px solid #ffe100'} : undefined}>
+            <div 
+                key={index} 
+                id={entity.url} 
+                className='entity' 
+                style={entity.url == this.state.hightlight ? {border: '4px solid #ffe100'} : undefined}
+                onClick={() => this.props.onOpenEntity && this.props.onOpenEntity(entity, this.props.date)}>
                 {entity.label}<div className='entityflag'><EntityFlag source={entity.source} /></div>
             </div>
         )
