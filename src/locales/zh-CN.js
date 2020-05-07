@@ -80,6 +80,10 @@ export default {
     "event.entities": "实体",
     "event.related_events": "相关事件",
 
+    //hos
+    "hot.entities": "热点实体",
+    "hot.events": "热点事件",
+
     "search.placeholder": "事件关键词，如：瑞德西韦",
 
     //contributors

@@ -7,7 +7,6 @@ interface IProps {
 
 const EntityFlag = (props: IProps) => {
   const source = props.source || "xlink";
-  console.log(source);
   return (
     <span className={`entityflag ${source}`}>
       {source.toUpperCase()}

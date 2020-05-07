@@ -80,6 +80,10 @@ export default {
     "event.entities": "Entities",
     "event.related_events": "Related Events",
 
+    //hos
+    "hot.entities": "Hot Entities",
+    "hot.events": "Hot Events",
+
     "search.placeholder": "Event Keywords, e.g., Remdesivir",
 
     //contributors
