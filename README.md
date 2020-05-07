@@ -61,8 +61,4 @@ yarn build
 [记疫-南都传媒](https://m.mp.oeeee.com/h5/pages/v20/nCovTimeline/)  
 
 ## Contributors
-Prof. Bin Yang Team, Tsinghua University  
-Prof. Yiqun Liu Team, Tsinghua University  
-Dr. Panpan Zhou, Dr. Bing Zou, Tsinghua University  
-Da Yin, Aohan Zeng, Tsinghua University  
-Zhipu.AI Team
+[https://covid-dashboard.aminer.cn/contributors](https://covid-dashboard.aminer.cn/contributors)

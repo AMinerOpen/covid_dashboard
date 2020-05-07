@@ -84,13 +84,13 @@
                 "name_en": "Ping Su",
                 "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/suping.jpg"
             }, {
-                "name_zh": "袁永强",
-                "name_en": "Yongqiang Yuan",
-                "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/yuanyongqiang.jpg"
-            }, {
                 "name_zh": "王笑尘",
                 "name_en": "Xiaochen Wang",
                 "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/wangxiaochen.jpg"
+            }, {
+                "name_zh": "袁永强",
+                "name_en": "Yongqiang Yuan",
+                "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/yuanyongqiang.jpg"
             }
         ]
     }
