@@ -86,9 +86,9 @@ export default class MapContainer extends React.Component<IProp, IState> {
         if (this.hover_feature) this.map?.setFeatureState(this.hover_feature, { hover_opacity: 0.9, hover_stroke_opacity: 0.5 })
         const name = this.hover_feature === undefined ? 'World' : this.hover_feature.properties!.name
         const globalOffset = new Date(this.props.date).getTime() / DAYMILLS
-        const ep = this.regionEpidemicData[name]
-        if (!ep) return
-        const dayEp = this.__getDayEp(ep, globalOffset, {})
+        let ep = this.regionEpidemicData[name]
+        if (!ep && name.indexOf('|') >= 0) return
+        const dayEp = ep ? this.__getDayEp(ep, globalOffset, {}) : {}
         this.props.onHover(this.regionsInfo[name], dayEp)
     })
 
@@ -119,6 +119,8 @@ export default class MapContainer extends React.Component<IProp, IState> {
                     ) : 0
                     const color = (opacity > 0 && dayEp.colors) ? (dayEp.colors[this.mapMode] || '#ffffff') : '#ffffff'
                     this.map!.setFeatureState({source: 'composite', sourceLayer, id: feature.id}, { color, opacity, stroke_opacity })
+                } else if (sourceLayer === COUNTRY_SOURCE_LAYER) {
+                    this.map!.setFeatureState({source: 'composite', sourceLayer, id: feature.id}, { color: '#dddddd', opacity: 1, stroke_opacity: 0.1})
                 }
             })
         })
