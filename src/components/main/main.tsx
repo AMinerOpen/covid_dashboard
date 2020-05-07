@@ -296,6 +296,7 @@ export default class Main extends React.Component<IProps, IState> {
               )}
               {showDataSource && <div>{this.source()}</div>}
               {panelDate && this.eventPanel()}
+              {entity && this.entityPanel()}
             </div>
           </div>
         ) : (
