@@ -45,7 +45,7 @@
             display: block;
             .drawer {
                 position: absolute;
-                bottom: 100%;
+                top: 32px;
                 left: 50%;
                 transform: translateX(-50%);
                 background: #020E26;

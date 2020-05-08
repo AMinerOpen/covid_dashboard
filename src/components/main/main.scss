@@ -150,7 +150,7 @@ $main-margin: 6px;
                         .main_btns {
                             position: absolute;
                             right: $main-margin;
-                            bottom: calc(26% + #{$main-margin} * 3);
+                            top: $main-margin;
                             .btn_svg {
                                 float: right;
                                 width: 30px;

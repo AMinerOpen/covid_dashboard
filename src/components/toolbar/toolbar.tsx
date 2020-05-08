@@ -4,7 +4,7 @@ import { Switch, Tooltip } from 'antd';
 import { FormattedMessage } from "react-intl";
 import { IDefaultProps } from '../../global'
 import { ReactComponent as Source_Svg } from './images/source.svg';
-import { ReactComponent as Github_Svg } from './images/github.svg';
+import { ReactComponent as Search_Svg } from './images/search.svg';
 
 import _ from 'lodash'
 import MapModeSelector from '../map/map-mode-selector';
@@ -15,6 +15,7 @@ interface IProps extends IDefaultProps {
     theme: string;
     onSwitchTheme: () => void;
     onClickSource: () => void;
+    onSearch: () => void;
     mapMode: string
     onSetMapMode: (mapMode: string) => void;
 }
@@ -46,9 +47,9 @@ export default class Toolbar extends React.Component<IProps, any> {
                 <div className='toolbar_source' onClick={() => this.props.onClickSource()}>
                     <Source_Svg />
                 </div>
-                {/* <div className='toolbar_source' onClick={() => this.props.onClickSelftest()}>
-                    <Selftest_Svg />
-                </div> */}
+                <div className='toolbar_source' onClick={() => this.props.onSearch()}>
+                    <Search_Svg />
+                </div>
                 {/* <div id="style-switch-btn" className={`button ${this.props.theme === 'dark' ? 'light' : 'dark'}`}
                     onClick={() => this.props.onSwitchTheme()}
                 ><i className="fas fa-lightbulb"/></div> */}

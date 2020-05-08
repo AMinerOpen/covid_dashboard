@@ -1,9 +1,10 @@
 import * as React from 'react';
 import './timeline.scss';
-import { IDefaultProps } from '../../global';
+import { IDefaultProps, sameDay } from '../../global';
 import dateformat from 'dateformat'
 import { requestEvents, requestEventsUpdate } from '../../utils/requests';
 import GlobalStorage from '../../utils/global-storage';
+import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 
 interface IState {
     tflag: number;
@@ -25,6 +26,8 @@ interface IProps extends IDefaultProps {
 }
 
 export default class Timeline extends React.Component<IProps, IState> {
+    private begin = new Date(2020, 0, 24, 0, 0, 0, 0);
+    private end = new Date();
     private _ms1Day: number = 24*60*60*1000;
     private _rangeStartDate: Date;
     private _rangeEndDate: Date;
@@ -102,6 +105,7 @@ export default class Timeline extends React.Component<IProps, IState> {
         this.drawBars = this.drawBars.bind(this);
         this.handleBar = this.handleBar.bind(this);
         this.handleDateUp = this.handleDateUp.bind(this);
+        this.handleBtnClick = this.handleBtnClick.bind(this);
     }
 
     public componentDidMount() {
@@ -357,6 +361,17 @@ export default class Timeline extends React.Component<IProps, IState> {
         )
     }
 
+    private handleBtnClick() {
+        if(!this.props.env.speed) {
+            if(sameDay(this.props.env.date, this.end)) {
+                this.props.onChangeDate && this.props.onChangeDate(this.begin);
+            }
+        }
+        setTimeout(() => {
+            this.props.onChangeSpeed && this.props.onChangeSpeed(this.props.env.speed ? 0 : 3);
+        }, 200);
+    }
+
     private drawLine() {
         return (
             <div className='timeline_bar'>
@@ -372,26 +387,38 @@ export default class Timeline extends React.Component<IProps, IState> {
     }
 
     public render() {
+        const { env } = this.props;
         const { catchBars } = this.state;
         return (
             <div className='timeline'>
                 <div className='bg' />
-                {this.drawPointer()}
-                <div className='timeline_container'
-                    ref={r => this._container = r}
-                    onMouseDown={this.props.env.isMobile ? undefined : this.handleMouseDown}
-                    onTouchStart={this.handleTouchStart}
-                    onMouseMove={this.props.env.isMobile ? undefined : (e: React.MouseEvent) => this.handleMouseMove(e.movementX)}
-                    onTouchMove={(e: React.TouchEvent) => {
-                        if(e.touches.length) {
-                            this.handleMouseMove(e.touches[0].clientX - this._lastTouchX)
-                            this._lastTouchX = e.touches[0].clientX;
-                        }}}
-                    onWheel={this.handleMouseWheel}>
-                        {this.drawLine()}
-                        <div className='events'>
-                            { catchBars }
-                        </div>
+                <div className='play_btn' onClick={this.handleBtnClick}>
+                {
+                    env.speed > 0 ? (
+                        <PauseOutlined className='btn' />
+                    ) : (
+                        <CaretRightOutlined className='btn' style={{marginLeft: '3px'}} />
+                    )
+                }
+                </div>
+                <div className='timeline_right'>
+                    {this.drawPointer()}
+                    <div className='timeline_container'
+                        ref={r => this._container = r}
+                        onMouseDown={this.props.env.isMobile ? undefined : this.handleMouseDown}
+                        onTouchStart={this.handleTouchStart}
+                        onMouseMove={this.props.env.isMobile ? undefined : (e: React.MouseEvent) => this.handleMouseMove(e.movementX)}
+                        onTouchMove={(e: React.TouchEvent) => {
+                            if(e.touches.length) {
+                                this.handleMouseMove(e.touches[0].clientX - this._lastTouchX)
+                                this._lastTouchX = e.touches[0].clientX;
+                            }}}
+                        onWheel={this.handleMouseWheel}>
+                            {this.drawLine()}
+                            <div className='events'>
+                                { catchBars }
+                            </div>
+                    </div>
                 </div>
             </div>
         )

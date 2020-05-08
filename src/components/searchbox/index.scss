@@ -5,7 +5,21 @@
     margin-left: 20px;
     .search-input {
         transform: translateY(50%);
-        width: 300px;
+        width: 320px;
+        display: flex;
+        flex-direction: row;
+        .close {
+            width: 30px;
+            height: 32px;
+            background-color: white;
+            font-size: 18px;
+            text-align: center;
+            padding-top: 2px;
+            color: grey;
+            border: 1px solid #c9d3dc;
+            opacity: 0.8;
+            cursor: pointer;
+        }
     }
     .search-result {
         position: absolute;

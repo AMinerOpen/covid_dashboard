@@ -178,7 +178,7 @@ export default class EventTree extends React.Component<IProps, IState> {
         const svgOffsetY = -dy + (this.svgContainerDivEl?.scrollTop || 0)
         return <div className="event-tree" style={{height: svgHeight}}>
             <div className="svg-container" ref={e => { this.svgContainerDivEl = e }}>
-                {_.range(0, maxDateIdx+1).map(i => <div className="name-bg" style={{width: (i === 0 || i === maxDateIdx) ? dx * 1.5 : dx, left: i === 0 ? 0 : (i + 0.5) * dx, background: i % 2 === 0 ? '#dddddda0' : '#aaaaaaa0', height: svgHeight}}>
+                {_.range(0, maxDateIdx+1).map(i => <div className="name-bg" key={i} style={{width: (i === 0 || i === maxDateIdx) ? dx * 1.5 : dx, left: i === 0 ? 0 : (i + 0.5) * dx, background: i % 2 === 0 ? '#dddddda0' : '#aaaaaaa0', height: svgHeight}}>
                     <span style={{top: svgOffsetY + dy}}>{idx2date(i).slice(5)}</span>
                 </div>)}
                 <svg viewBox={`${-dx} ${-dy} ${svgWidth} ${svgHeight}`} width={svgWidth} height={svgHeight}>

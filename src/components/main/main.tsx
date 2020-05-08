@@ -48,6 +48,7 @@ interface IState {
   showDataSource: boolean;
   panelStack: IPanelParams[];
   mapMode: string;
+  showSearch: boolean;
 }
 
 export default class Main extends React.Component<IProps, IState> {
@@ -62,7 +63,8 @@ export default class Main extends React.Component<IProps, IState> {
       events: [],
       showDataSource: false,
       panelStack: [],
-      mapMode: 'risk'
+      mapMode: 'risk',
+      showSearch: false
     };
 
     this.handleLangAllChange = this.handleLangAllChange.bind(this);
@@ -165,6 +167,7 @@ export default class Main extends React.Component<IProps, IState> {
         mapMode={this.state.mapMode}
         onSetMapMode={(mapMode: string) => this.setState({mapMode})}
         onClickSource={this.handleClickDataSource}
+        onSearch={() => this.setState({showSearch: !this.state.showSearch})}
         onSwitchTheme={() =>
           this.setState({
             theme: this.state.theme === "dark" ? "light" : "dark"
@@ -273,7 +276,8 @@ export default class Main extends React.Component<IProps, IState> {
     const {
       showForcast,
       showDataSource,
-      panelStack
+      panelStack,
+      showSearch
     } = this.state;
     let curPanel: IPanelParams | null = panelStack.length ? panelStack[panelStack.length-1] : null;
     return (
@@ -308,7 +312,7 @@ export default class Main extends React.Component<IProps, IState> {
                   </div>
                 </div>
               </div>
-              <div className="main_controlbar">{this.controlBar()}</div>
+              {/* <div className="main_controlbar">{this.controlBar()}</div> */}
               {showForcast && (
                 <div className="main_forcast">{this.forcast()}</div>
               )}
@@ -327,8 +331,8 @@ export default class Main extends React.Component<IProps, IState> {
                 <EventTree/>
                 <div className="main_timeline">{this.timeline()}</div>
                 <div className="main_controlbar">
-                  {this.controlBar()}
-                  <SearchBox onClickEvent={(focusEvent, panelDate) => {this.pushPanelStack({type: 'event', date: panelDate, data: focusEvent})}}/>
+                  {/* {this.controlBar()} */}
+                  { showSearch && <SearchBox onClose={() => this.setState({showSearch: false})} onClickEvent={(focusEvent, panelDate) => {this.pushPanelStack({type: 'event', date: panelDate, data: focusEvent})}}/> }
                 </div>
                 <div className="main_right">
                   <div className="main_toolbar">{this.toolbar()}</div>

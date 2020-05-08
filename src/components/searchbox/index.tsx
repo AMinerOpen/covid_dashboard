@@ -9,7 +9,8 @@ import GlobalStorage from '../../utils/global-storage'
 import { CloseCircleOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons'
 
 interface IProps extends WrappedComponentProps {
-    onClickEvent: (focusEvent: any, time: Date) => void
+    onClickEvent: (focusEvent: any, time: Date) => void;
+    onClose: () => void;
 }
 interface IState {
     loading: boolean
@@ -46,7 +47,10 @@ class SearchBox extends React.Component<IProps, IState> {
 
     onClickEvent(event: any) {
         const focusEvent = GlobalStorage.events[event._id]
-        if (focusEvent) this.props.onClickEvent(focusEvent, focusEvent.time)
+        if (focusEvent) {
+            this.props.onClose();
+            this.props.onClickEvent(focusEvent, focusEvent.time)
+        }
     }
 
     render() {
@@ -67,7 +71,7 @@ class SearchBox extends React.Component<IProps, IState> {
                 </div>
             </div>}
             <div className="search-input">
-                <Input.Search placeholder={this.props.intl.formatMessage({id: "search.placeholder"})} onChange={(e) => this.search(e.target.value)} onSearch={(text) => this.search(text)} loading={this.state.loading}/>
+                <Input.Search placeholder={this.props.intl.formatMessage({id: "search.placeholder"})} onChange={(e) => this.search(e.target.value)} onSearch={(text) => this.search(text)} loading={this.state.loading}/><span className='close' onClick={() => this.props.onClose && this.props.onClose()}><CloseCircleOutlined/></span>
             </div>
         </div>
     }
