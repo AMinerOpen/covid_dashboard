@@ -177,9 +177,9 @@ export default class Main extends React.Component<IProps, IState> {
 
   private hotbar(): JSX.Element {
     return (
-      <Hotbar 
-        lang={this.props.env.lang} 
-        date={this.props.env.date} 
+      <Hotbar
+        lang={this.props.env.lang}
+        date={this.props.env.date}
         events={this.state.events}
         onOpenEvent={this.handleOpenEventPanel}
         onOpenEntity={this.handleOpenEntityPanel}/>
@@ -229,11 +229,11 @@ export default class Main extends React.Component<IProps, IState> {
 
   private entityPanel(): JSX.Element {
     return (
-      <EntityPanel 
-        env={this.props.env} 
+      <EntityPanel
+        env={this.props.env}
         events={this.state.events}
         date={this.state.entityDate}
-        data={this.state.entity} 
+        data={this.state.entity}
         onOpenEvent={this.handleOpenEventPanel}
         onOpenEntity={this.handleOpenEntityPanel}
         onClose={this.handleCloseEntityPanel}/>
@@ -305,8 +305,8 @@ export default class Main extends React.Component<IProps, IState> {
             <div className="main_content">
               <div className="main_map">{this.map()}</div>
               <div className="main_upper">
-                {/* <EventTree/> */}
                 <div className='main_hotbar'>{this.hotbar()}</div>
+                <EventTree/>
                 <div className="main_timeline">{this.timeline()}</div>
                 <div className="main_controlbar">
                   {this.controlBar()}
