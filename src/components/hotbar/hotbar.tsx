@@ -8,7 +8,7 @@ interface IProps {
   events: any[];
   lang: 'zh' | 'en';
   date: Date;
-  onOpenEvent: (date: Date) => void;
+  onOpenEvent: (date: Date, data: any) => void;
   onOpenEntity: (entity: any, date: Date) => void;
 }
 
@@ -112,7 +112,7 @@ export default class Hotbar extends React.Component<IProps, IState> {
                 {
                   hotEvents.map((event: any, index: number) => {
                     return (
-                      <div className='event' key={index} onClick={() => onOpenEvent && onOpenEvent(this.props.date)}>
+                      <div className='event' key={index} onClick={() => onOpenEvent && onOpenEvent(this.props.date, event)}>
                         <EventFlag lang={lang} type={event.type} category={event.category}/><span className='title'>{event.title}</span>
                       </div>
                     )

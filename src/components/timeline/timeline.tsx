@@ -17,7 +17,7 @@ interface IState {
 interface IProps extends IDefaultProps {
     langAll: boolean;
     onTflagChange: (tflag: number) => void;
-    onOpenEvent: (date: Date) => void;
+    onOpenEvent: (date: Date, data: any) => void;
     onLoadNews?: (news: any[]) => void;
     onLoadEvents?: (events: any[]) => void;
     onChangeDate: (date: Date) => void;
@@ -146,7 +146,7 @@ export default class Timeline extends React.Component<IProps, IState> {
 
     private handleDateUp(date: Date) {
         if((new Date()).getTime() - this._downTime < 300) {
-            this.props.onOpenEvent && this.props.onOpenEvent(date);
+            this.props.onOpenEvent && this.props.onOpenEvent(date, null);
         }
     }
 

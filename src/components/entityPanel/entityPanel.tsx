@@ -16,7 +16,7 @@ interface IProps {
   date: Date | null;
   data: any;
   onOpenEntity: (entity: any, date: Date) => void;
-  onOpenEvent: (date: Date) => void;
+  onOpenEvent: (date: Date, data: any) => void;
   onClose: () => void;
 }
 
@@ -122,7 +122,7 @@ export default class EntityPanel extends React.Component<IProps, IState> {
               { 
                 this.state.relatedEvents.map((event: any, index: number) => {
                   return (
-                    <div className='event' key={index} onClick={() => this.props.onOpenEvent && this.props.onOpenEvent(this.props.date || this.props.env.date)}>
+                    <div className='event' key={index} onClick={() => this.props.onOpenEvent && this.props.onOpenEvent(this.props.date || this.props.env.date, event)}>
                       <EventFlag lang={this.props.env.lang} type={event.type} category={event.category}/><span className='title'>{event.title}</span>
                     </div>
                   )

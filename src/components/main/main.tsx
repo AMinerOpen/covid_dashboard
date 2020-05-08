@@ -9,7 +9,6 @@ import Timeline from "../timeline/timeline";
 import { ReactComponent as Forcast_Svg } from "./images/forcast.svg";
 import ControlBar from "../controlBar/controlBar";
 import { ReactComponent as Source_Svg } from "../toolbar/images/source.svg";
-import { ReactComponent as Contributors_Svg } from "./images/contributors.svg";
 import Source from "../source/source";
 import EventPanel from "../event/eventPanel";
 import { Header } from "covid-header";
@@ -19,6 +18,12 @@ import SearchBox from "../searchbox";
 import EventTree from "../event/eventTree";
 import Hotbar from "../hotbar/hotbar";
 import EntityPanel from "../entityPanel/entityPanel";
+
+interface IPanelParams {
+  type: 'event' | "entity";
+  date: Date;
+  data: any;
+}
 
 interface IProps extends IDefaultProps {
   frame: boolean;
@@ -41,11 +46,8 @@ interface IState {
   news: any[];
   events: any[];
   showDataSource: boolean;
-  panelDate: Date | null;
-  entity: any;
-  entityDate: Date | null;
+  panelStack: IPanelParams[];
   mapMode: string;
-  focusEvent?: any;
 }
 
 export default class Main extends React.Component<IProps, IState> {
@@ -58,22 +60,20 @@ export default class Main extends React.Component<IProps, IState> {
       showForcast: false,
       news: [],
       events: [],
-      entity: null,
-      entityDate: null,
       showDataSource: false,
-      panelDate: null,
+      panelStack: [],
       mapMode: 'risk'
     };
 
     this.handleLangAllChange = this.handleLangAllChange.bind(this);
     this.handleClickDataSource = this.handleClickDataSource.bind(this);
     this.handleOpenEventPanel = this.handleOpenEventPanel.bind(this);
-    this.handleCloseEventPanel = this.handleCloseEventPanel.bind(this);
     this.handleKg = this.handleKg.bind(this);
     this.handleDatasets = this.handleDatasets.bind(this);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.handleOpenEntityPanel = this.handleOpenEntityPanel.bind(this);
-    this.handleCloseEntityPanel = this.handleCloseEntityPanel.bind(this);
+    this.pushPanelStack = this.pushPanelStack.bind(this);
+    this.popPanelStack = this.popPanelStack.bind(this);
   }
 
   private handleLangAllChange() {
@@ -84,24 +84,42 @@ export default class Main extends React.Component<IProps, IState> {
     this.setState({ showDataSource: !this.state.showDataSource });
   }
 
-  private handleOpenEventPanel(date: Date) {
-    this.setState({ panelDate: date, entity: null });
+  private handleOpenEventPanel(date: Date, data: any) {
+    this.pushPanelStack({ 
+      type: "event",
+      date,
+      data
+    })
   }
 
   private handleOpenEntityPanel(entity: any, entityDate?: Date) {
-    this.setState({ panelDate: null, entity, entityDate: entityDate||null })
+    this.pushPanelStack({
+      type: "entity",
+      date: entityDate || this.props.env.date,
+      data: entity
+    })
   }
 
   private handleMarkerClick(data: any) {
-    this.setState({ panelDate: this.props.env.date, focusEvent: data });
+    this.pushPanelStack({
+      type: "event",
+      date: this.props.env.date,
+      data
+    })
   }
 
-  private handleCloseEventPanel() {
-    this.setState({ panelDate: null });
+  private pushPanelStack(params: IPanelParams) {
+    let panelStack: IPanelParams[] = [...this.state.panelStack];
+    panelStack.push(params);
+    this.setState({panelStack});
   }
 
-  private handleCloseEntityPanel() {
-    this.setState({entity: null})
+  private popPanelStack() {
+    let panelStack: IPanelParams[] = [...this.state.panelStack];
+    if(panelStack.length) {
+      panelStack.pop();
+      this.setState({panelStack});
+    }
   }
 
   private handleKg() {
@@ -214,29 +232,29 @@ export default class Main extends React.Component<IProps, IState> {
     return <Source onClose={() => this.setState({ showDataSource: false })} />;
   }
 
-  private eventPanel(): JSX.Element {
+  private eventPanel(param: IPanelParams): JSX.Element {
     return (
       <EventPanel
         env={this.props.env}
         events={this.state.events}
-        date={this.state.panelDate!}
-        onClose={this.handleCloseEventPanel}
-        focusEvent={this.state.focusEvent}
+        date={param.date!}
+        onClose={this.popPanelStack}
+        focusEvent={param.data}
         onOpenEntity={this.handleOpenEntityPanel}
       />
     );
   }
 
-  private entityPanel(): JSX.Element {
+  private entityPanel(param: IPanelParams): JSX.Element {
     return (
       <EntityPanel
         env={this.props.env}
         events={this.state.events}
-        date={this.state.entityDate}
-        data={this.state.entity}
+        date={param.date}
+        data={param.data}
         onOpenEvent={this.handleOpenEventPanel}
         onOpenEntity={this.handleOpenEntityPanel}
-        onClose={this.handleCloseEntityPanel}/>
+        onClose={this.popPanelStack}/>
     )
   }
 
@@ -255,9 +273,9 @@ export default class Main extends React.Component<IProps, IState> {
     const {
       showForcast,
       showDataSource,
-      panelDate,
-      entity
+      panelStack
     } = this.state;
+    let curPanel: IPanelParams | null = panelStack.length ? panelStack[panelStack.length-1] : null;
     return (
       <div className="main">
         {env.isMobile ? (
@@ -295,8 +313,8 @@ export default class Main extends React.Component<IProps, IState> {
                 <div className="main_forcast">{this.forcast()}</div>
               )}
               {showDataSource && <div>{this.source()}</div>}
-              {panelDate && this.eventPanel()}
-              {entity && this.entityPanel()}
+              {curPanel && curPanel.type == 'event' && this.eventPanel(curPanel)}
+              {curPanel && curPanel.type == 'entity' && this.entityPanel(curPanel)}
             </div>
           </div>
         ) : (
@@ -310,7 +328,7 @@ export default class Main extends React.Component<IProps, IState> {
                 <div className="main_timeline">{this.timeline()}</div>
                 <div className="main_controlbar">
                   {this.controlBar()}
-                  <SearchBox onClickEvent={(focusEvent, panelDate) => {this.setState({focusEvent, panelDate})}}/>
+                  <SearchBox onClickEvent={(focusEvent, panelDate) => {this.pushPanelStack({type: 'event', date: panelDate, data: focusEvent})}}/>
                 </div>
                 <div className="main_right">
                   <div className="main_toolbar">{this.toolbar()}</div>
@@ -319,8 +337,8 @@ export default class Main extends React.Component<IProps, IState> {
                 </div>
               </div>
               {showDataSource && <div>{this.source()}</div>}
-              {panelDate && this.eventPanel()}
-              {entity && this.entityPanel()}
+              {curPanel && curPanel.type == 'event' && this.eventPanel(curPanel)}
+              {curPanel && curPanel.type == 'entity' && this.entityPanel(curPanel)}
             </div>
           </div>
         )}
