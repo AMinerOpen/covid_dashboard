@@ -106,6 +106,7 @@ $main-margin: 6px;
 }
 
 @media screen and (max-width: 560px) {
+    $btn-width: 30px;
     .main {
         margin-top: 0px;
         .main_root {
@@ -149,15 +150,17 @@ $main-margin: 6px;
                         }
                         .main_btns {
                             position: absolute;
+                            max-width: 35%;
                             right: $main-margin;
                             top: $main-margin;
                             .btn_svg {
                                 float: right;
-                                width: 30px;
-                                height: 30px;
+                                width: $btn-width;
+                                height: $btn-width;
                                 padding: 4px;
                                 background-color: $background;
                                 margin-left: $main-margin;
+                                margin-bottom: $main-margin;
                                 border-radius: 4px;
                                 svg {
                                     fill: lightgrey;
@@ -180,7 +183,8 @@ $main-margin: 6px;
                 .main_controlbar {
                     position: absolute;
                     left: 0;
-                    bottom: calc(12px + 26% + #{$main-margin} * 2 - 28px);
+                    top: 100px;
+                    bottom: unset;
                 }
             }
         }

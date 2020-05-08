@@ -9,6 +9,7 @@ import Timeline from "../timeline/timeline";
 import { ReactComponent as Forcast_Svg } from "./images/forcast.svg";
 import ControlBar from "../controlBar/controlBar";
 import { ReactComponent as Source_Svg } from "../toolbar/images/source.svg";
+import { ReactComponent as Search_Svg } from '../toolbar/images/search.svg';
 import Source from "../source/source";
 import EventPanel from "../event/eventPanel";
 import { Header } from "covid-header";
@@ -300,6 +301,7 @@ export default class Main extends React.Component<IProps, IState> {
                     >
                       <Forcast_Svg />
                     </div>
+                    <MapModeSelector mapMode={this.state.mapMode} onSetMapMode={(mapMode) => this.setState({mapMode})}/>
                     <div
                       className="btn_svg"
                       onClick={() =>
@@ -308,11 +310,18 @@ export default class Main extends React.Component<IProps, IState> {
                     >
                       <Source_Svg />
                     </div>
-                    <MapModeSelector mapMode={this.state.mapMode} onSetMapMode={(mapMode) => this.setState({mapMode})}/>
+                    <div
+                      className="btn_svg"
+                      onClick={() =>
+                        this.setState({ showSearch: !showSearch })
+                      }
+                    >
+                      <Search_Svg />
+                    </div>
                   </div>
                 </div>
               </div>
-              {/* <div className="main_controlbar">{this.controlBar()}</div> */}
+              <div className="main_controlbar">{ showSearch && <SearchBox onClose={() => this.setState({showSearch: false})} onClickEvent={(focusEvent, panelDate) => {this.pushPanelStack({type: 'event', date: panelDate, data: focusEvent})}}/> }</div>
               {showForcast && (
                 <div className="main_forcast">{this.forcast()}</div>
               )}
