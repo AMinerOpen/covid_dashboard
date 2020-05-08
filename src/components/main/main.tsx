@@ -323,8 +323,8 @@ export default class Main extends React.Component<IProps, IState> {
             <div className="main_content">
               <div className="main_map">{this.map()}</div>
               <div className="main_upper">
-                <div className='main_hotbar'>{this.hotbar()}</div>
-                <EventTree/>
+                {/* <div className='main_hotbar'>{this.hotbar()}</div> */}
+                {/* <EventTree/> */}
                 <div className="main_timeline">{this.timeline()}</div>
                 <div className="main_controlbar">
                   {this.controlBar()}
