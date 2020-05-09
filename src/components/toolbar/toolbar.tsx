@@ -38,18 +38,18 @@ export default class Toolbar extends React.Component<IProps, any> {
                         </Tooltip>
                     )
                 }
-                <MapModeSelector mapMode={this.props.mapMode} onSetMapMode={this.props.onSetMapMode}/>
-                {/* <div className='toolbar_locale' onClick={this.handleClickLocale}>
-                    {
-                        env.lang == 'en' ? <En_Svg style={{fill: 'lightgrey'}} /> : <Zh_Svg style={{fill: '#e72620'}}/>
-                    }
-                </div> */}
                 <div className='toolbar_source' onClick={() => this.props.onClickSource()}>
                     <Source_Svg />
                 </div>
                 <div className='toolbar_source' onClick={() => this.props.onSearch()}>
                     <Search_Svg />
                 </div>
+                <MapModeSelector mapMode={this.props.mapMode} onSetMapMode={this.props.onSetMapMode}/>
+                {/* <div className='toolbar_locale' onClick={this.handleClickLocale}>
+                    {
+                        env.lang == 'en' ? <En_Svg style={{fill: 'lightgrey'}} /> : <Zh_Svg style={{fill: '#e72620'}}/>
+                    }
+                </div> */}
                 {/* <div id="style-switch-btn" className={`button ${this.props.theme === 'dark' ? 'light' : 'dark'}`}
                     onClick={() => this.props.onSwitchTheme()}
                 ><i className="fas fa-lightbulb"/></div> */}
