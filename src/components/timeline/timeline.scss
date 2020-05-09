@@ -1,5 +1,7 @@
 @import "../../global.scss";
 $height: 220px;
+$bg-height: 60px;
+$btn-width: 60px;
 
 .timeline {
     position: relative;
@@ -12,44 +14,91 @@ $height: 220px;
         left: 0;
         bottom: 0;
         width: 100%;
-        height: 60px;
+        height: $bg-height;
         background-color: $background;
     }
-    .timeline_pointer {
-        position: absolute;
-        left: 50%;
-        bottom: 0;
-        margin-left: -2px;
-        width: 4px;
-        height: 60px;
-        background-color: #ffe100cc;
-    }
-
-    .timeline_bar {
-        .date {
-            position: absolute;
-            background-color: grey;
-            font-size: 12px;
-            text-align: center;
-            color: white;
-            user-select: none;
-        }
-    }
-
-    .timeline_container {
+    .play_btn {
         position: absolute;
         left: 0;
+        bottom: 0;
+        width: $btn-width;
+        height: $bg-height;
+        border-right: 2px solid rgba(211, 211, 211, 0.596);
+        cursor: pointer;
+        &:hover {
+            background-color: #ffffff20;
+        }
+        .btn {
+            width: 100%;
+            text-align: center;
+            line-height: $bg-height;
+            font-size: 36px;
+            color: lightgrey;
+        }
+    }
+    .timeline_right {
+        position: absolute;
+        left: $btn-width;
         top: 0;
-        width: 100%;
+        width: calc(100% - #{$btn-width});
         height: 100%;
-        overflow-x: scroll;
-        .events {
+        mask-image: linear-gradient(90deg, #0000 0%, #000f 4%, #000f 96%, #0000 100%);
+        .timeline_pointer {
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            margin-left: -2px;
+            width: 4px;
+            height: $bg-height;
+            background-color: #ffe100cc;
+        }
+        .timeline_container {
             position: absolute;
             left: 0;
-            top: calc(#{$height} - 50px);
-            .bar {
-                position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: scroll;
+            .timeline_bar {
+                .date {
+                    position: absolute;
+                    background-color: grey;
+                    font-size: 12px;
+                    text-align: center;
+                    color: white;
+                    user-select: none;
+                }
             }
+            .events {
+                position: absolute;
+                left: 0;
+                top: calc(#{$height} - 50px);
+                .bar {
+                    position: absolute;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 560px) {
+    $btn-width: 46px;
+
+    .timeline {
+        .play_btn {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: $btn-width;
+            height: $bg-height;
+            cursor: pointer;
+        }
+        .timeline_right {
+            position: absolute;
+            left: $btn-width;
+            top: 0;
+            width: calc(100% - #{$btn-width});
+            height: 100%;
         }
     }
 }
