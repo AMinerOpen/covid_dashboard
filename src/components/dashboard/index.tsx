@@ -47,11 +47,9 @@ export default class DashBoard extends React.Component<IProps, IState> {
     if(epData && regionInfo) {
       let name = regionInfo.name == 'World' ? "" : regionInfo.name;
       let regionData: ITimeline<IEpidemicData> | null = epData[name] || null;
-      console.log("regiondata: ", regionData);
       if(regionData) {
         let keys: string[] = Object.keys(regionData);
         if(keys.length > 20) keys = keys.slice(-20);
-        console.log("keys: ", keys);
         option = {
           grid: {
             left: "0%",
