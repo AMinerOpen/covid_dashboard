@@ -56,7 +56,7 @@ export default class EpidemicMap extends React.Component<IProps, IState> {
                     langAll={this.props.langAll}
                     mapMode={this.props.mapMode}
                 />
-                <ControlPanel
+                {/* <ControlPanel
                     env={this.props.env}
                     transData={this.props.transData}
                     epData={this.props.epData}
@@ -65,7 +65,7 @@ export default class EpidemicMap extends React.Component<IProps, IState> {
                     onChangeTime={this.props.onChangeDate}
                     onChangeSpeed={this.props.onChangeSpeed}
                     endDate={this.state.endDate}
-                />
+                /> */}
                 <Dashboard
                     env={this.props.env}
                     transData={this.props.transData}

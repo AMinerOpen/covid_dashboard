@@ -26,17 +26,6 @@ export default class MapModeSelector extends React.Component<IProps, IState> {
                     <div className={`option ${mode === this.props.mapMode ? 'current' : ''}`} key={mode} onClick={() => this.props.onSetMapMode(mode)}><FormattedMessage id={`toolbar.mapmode.${mode}`}/></div>
                 )}
             </div>
-            <div className="dropdown-mobile">
-                <div className="btn_svg" onClick={() => this.setState({showOptions: !this.state.showOptions})}><IconMapSvg/></div>
-                <div className="drawer">
-                    {/* <div className="selected"><FormattedMessage id={`toolbar.mapmode`}/> &#x25BE;</div> */}
-                    {['risk', 'confirmed', 'recovered', 'deceased', 'recovery rate', 'death rate'].map(mode =>
-                        <div className={`option ${mode === this.props.mapMode ? 'current' : ''}`} key={mode} onClick={() => this.props.onSetMapMode(mode)} style={{display: this.state.showOptions ? 'block' : 'none'}}>
-                            <FormattedMessage id={`toolbar.mapmode.${mode}`}/>
-                        </div>
-                    )}
-                </div>
-            </div>
         </div>
     }
 }

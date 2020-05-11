@@ -30,37 +30,8 @@
             }
         }
     }
-    .dropdown-mobile {
-        display: none;
-    }
 }
 
 @media screen and (max-width: 560px) {
-    .mapmode-dropdown {
-        .dropdown {
-            display: none;
-        }
-        .dropdown-mobile {
-            display: block;
-            .drawer {
-                position: absolute;
-                top: 32px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: #020E26;
-                white-space: nowrap;
-                .option {
-                    padding: 2px 5px;
-                    opacity: 1;
-                    z-index: 50000;
-                    &:hover {
-                        background: #2759bc;
-                    }
-                }
-                .option.current {
-                    background: #4c6faa;
-                }
-            }
-        }
-    }
+    
 }

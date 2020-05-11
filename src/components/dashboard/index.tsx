@@ -7,7 +7,8 @@ import { displayNumber } from '../../utils/data';
 import { risk2color } from '../../utils/color';
 import ReactEcharts from 'echarts-for-react';
 import MapModeSelector from '../map/map-mode-selector';
-import { Popover } from 'antd'
+import { Popover } from 'antd';
+import { FormattedMessage} from 'react-intl';
 
 interface IProps extends IDefaultProps{
   regionInfo: IRegionInfo
@@ -25,7 +26,8 @@ interface IState {
 
 export default class DashBoard extends React.Component<IProps, IState> {
   private _upHeight: number = 100;
-  private _leftWdith: number = 180;
+  private _leftWidth: number = 180;
+  private _leftWidth_m: number = 160;
   private _rightupHeight: number = 36;
   private _rightdownHeight: number;
   private _blockMargin: number = 2;
@@ -47,6 +49,7 @@ export default class DashBoard extends React.Component<IProps, IState> {
     if(epData && regionInfo) {
       let name = regionInfo.name == 'World' ? "" : regionInfo.name;
       let regionData: ITimeline<IEpidemicData> | null = epData[name] || null;
+      let worldData: ITimeline<IEpidemicData> = epData[""];
       if(regionData) {
         let keys: string[] = Object.keys(regionData);
         if(keys.length > 20) keys = keys.slice(-20);
@@ -109,7 +112,20 @@ export default class DashBoard extends React.Component<IProps, IState> {
           },
           series: [
             {
-              name: 'Risk',
+              name: 'World Risk',
+              type: 'line',
+              show: false,
+              smooth: true,
+              symbol: 'none',
+              data: keys.map(d => worldData![d].risk || 0),
+              lineStyle: {
+                color: 'grey',
+                width: 3,
+                opacity: 0.5
+              }
+            },
+            {
+              name: 'Region Risk',
               type: 'line',
               smooth: true,
               symbol: 'none',
@@ -155,15 +171,15 @@ export default class DashBoard extends React.Component<IProps, IState> {
       <div className='dashboard'>
         <div className='up'>
           <div className='left'>
-            <DBBlock style={{width: `${this._leftWdith}px`, height: `${this._upHeight}px`}}>
+            <DBBlock style={{width: `${this.props.env.isMobile ? this._leftWidth_m : this._leftWidth}px`, height: `${this._upHeight}px`}}>
               <div className='region'>{fullName}</div>
               <Popover 
                 title={this.props.env.lang == 'zh' ? "风险指数" : "Risk Index"}
                 placement='bottom'
                 content={this.popover()}>
                 <div className='risk'>
-                  <span className='title'>Risk</span>
-                  <span className='value' style={{color: risk2color(ep?.risk)}}>{displayNumber(ep?.risk)}</span>
+                  <div className='value' style={{color: risk2color(ep?.risk)}}>{displayNumber(ep?.risk)}</div>
+                  <div className='title'>Risk Index</div>
                 </div>
               </Popover>
               <div className='mode-con'>
@@ -171,33 +187,38 @@ export default class DashBoard extends React.Component<IProps, IState> {
               </div>
             </DBBlock>
           </div>
-          <div className='right'>
-            <div className='rightup'>
-              <DBBlock style={{width: `${this._dataWidth}px`, height: `${this._rightupHeight}px`}}>
-                <div className='data-delta' style={{color: 'lightsalmon'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(ep?.confirmed_delta)}</span></div>
-                <div className='data' style={{color: 'red'}}><i className="fas fa-medkit"/><span className="agg">{displayNumber(ep?.confirmed)}</span></div>
-              </DBBlock>
-              <DBBlock style={{width: `${this._dataWidth}px`, height: `${this._rightupHeight}px`}}>
-              <div className='data-delta' style={{color: 'lightgoldenrodyellow'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(active_delta)}</span></div>
-                <div className='data' style={{color: 'khaki'}}><i className="fas fa-diagnoses"/><span className="agg">{displayNumber(active)}</span></div>
-              </DBBlock>
-              <DBBlock style={{width: `${this._dataWidth}px`, height: `${this._rightupHeight}px`}}>
-                <div className='data-delta' style={{color: 'palegreen'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(ep?.cured_delta)}</span></div>
-                <div className='data' style={{color: 'lime'}}><i className="fas fa-star-of-life"/><span className="agg">{displayNumber(ep?.cured)}</span></div>
-              </DBBlock>
-              <DBBlock style={{width: `${this._dataWidth}px`, height: `${this._rightupHeight}px`}}>
-                <div className='data-delta' style={{color: 'gainsboro'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(ep?.dead_delta)}</span></div>
-                <div className='data' style={{color: 'darkgrey'}}><i className="fas fa-skull-crossbones"/><span className="agg">{displayNumber(ep?.dead)}</span></div>
-              </DBBlock>
-            </div>
-            <div className='rightdown'>
-              <DBBlock style={{width: `${this._riskWidth}px`, height: `${this._rightdownHeight}px`}}>
-                <div className='chart-con'>
-                  <ReactEcharts option={this.riskOption()} style={{height: `${this._rightdownHeight-12}px`, width: '100%'}}/>
+          { 
+            !this.props.env.isMobile && (
+              <div className='right'>
+                <div className='rightup'>
+                  <DBBlock style={{width: `${this._dataWidth}px`, height: `${this._rightupHeight}px`}}>
+                    <div className='data-delta' style={{color: 'lightsalmon'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(ep?.confirmed_delta)}</span></div>
+                    <div className='data' style={{color: 'red'}}><i className="fas fa-medkit"/><span className="agg">{displayNumber(ep?.confirmed)}</span></div>
+                  </DBBlock>
+                  <DBBlock style={{width: `${this._dataWidth}px`, height: `${this._rightupHeight}px`}}>
+                  <div className='data-delta' style={{color: 'lightgoldenrodyellow'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(active_delta)}</span></div>
+                    <div className='data' style={{color: 'khaki'}}><i className="fas fa-diagnoses"/><span className="agg">{displayNumber(active)}</span></div>
+                  </DBBlock>
+                  <DBBlock style={{width: `${this._dataWidth}px`, height: `${this._rightupHeight}px`}}>
+                    <div className='data-delta' style={{color: 'palegreen'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(ep?.cured_delta)}</span></div>
+                    <div className='data' style={{color: 'lime'}}><i className="fas fa-star-of-life"/><span className="agg">{displayNumber(ep?.cured)}</span></div>
+                  </DBBlock>
+                  <DBBlock style={{width: `${this._dataWidth}px`, height: `${this._rightupHeight}px`}}>
+                    <div className='data-delta' style={{color: 'gainsboro'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(ep?.dead_delta)}</span></div>
+                    <div className='data' style={{color: 'darkgrey'}}><i className="fas fa-skull-crossbones"/><span className="agg">{displayNumber(ep?.dead)}</span></div>
+                  </DBBlock>
                 </div>
-              </DBBlock>
-            </div>
-          </div>
+                <div className='rightdown'>
+                  <DBBlock style={{width: `${this._riskWidth}px`, height: `${this._rightdownHeight}px`}}>
+                    <div className='chart-con'>
+                      <ReactEcharts option={this.riskOption()} style={{height: `${this._rightdownHeight-12}px`, width: '100%'}}/>
+                      <div className='title'><FormattedMessage id='map.control.riskchart' /></div>
+                    </div>
+                  </DBBlock>
+                </div>
+              </div>
+            )
+          }
         </div>
       </div>
     )

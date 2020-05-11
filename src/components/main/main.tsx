@@ -1,7 +1,7 @@
 import * as React from "react";
 import "./main.scss";
 import EpidemicMap from "../map/epidemic-map";
-import { IDefaultProps } from "../../global";
+import { IDefaultProps, IEnv } from "../../global";
 import Toolbar from "../toolbar/toolbar";
 import Forcast from "../forcast/forcast";
 import { ITimeline, IEpidemicData } from "../../models/index";
@@ -50,9 +50,33 @@ interface IState {
   panelStack: IPanelParams[];
   mapMode: string;
   showSearch: boolean;
+  fps: number;
 }
 
 export default class Main extends React.Component<IProps, IState> {
+  private begin = new Date(2020, 0, 24, 0, 0, 0, 0)
+  private end = new Date()
+  private frames: number = 0;
+  private lastTime: number = (new Date()).getTime();
+
+  private tick = setInterval(() => {
+    let env: IEnv = this.props.env;
+    if (env.speed > 0) {
+        let newDate = new Date(env.date)
+        newDate.setHours(env.date.getHours() + env.speed)
+        this.setTime(newDate, true)
+    }
+    if(process.env.NODE_ENV == 'development') {
+        this.frames ++;
+        let now: number = (new Date()).getTime();
+        if(now - this.lastTime >= 1000) {
+            this.setState({fps: this.frames})
+            this.frames = 0;
+            this.lastTime = now;
+        }
+    }
+  }, 16)
+
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -65,7 +89,8 @@ export default class Main extends React.Component<IProps, IState> {
       showDataSource: false,
       panelStack: [],
       mapMode: 'risk',
-      showSearch: false
+      showSearch: false,
+      fps: 0
     };
 
     this.handleLangAllChange = this.handleLangAllChange.bind(this);
@@ -79,6 +104,10 @@ export default class Main extends React.Component<IProps, IState> {
     this.popPanelStack = this.popPanelStack.bind(this);
   }
 
+  public componentDidMount() {
+    this.props.onChangeDate(new Date());
+  }
+
   private handleLangAllChange() {
     this.setState({ langAll: !this.state.langAll });
   }
@@ -86,6 +115,15 @@ export default class Main extends React.Component<IProps, IState> {
   private handleClickDataSource() {
     this.setState({ showDataSource: !this.state.showDataSource });
   }
+
+  private setTime(newDate: Date, auto?: boolean) {
+    if (newDate < this.begin) newDate = new Date(this.begin)
+    if (newDate > this.end) newDate = new Date(this.end)
+    if (!auto || newDate >= this.end) {
+        if (this.props.env.speed !== 0) this.props.onChangeSpeed(0)
+    }
+    this.props.onChangeDate(newDate)
+  } 
 
   private handleOpenEventPanel(date: Date, data: any) {
     this.pushPanelStack({ 
@@ -300,7 +338,6 @@ export default class Main extends React.Component<IProps, IState> {
                     >
                       <Forcast_Svg />
                     </div>
-                    <MapModeSelector mapMode={this.state.mapMode} onSetMapMode={(mapMode) => this.setState({mapMode})}/>
                     <div
                       className="btn_svg"
                       onClick={() =>

@@ -1,3 +1,5 @@
+@import '../../global.scss';
+
 .dashboard {
   position: absolute;
   left: 8px;
@@ -20,16 +22,26 @@
         border-bottom: 1px solid rgba(211, 211, 211, 0.747);
       }
       .risk {
+        margin-top: 4px;
+        width: 80px;
         margin-left: 8px;
+        border: 1px solid rgba(211, 211, 211, 0.3);
         .title {
-          color: lightgrey;
+          color: springgreen;
+          font-weight: bold;
           font-size: 12px;
+          line-height: 12px;
+          padding-top: 2px;
+          width: 100%;
+          text-align: center;
+          background-color: rgba(211, 211, 211, 0.3);
         }
         .value {
           color: white;
-          font-size: 42px;
+          text-align: center;
+          font-size: 46px;
+          line-height: 46px;
           font-weight: bold;
-          margin-left: 12px;
         }
       }
       .mode-con {
@@ -68,6 +80,69 @@
         .chart-con {
           position: relative;
           padding: 6px;
+          .title {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            color: lightgrey;
+            font-size: 12px;
+            user-select: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .dashboard {
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    .up {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      .left {
+        position: relative;
+        .region {
+          color: white;
+          width: 92%;
+          font-size: 16px;
+          margin-left: 6px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          font-weight: bold;
+          border-bottom: 1px solid rgba(211, 211, 211, 0.747);
+        }
+        .risk {
+          margin-top: 4px;
+          width: 80px;
+          margin-left: 6px;
+          border: 1px solid rgba(211, 211, 211, 0.3);
+          .title {
+            color: springgreen;
+            font-weight: bold;
+            font-size: 12px;
+            line-height: 12px;
+            padding-top: 2px;
+            width: 100%;
+            text-align: center;
+            background-color: rgba(211, 211, 211, 0.3);
+          }
+          .value {
+            color: white;
+            text-align: center;
+            font-size: 46px;
+            line-height: 46px;
+            font-weight: bold;
+          }
+        }
+        .mode-con {
+          position: absolute;
+          right: -16px;
+          top: calc(100% - 12px);
         }
       }
     }

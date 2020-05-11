@@ -43,6 +43,7 @@ export default {
     "map.control.dead": "死亡人数",
     "map.control.risk": "风险指数",
     "map.control.risktip": "利用地区内的疫情历史数据对公式中的参数进行估计，将预测所得的拐点，死亡率与新增人数相结合用来估算出地区的危险程度。",
+    "map.control.riskchart": "最近20天的风险指数",
 
     //timeline
     "timeline.title": "时间轴",
