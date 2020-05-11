@@ -5,20 +5,21 @@
     text-align: center;
     position: relative;
     top: 50%;
+    width: 92px;
     .dropdown {
         display: inline-block;
         .selected, .option {
             transform: translateY(-50%);
-            background: #020E26;
             padding: 2px;
         }
         .option {
-            opacity: 0;
+            display: none;
+            background: #020E26;
         }
         &:hover {
             cursor: pointer;
             .option {
-                opacity: 1;
+                display: block;
                 z-index: 50000;
                 &:hover {
                     background: #2759bc;
@@ -33,7 +34,6 @@
         display: none;
     }
 }
-
 
 @media screen and (max-width: 560px) {
     .mapmode-dropdown {

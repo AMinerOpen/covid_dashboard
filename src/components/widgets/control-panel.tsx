@@ -72,7 +72,7 @@ export default class ControlPanel extends React.Component<IProp, IState> {
         const ep = this.props.dayEp
         let active: number | undefined = ep ? ((ep.confirmed||0) - (ep.cured||0) - (ep.dead||0)) : undefined;
         let active_delta: number | undefined = ep ? ((ep.confirmed_delta||0) - (ep.cured_delta||0) - (ep.dead_delta||0)) : undefined;
-        return <div className="control-panel">
+        return <div className="control-panel" style={{pointerEvents: 'none'}}>
             {
                 !this.props.env.isMobile && (
                     <div className="side-panel left-side-panel">

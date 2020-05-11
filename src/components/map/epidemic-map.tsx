@@ -6,6 +6,7 @@ import ControlPanel from '../widgets/control-panel'
 import dateformat from 'dateformat'
 import { IEnv, IDefaultProps } from '../../global'
 import _ from 'lodash'
+import Dashboard from '../dashboard';
 
 interface IProps extends IDefaultProps  {
     onLoadGlobalEpData: (epData:  {[id: string]: ITimeline<IEpidemicData>}) => void
@@ -17,6 +18,7 @@ interface IProps extends IDefaultProps  {
     langAll: boolean
     onEventClick: (event: any) => void
     mapMode: string
+    onSetMapMode: (mode: string) => void
 }
 interface IState {
     region?: IRegionData
@@ -63,6 +65,18 @@ export default class EpidemicMap extends React.Component<IProps, IState> {
                     onChangeTime={this.props.onChangeDate}
                     onChangeSpeed={this.props.onChangeSpeed}
                     endDate={this.state.endDate}
+                />
+                <Dashboard
+                    env={this.props.env}
+                    transData={this.props.transData}
+                    epData={this.props.epData}
+                    dayEp={this.state.dayEp}
+                    regionInfo={this.state.regionInfo}
+                    onChangeTime={this.props.onChangeDate}
+                    onChangeSpeed={this.props.onChangeSpeed}
+                    endDate={this.state.endDate}
+                    mapMode={this.props.mapMode}
+                    onSetMapMode={this.props.onSetMapMode}
                 />
             </div>
         )

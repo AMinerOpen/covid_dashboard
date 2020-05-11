@@ -409,7 +409,7 @@ export default class Forcast extends React.Component<IProps, IState> {
           }
           dataArr.sort((a: any, b: any) => a.date < b.date ? 1 : -1)
           let area: string = (lang === 'en' || !transData[d]) ? d : transData[d][lang]
-          if (area == "United States of America") area = "USA";
+          if (area == "United States of America") area = "United States";
           worldArr.push({
             area: area,
             data: dataArr

@@ -1,0 +1,75 @@
+.dashboard {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  .up {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    .left {
+      position: relative;
+      .region {
+        color: white;
+        width: 92%;
+        font-size: 16px;
+        margin-left: 8px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-weight: bold;
+        border-bottom: 1px solid rgba(211, 211, 211, 0.747);
+      }
+      .risk {
+        margin-left: 8px;
+        .title {
+          color: lightgrey;
+          font-size: 12px;
+        }
+        .value {
+          color: white;
+          font-size: 42px;
+          font-weight: bold;
+          margin-left: 12px;
+        }
+      }
+      .mode-con {
+        position: absolute;
+        right: -16px;
+        top: calc(100% - 12px);
+      }
+    }
+    .right {
+      position: relative;
+      .rightup {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        .data-delta {
+          font-size: 12px;
+          text-align: center;
+          margin-top: -2px;
+          line-height: 12px;
+          border-bottom: 1px solid rgba(211, 211, 211, 0.555);
+        }
+        .data {
+          text-align: center;
+          font-size: 14px;
+          margin-top: -1px;
+          font-weight: bold;
+        }
+        .agg {
+          margin-left: 4px;
+        }
+      }
+      .rightdown {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        .chart-con {
+          position: relative;
+          padding: 6px;
+        }
+      }
+    }
+  }
+}
