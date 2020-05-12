@@ -7,7 +7,7 @@ import { displayNumber } from '../../utils/data';
 import { risk2color } from '../../utils/color';
 import ReactEcharts from 'echarts-for-react';
 import MapModeSelector from '../map/map-mode-selector';
-import { Popover } from 'antd';
+import { Popover, Tooltip } from 'antd';
 import { FormattedMessage} from 'react-intl';
 
 interface IProps extends IDefaultProps{
@@ -192,20 +192,36 @@ export default class DashBoard extends React.Component<IProps, IState> {
               <div className='right'>
                 <div className='rightup'>
                   <DBBlock style={{width: `${this._dataWidth}px`, height: `${this._rightupHeight}px`}}>
-                    <div className='data-delta' style={{color: 'lightsalmon'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(ep?.confirmed_delta)}</span></div>
-                    <div className='data' style={{color: 'red'}}><i className="fas fa-medkit"/><span className="agg">{displayNumber(ep?.confirmed)}</span></div>
+                    <Tooltip title={this.props.env.lang == 'zh' ? "累计确诊" : "Total Confirmed"} placement='top' >
+                      <div>
+                        <div className='data-delta' style={{color: 'lightsalmon'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(ep?.confirmed_delta)}</span></div>
+                        <div className='data' style={{color: 'red'}}><i className="fas fa-medkit"/><span className="agg">{displayNumber(ep?.confirmed)}</span></div>
+                      </div>
+                    </Tooltip>
                   </DBBlock>
                   <DBBlock style={{width: `${this._dataWidth}px`, height: `${this._rightupHeight}px`}}>
-                  <div className='data-delta' style={{color: 'lightgoldenrodyellow'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(active_delta)}</span></div>
-                    <div className='data' style={{color: 'khaki'}}><i className="fas fa-diagnoses"/><span className="agg">{displayNumber(active)}</span></div>
+                    <Tooltip title={this.props.env.lang == 'zh' ? "现存确诊" : "Active"} placement='top' >
+                      <div>
+                        <div className='data-delta' style={{color: 'lightgoldenrodyellow'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(active_delta)}</span></div>
+                        <div className='data' style={{color: 'khaki'}}><i className="fas fa-diagnoses"/><span className="agg">{displayNumber(active)}</span></div>
+                      </div>
+                    </Tooltip>
                   </DBBlock>
                   <DBBlock style={{width: `${this._dataWidth}px`, height: `${this._rightupHeight}px`}}>
-                    <div className='data-delta' style={{color: 'palegreen'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(ep?.cured_delta)}</span></div>
-                    <div className='data' style={{color: 'lime'}}><i className="fas fa-star-of-life"/><span className="agg">{displayNumber(ep?.cured)}</span></div>
+                    <Tooltip title={this.props.env.lang == 'zh' ? "治愈" : "Cured"} placement='top' >
+                      <div>
+                        <div className='data-delta' style={{color: 'palegreen'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(ep?.cured_delta)}</span></div>
+                        <div className='data' style={{color: 'lime'}}><i className="fas fa-star-of-life"/><span className="agg">{displayNumber(ep?.cured)}</span></div>
+                      </div>
+                    </Tooltip>
                   </DBBlock>
                   <DBBlock style={{width: `${this._dataWidth}px`, height: `${this._rightupHeight}px`}}>
-                    <div className='data-delta' style={{color: 'gainsboro'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(ep?.dead_delta)}</span></div>
-                    <div className='data' style={{color: 'darkgrey'}}><i className="fas fa-skull-crossbones"/><span className="agg">{displayNumber(ep?.dead)}</span></div>
+                    <Tooltip title={this.props.env.lang == 'zh' ? "死亡" : "Dead"} placement='top' >
+                      <div>
+                        <div className='data-delta' style={{color: 'gainsboro'}}><i className="fas fa-plus"/><span className="agg">{displayNumber(ep?.dead_delta)}</span></div>
+                        <div className='data' style={{color: 'darkgrey'}}><i className="fas fa-skull-crossbones"/><span className="agg">{displayNumber(ep?.dead)}</span></div>
+                      </div>
+                    </Tooltip>
                   </DBBlock>
                 </div>
                 <div className='rightdown'>
