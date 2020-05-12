@@ -171,7 +171,6 @@ export default class EventTree extends React.Component<IProps, IState> {
         if (!this.state.eventsLoaded || !this.state.root) return <div className="event-tree"/>
         const timelineProps = this.state.root.getTimelineComponentProps()
         timelineProps.forEach((ts, idx) => { ts.context.y = idx })
-        console.log('rerender', timelineProps)
         const svgWidth = (maxDateIdx + 2) * dx
         const svgHeight = (timelineProps.length + 2) * dy
         const svgOffsetX = -dx + (this.svgContainerDivEl?.scrollLeft || 0)

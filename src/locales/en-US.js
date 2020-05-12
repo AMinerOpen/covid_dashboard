@@ -43,6 +43,7 @@ export default {
     "map.control.dead": "Deceased",
     "map.control.risk": "Risk Index",
     "map.control.risktip": "We use the historical epidemic data in the area to estimate the parameters in the formula. Combine the predicted inflection point, mortality and the number of new infected people to estimate the risk index in the area.",
+    "map.control.riskchart": "Risk index for the last 20 days",
 
     //timeline
     "timeline.title" : "Timeline",

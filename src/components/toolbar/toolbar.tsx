@@ -7,7 +7,6 @@ import { ReactComponent as Source_Svg } from './images/source.svg';
 import { ReactComponent as Search_Svg } from './images/search.svg';
 
 import _ from 'lodash'
-import MapModeSelector from '../map/map-mode-selector';
 
 interface IProps extends IDefaultProps {
     langAll: boolean;
@@ -16,8 +15,6 @@ interface IProps extends IDefaultProps {
     onSwitchTheme: () => void;
     onClickSource: () => void;
     onSearch: () => void;
-    mapMode: string
-    onSetMapMode: (mapMode: string) => void;
 }
 
 export default class Toolbar extends React.Component<IProps, any> {
@@ -44,7 +41,6 @@ export default class Toolbar extends React.Component<IProps, any> {
                 <div className='toolbar_source' onClick={() => this.props.onSearch()}>
                     <Search_Svg />
                 </div>
-                <MapModeSelector mapMode={this.props.mapMode} onSetMapMode={this.props.onSetMapMode}/>
                 {/* <div className='toolbar_locale' onClick={this.handleClickLocale}>
                     {
                         env.lang == 'en' ? <En_Svg style={{fill: 'lightgrey'}} /> : <Zh_Svg style={{fill: '#e72620'}}/>

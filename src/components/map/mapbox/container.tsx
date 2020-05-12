@@ -84,13 +84,16 @@ export default class MapContainer extends React.Component<IProp, IState> {
         if (this.hover_feature) this.map?.setFeatureState(this.hover_feature, { hover_opacity: undefined, hover_stroke_opacity: undefined })
         this.hover_feature = this._hover_feature
         if (this.hover_feature) this.map?.setFeatureState(this.hover_feature, { hover_opacity: 0.9, hover_stroke_opacity: 0.5 })
-        const name = this.hover_feature === undefined ? 'World' : this.hover_feature.properties!.name
+    })
+
+    onClick(feature?: mapboxgl.MapboxGeoJSONFeature) {
+        const name = feature === undefined ? 'World' : feature.properties!.name
         const globalOffset = new Date(this.props.date).getTime() / DAYMILLS
         let ep = this.regionEpidemicData[name]
         if (!ep && name.indexOf('|') >= 0) return
         const dayEp = ep ? this.__getDayEp(ep, globalOffset, {}) : {}
         this.props.onHover(this.regionsInfo[name], dayEp)
-    })
+    }
 
     onHover(feature?: mapboxgl.MapboxGeoJSONFeature, forceUpdate=false) {
         const update = forceUpdate || (feature && !this._hover_feature) || (!feature && this._hover_feature) || ((feature && this._hover_feature && feature.id !== this._hover_feature.id))
@@ -163,13 +166,14 @@ export default class MapContainer extends React.Component<IProp, IState> {
                     dead: dayEp.dead || 0,
                     dead_delta: dayEp.dead_delta || 0,
                     remain: dayEp.remain || 0,
-                    remain_delta: dayEp.remain_delta || 0
+                    remain_delta: dayEp.remain_delta || 0,
+                    risk: dayEp.risk || 0
                 }
             })
         })
         console.log('load ep data')
         this.props.onLoadGlobalEpData(globalEpData)
-        this.onHover(undefined, true)
+        this.onClick(undefined)
     }
 
     updateEpidemic() {
@@ -217,7 +221,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
                 })
                 console.log('load regions info')
                 this.props.onLoadGlobalTranslateData(translateData)
-                this.onHover(undefined, true)
+                this.onClick(undefined)
             })
             .catch(err => console.log('regions info failed', err))
 
@@ -225,6 +229,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
         this.map.on('sourcedata', () => this.reloadEpidemicMap())
 
         this.map.on('mousemove', (e) => this.onHover(this._selectTargetFeature(this.map!.queryRenderedFeatures(e.point))))
+        this.map.on('mousedown', (e) => this.onClick(this._selectTargetFeature(this.map!.queryRenderedFeatures(e.point))))
     }
 
     componentDidMount() {

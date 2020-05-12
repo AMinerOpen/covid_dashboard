@@ -5,20 +5,21 @@
     text-align: center;
     position: relative;
     top: 50%;
+    width: 92px;
     .dropdown {
         display: inline-block;
         .selected, .option {
             transform: translateY(-50%);
-            background: #020E26;
             padding: 2px;
         }
         .option {
-            opacity: 0;
+            display: none;
+            background: #020E26;
         }
         &:hover {
             cursor: pointer;
             .option {
-                opacity: 1;
+                display: block;
                 z-index: 50000;
                 &:hover {
                     background: #2759bc;
@@ -29,38 +30,8 @@
             }
         }
     }
-    .dropdown-mobile {
-        display: none;
-    }
 }
 
-
 @media screen and (max-width: 560px) {
-    .mapmode-dropdown {
-        .dropdown {
-            display: none;
-        }
-        .dropdown-mobile {
-            display: block;
-            .drawer {
-                position: absolute;
-                top: 32px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: #020E26;
-                white-space: nowrap;
-                .option {
-                    padding: 2px 5px;
-                    opacity: 1;
-                    z-index: 50000;
-                    &:hover {
-                        background: #2759bc;
-                    }
-                }
-                .option.current {
-                    background: #4c6faa;
-                }
-            }
-        }
-    }
+    
 }
