@@ -8,6 +8,11 @@ export async function requestEvents() {
     return resp.data as any
 }
 
+export async function requestHots() {
+    const resp = await axios.get(process.env.REACT_APP_API_URL + '/dist/hot-items.json', { headers: {'Cache-Control': 'no-cache'} })
+    return resp.data as any
+}
+
 export async function requestEventsUpdate(tflag: number) {
     const resp = await axios.get(process.env.REACT_APP_API_URL + '/events/update?tflag=' + tflag, { headers: {'Cache-Control': 'no-cache'} })
     return resp.data as any

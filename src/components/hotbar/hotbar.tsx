@@ -3,6 +3,8 @@ import './hotbar.scss';
 import { FormattedMessage } from 'react-intl';
 import { sameDay } from '../../global';
 import EventFlag from '../eventFlag/eventFlag';
+import { requestHots } from '../../utils/requests';
+import dateformat from 'dateformat';
 
 interface IProps {
   events: any[];
@@ -21,6 +23,7 @@ interface IState {
 
 export default class Hotbar extends React.Component<IProps, IState> {
   private _blackList: string[] = ["xinhua", "COVID-19", "coronavirus", "confirmed", "So", "so"];
+  private _hots: any = null;
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -32,7 +35,12 @@ export default class Hotbar extends React.Component<IProps, IState> {
   }
 
   public componentDidMount() {
-    this.freshHot();
+    requestHots().then(data => {
+      if(data) {
+        this._hots = data;
+        this.freshHot();
+      }
+    })
   }
 
   public componentDidUpdate(preProps: IProps, preState: IState) {
@@ -48,26 +56,14 @@ export default class Hotbar extends React.Component<IProps, IState> {
     let hotEntities: any[] = [];
     if(curDate) {
       let curData: any[] = curDate.data;
-      hotEvents = curData.length > 10 ? curData.slice(0, 10) : curData;
-      curData.forEach(d => {
-        if(d.entities && d.entities.length) {
-          d.entities.forEach((entity: any) => {
-            if(this._blackList.indexOf(entity.label) < 0) {
-              let obj: any = hotEntities.find(e => e.url == entity.url);
-              if(obj) {
-                obj.count += 1;
-              }else {
-                hotEntities.push({
-                  label: entity.label,
-                  url: entity.url,
-                  count: 1
-                })
-              }
-            }
-          })
+      curData = curData.sort((a, b) => b.influence - a.influence);
+      hotEvents = curData.length > 5 ? curData.slice(0, 5) : curData;
+      if(this._hots) {
+        let date: string = dateformat(this.props.date, "yyyy-mm-dd");
+        if(this._hots[date]) {
+          hotEntities = this._hots[date].hot_entities.slice(0, 10);
         }
-      })
-      hotEntities.sort((a: any, b: any) => b.count - a.count);
+      }
       if(hotEntities.length > 16) hotEntities = hotEntities.slice(0, 16);
     }
     this.setState({hotEvents, hotEntities});
