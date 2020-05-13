@@ -9,6 +9,7 @@ import ReactEcharts from 'echarts-for-react';
 import MapModeSelector from '../map/map-mode-selector';
 import { Popover, Tooltip } from 'antd';
 import { FormattedMessage} from 'react-intl';
+import dateformat from 'dateformat';
 
 interface IProps extends IDefaultProps{
   regionInfo: IRegionInfo
@@ -33,6 +34,7 @@ export default class DashBoard extends React.Component<IProps, IState> {
   private _blockMargin: number = 2;
   private _dataWidth: number = 106;
   private _riskWidth: number;
+  private _timeHeight: number;
 
   constructor(props: IProps) {
     super(props);
@@ -41,6 +43,7 @@ export default class DashBoard extends React.Component<IProps, IState> {
     }
     this._rightdownHeight = this._upHeight - this._blockMargin - this._rightupHeight;
     this._riskWidth = 3 * this._dataWidth + 2 * this._blockMargin;
+    this._timeHeight = props.env.isMobile ? 32 : 36;
   }
 
   private riskOption() {
@@ -185,6 +188,9 @@ export default class DashBoard extends React.Component<IProps, IState> {
               <div className='mode-con'>
                 <MapModeSelector mapMode={this.props.mapMode} onSetMapMode={this.props.onSetMapMode}/>
               </div>
+            </DBBlock>
+            <DBBlock style={{width: `${this.props.env.isMobile ? this._leftWidth_m : this._leftWidth}px`, height: `${this._timeHeight}px`}}>
+              <div className='time'>{dateformat(this.props.env.date, "yyyy/mm/dd HH:MM:ss")}</div>
             </DBBlock>
           </div>
           { 

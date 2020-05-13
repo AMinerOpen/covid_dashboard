@@ -46,8 +46,17 @@
       }
       .mode-con {
         position: absolute;
+        z-index: 10;
         right: -16px;
         top: calc(100% - 12px);
+      }
+      .time {
+        margin-top: 4px;
+        color: lightgrey;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
       }
     }
     .right {
@@ -143,6 +152,14 @@
           position: absolute;
           right: -16px;
           top: calc(100% - 12px);
+        }
+        .time {
+          margin-top: 4px;
+          color: lightgrey;
+          width: 100%;
+          text-align: center;
+          font-weight: bold;
+          font-size: 12px;
         }
       }
     }
