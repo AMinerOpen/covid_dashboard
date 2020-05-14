@@ -10,6 +10,7 @@ import MapModeSelector from '../map/map-mode-selector';
 import { Popover, Tooltip } from 'antd';
 import { FormattedMessage} from 'react-intl';
 import dateformat from 'dateformat';
+import { ReactComponent as Tip_Svg } from '../main/images/tip.svg';
 
 interface IProps extends IDefaultProps{
   regionInfo: IRegionInfo
@@ -176,15 +177,15 @@ export default class DashBoard extends React.Component<IProps, IState> {
           <div className='left'>
             <DBBlock style={{width: `${this.props.env.isMobile ? this._leftWidth_m : this._leftWidth}px`, height: `${this._upHeight}px`}}>
               <div className='region'>{fullName}</div>
-              <Popover 
+              <Tooltip 
                 title={this.props.env.lang == 'zh' ? "风险指数" : "Risk Index"}
-                placement='bottom'
-                content={this.popover()}>
+                placement='bottom'>
                 <div className='risk'>
                   <div className='value' style={{color: risk2color(ep?.risk)}}>{displayNumber(ep?.risk)}</div>
                   <div className='title'>Risk Index</div>
+                  <span className='tip' onClick={() => window.open("https://covid-dashboard.aminer.cn/algorithm/?lang="+this.props.env.lang)}><Tip_Svg /></span>
                 </div>
-              </Popover>
+              </Tooltip>
               <div className='mode-con'>
                 <MapModeSelector mapMode={this.props.mapMode} onSetMapMode={this.props.onSetMapMode}/>
               </div>

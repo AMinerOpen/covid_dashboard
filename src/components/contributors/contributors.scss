@@ -10,7 +10,7 @@ $avatar-width: 140px;
     position: relative;
     width: 68%;
     min-width: 720px;
-    margin: 0 auto;
+    margin: 0 auto 32px auto;
     padding: 0 12px;
 
     .title {
@@ -76,6 +76,13 @@ $avatar-width: 140px;
       }
     }
   }
+  .footer {
+    height: 42px;
+    background-color: #020e25;
+    color: white;
+    text-align: center;
+    line-height: 40px;
+  }
 }
 
 @media screen and (max-width: 560px) {
@@ -91,7 +98,7 @@ $avatar-width: 140px;
       position: relative;
       width: 100%;
       min-width: unset;
-      margin: 0 auto;
+      margin: 0 auto 32px auto;
       padding: 0 12px;
 
       .title {
