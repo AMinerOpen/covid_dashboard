@@ -22,6 +22,7 @@
         border-bottom: 1px solid rgba(211, 211, 211, 0.747);
       }
       .risk {
+        position: relative;
         margin-top: 4px;
         width: 80px;
         margin-left: 8px;
@@ -39,9 +40,22 @@
         .value {
           color: white;
           text-align: center;
-          font-size: 46px;
+          font-size: 42px;
           line-height: 46px;
           font-weight: bold;
+        }
+        .tip {
+          position: absolute;
+          right: 0px;
+          top: 0px;
+          opacity: 0.6;
+          user-select: none;
+          cursor: pointer;
+          svg {
+            width: 16px;
+            height: 16px;
+            fill: lightgrey;
+          }
         }
       }
       .mode-con {

@@ -64,6 +64,9 @@ export default class Contributors extends React.Component<IProps, IState> {
             })}
           </div>
         </div>
+        <div className='footer'>
+          © 2005-2020 AMiner 京ICP备17059297号-2
+        </div>
       </div>
     )
   }

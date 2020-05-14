@@ -9,6 +9,7 @@ import { ITimeline, IEpidemicData } from './models';
 import QueryString from 'query-string';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Contributors from './components/contributors/contributors';
+import AlgorithmPage from './components/algorithmPage/algorithmPage';
 
 interface IState {
   env: IEnv;
@@ -106,6 +107,7 @@ export default class App extends React.Component<any, IState> {
             <Route exact path='/' >{this.drawMain()}</Route>
             <Route exact path='/public' >{this.drawMain()}</Route>
             <Route exact path='/contributors' ><Contributors lang={env.lang} onSwitchLang={this.handleSwitchLocale} /></Route>
+            <Route exact path='/algorithm' ><AlgorithmPage lang={env.lang} onSwitchLang={this.handleSwitchLocale} /></Route>
           </div>
         </Router>
       </IntlProvider>
