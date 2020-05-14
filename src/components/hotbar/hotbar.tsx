@@ -22,7 +22,6 @@ interface IState {
 }
 
 export default class Hotbar extends React.Component<IProps, IState> {
-  private _blackList: string[] = ["xinhua", "COVID-19", "coronavirus", "confirmed", "So", "so"];
   private _hots: any = null;
   constructor(props: IProps) {
     super(props);
@@ -86,7 +85,7 @@ export default class Hotbar extends React.Component<IProps, IState> {
                     hotEntities.map((entity: any, index: number) => {
                       return (
                         <div className='entity' key={index} onClick={() => onOpenEntity && onOpenEntity(entity, date)}>
-                          <span className='label'>{`${entity.label}(${entity.count || 0})`}</span>
+                          <span className='label'>{`${entity.label}`}</span>
                         </div>
                       )
                     })

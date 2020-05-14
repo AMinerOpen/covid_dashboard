@@ -2,7 +2,7 @@ import * as React from 'react';
 import './eventPanel.scss';
 import { IDefaultProps } from '../../global';
 import { FormattedMessage } from 'react-intl'
-import { requestEvent, requestEntities } from '../../utils/requests';
+import { requestEvent } from '../../utils/requests';
 import EventFlag from '../eventFlag/eventFlag';
 import dateFormat from 'dateformat';
 import GlobalStorage from '../../utils/global-storage';
@@ -66,9 +66,6 @@ export default class EventPanel extends React.Component<IProps, IState> {
                 div.scrollIntoView();
             }
         }
-        if(preState.eventDetail != this.state.eventDetail) {
-            this.requestEntities();
-        }
     }
 
     private handleClose() {
@@ -83,33 +80,13 @@ export default class EventPanel extends React.Component<IProps, IState> {
         return a.getFullYear() == b.getFullYear() && a.getMonth() == b.getMonth() && a.getDate() == b.getDate();
     }
 
-    private requestEntities(): void {
-        let event: any = this.state.eventDetail;
-        if(event.entities && event.entities.length) {
-            let exists: any[] = [];
-            event.entities.forEach((d: any) => {
-                if((event.title && event.title.indexOf(d.label) >= 0) || (event.content && event.content.indexOf(d.label) >= 0)) {
-                    exists.push(d);
-                }
-            })
-            if(exists.length) {
-                let urls: string[] = exists.map(d => d.url);
-                requestEntities(urls).then(data => {
-                    if(data && data.length) {
-                        this.setState({entities: data});
-                    }
-                })
-            }
-        }
-    }
-
     private handleSelectEvent(id: string): void {
         if(id != this._curEventId) {
             this._curEventId = id;
             requestEvent(id).then(data => {
                 if(data && data.status) {
                     if(this._curEventId == data.data._id) {
-                        this.setState({eventDetail: data.data});
+                        this.setState({eventDetail: data.data, entities: data.data.entities || []});
                     }
                 }
             })
@@ -134,7 +111,7 @@ export default class EventPanel extends React.Component<IProps, IState> {
                 className='entity' 
                 style={entity.url == this.state.hightlight ? {border: '4px solid #ffe100'} : undefined}
                 onClick={() => this.props.onOpenEntity && this.props.onOpenEntity(entity, this.props.date)}>
-                {entity.label}<div className='entityflag'><EntityFlag source={entity.source} /></div>
+                {entity.label}<div className='entityflag'><EntityFlag source={entity.url.indexOf('xlore') < 0 ? 'kg' : 'xlink'} /></div>
             </div>
         )
     }

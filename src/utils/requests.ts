@@ -34,10 +34,9 @@ export async function requestEvent(id: string) {
     return resp.data as any
 }
 
-export async function requestEntities(urls: string[]) {
-    let param:string = encodeURI('[' + urls.map(d => "\"" + d + "\"").join(',') + ']');
-    let url: string = "https://covid19.aminer.cn/getEntities?urls=" + param;
-    const resp = await axios.get(url, { headers: {'Cache-Control': 'no-cache'} })
+export async function requestEntity(url: string, time: number) {
+    let req: string = process.env.REACT_APP_API_URL + '/entity?url=' + url + "&time=" + time;
+    const resp = await axios.get(req, { headers: {'Cache-Control': 'no-cache'} })
     return resp.data as any
 }
 

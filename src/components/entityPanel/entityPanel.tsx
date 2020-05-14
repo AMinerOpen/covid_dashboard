@@ -2,7 +2,7 @@ import React from 'react';
 import './entityPanel.scss';
 import { Tooltip } from 'antd';
 import { IEnv } from '../../global';
-import { requestEntities } from '../../utils/requests';
+import { requestEntity } from '../../utils/requests';
 import { FormattedMessage } from 'react-intl';
 import EventFlag from '../eventFlag/eventFlag';
 import EntityFlag from '../entityFlag/entityFlag';
@@ -45,15 +45,15 @@ export default class EntityPanel extends React.Component<IProps, IState> {
   }
 
   private requestEntity() {
-    requestEntities([this.props.data.url]).then(data => {
-      if(data && data.length) {
+    requestEntity(this.props.data.url, (this.props.date || this.props.env.date).getTime()).then(data => {
+      if(data && data.status) {
         let date: Date = this.props.date || this.props.env.date;
         let obj: any = this.props.events.find(d => sameDay(date, d.date));
         let relatedEvents: any[] = [];
         if(obj) {
-          obj.data.forEach((d: any) => d.entities && d.entities.find((e: any) => e.url == data[0].url) && relatedEvents.push(d));
+          obj.data.forEach((d: any) => data.data.related_events && data.data.related_events.find((e: any) => e == d._id) && relatedEvents.push(d));
         }
-        this.setState({detail: data[0], relatedEvents});
+        this.setState({detail: data.data, relatedEvents});
       }
     })
   }
