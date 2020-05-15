@@ -7,7 +7,7 @@ import { displayNumber } from '../../utils/data';
 import { risk2color } from '../../utils/color';
 import ReactEcharts from 'echarts-for-react';
 import MapModeSelector from '../map/map-mode-selector';
-import { Popover, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import { FormattedMessage} from 'react-intl';
 import dateformat from 'dateformat';
 import { ReactComponent as Tip_Svg } from '../main/images/tip.svg';
@@ -144,23 +144,6 @@ export default class DashBoard extends React.Component<IProps, IState> {
     }
     return option;
   }
-
-  popover(): JSX.Element {
-    const isMobile: boolean = this.props.env.isMobile;
-    const lang: string = this.props.env.lang;
-    return (
-        <div className='popover' style={{width: isMobile ? '200px' : "360px"}}>
-            <div className='h1'>{lang == 'zh' ? "我们使用多个维度的数据，对地区的风险指数进行综合评估：" : "We aggregate multiple dimensions of data to conduct a comprehensive assessment of the regional risk index, including:"}</div>
-            <div className='h2'>{lang == 'zh' ? "- 历史疫情数据，包括确诊病例，死亡/治愈率，预测的拐点等" : "- Historical epidemic data, including confirmed cases, death / cure rates, predicted inflection points, etc."}</div>
-            <div className='h2'>{lang == 'zh' ? "- 地区人口数据 [1]" : "- Regional population data [1]"}</div>
-            <div className='h2'>{lang == 'zh' ? "- 地区医疗资源 [2]" : "- Regional medical resources [2]"}</div>
-            <div className='origin'>
-                <div className='h3'><a href='https://data.worldbank.org/indicator/sp.pop.totl' target="_blank">{"[1]  https://data.worldbank.org/indicator/sp.pop.totl"}</a></div>
-                <div className='h3'><a href='https://www.ghsindex.org/' target="_blank">{"[2]  https://www.ghsindex.org/"}</a></div>
-            </div>
-        </div>
-    )
-  } 
 
   render() {
     const regionInfo = this.props.regionInfo || {name_en: '', name_zh: ''}

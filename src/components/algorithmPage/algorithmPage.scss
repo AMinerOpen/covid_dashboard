@@ -8,6 +8,17 @@
     position: relative;
     padding: 24px 20%;
     margin-bottom: 68px;
+    .al {
+      position: relative;
+      font-size: 18px;
+      color: $background;
+      margin-left: 50%;
+      text-align: center;
+      transform: translateX(-50%);
+      margin-top: 20px;
+      margin-bottom: 20px;
+      max-width: 480px;
+    }
     h1 {
       font-size: 36px;
       font-weight: bold;
@@ -51,6 +62,11 @@
       position: relative;
       padding: 24px 6%;
       margin-bottom: 48px;
+      .al {
+        position: relative;
+        font-size: 14px;
+        width: 300px;
+      }
       h1 {
         font-size: 26px;
         font-weight: bold;
