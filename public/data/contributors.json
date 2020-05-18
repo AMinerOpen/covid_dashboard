@@ -1,7 +1,7 @@
 [
     {
         "name_zh": "清华大学人工智能研究院",
-        "name_en": "Institute for Artificial Intelligence of Tsinghua University",
+        "name_en": "Institute for Artificial Intelligence, Tsinghua University",
         "members": [
             {
                 "name_zh": "杨斌 教授",
@@ -12,7 +12,7 @@
     },
     {
         "name_zh": "清华大学计算机科学与技术系",
-        "name_en": "Department of Computer Science and Technology of Tsinghua University",
+        "name_en": "Department of Computer Science and Technology, Tsinghua University",
         "members": [
             {
                 "name_zh": "刘奕群 教授",
@@ -39,16 +39,23 @@
     },
     {
         "name_zh": "清华大学医学院",
-        "name_en": "School of Medicine of Tsinghua University",
+        "name_en": "School of Medicine, Tsinghua University",
         "members": [
             {
                 "name_zh": "周盼盼 博士",
-                "name_en": "Dr. Panpan Zhou",
-                "avatar": ""
-            }, {
+                "name_en": "Phd. Panpan Zhou",
+                "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/zhoupanpan.jpg"
+            }
+        ]
+    },
+    {
+        "name_zh": "清华大学生命科学学院",
+        "name_en": "School of Life Sciences, Tsinghua Universlty",
+        "members": [
+            {
                 "name_zh": "邹兵 博士",
                 "name_en": "Phd. Bing Zou",
-                "avatar": ""
+                "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/zoubing.jpg"
             }
         ]
     },
@@ -71,6 +78,10 @@
                 "name_zh": "杜冀中",
                 "name_en": "Jizhong Du",
                 "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/dujizhong.png"
+            }, {
+                "name_zh": "胡迪",
+                "name_en": "Di HU",
+                "avatar": "https://originalstatic.aminer.cn/misc/ncov/homepage/avatars/hudi.jpg"
             }, {
                 "name_zh": "论兵",
                 "name_en": "Bing Lun",

@@ -14,7 +14,6 @@ import Source from "../source/source";
 import EventPanel from "../event/eventPanel";
 import { Header } from "covid-header";
 import Infobar from "../infobar/infobar";
-import MapModeSelector from "../map/map-mode-selector";
 import SearchBox from "../searchbox";
 import EventTree from "../event/eventTree";
 import Hotbar from "../hotbar/hotbar";
@@ -372,8 +371,8 @@ export default class Main extends React.Component<IProps, IState> {
             <div className="main_content">
               <div className="main_map">{this.map()}</div>
               <div className="main_upper">
-                {/* <div className='main_hotbar'>{this.hotbar()}</div> */}
-                {/* <EventTree/> */}
+                <div className='main_hotbar'>{this.hotbar()}</div>
+                <EventTree/>
                 <div className="main_timeline">{this.timeline()}</div>
                 <div className="main_controlbar">
                   {/* {this.controlBar()} */}
