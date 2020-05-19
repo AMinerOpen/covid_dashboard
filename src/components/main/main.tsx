@@ -18,6 +18,7 @@ import SearchBox from "../searchbox";
 import EventTree from "../event/eventTree";
 import Hotbar from "../hotbar/hotbar";
 import EntityPanel from "../entityPanel/entityPanel";
+import River from '../river/river';
 
 interface IPanelParams {
   type: 'event' | "entity";
@@ -372,7 +373,8 @@ export default class Main extends React.Component<IProps, IState> {
               <div className="main_map">{this.map()}</div>
               <div className="main_upper">
                 <div className='main_hotbar'>{this.hotbar()}</div>
-                <EventTree/>
+                {/* <EventTree/> */}
+                <River />
                 <div className="main_timeline">{this.timeline()}</div>
                 <div className="main_controlbar">
                   {/* {this.controlBar()} */}
