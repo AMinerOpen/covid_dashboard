@@ -78,6 +78,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
     }
 
     private _hover_feature?: mapboxgl.MapboxGeoJSONFeature
+    private _click_feature?: mapboxgl.MapboxGeoJSONFeature
     private hover_feature?: mapboxgl.MapboxGeoJSONFeature
     private _hover_date: string = ''
     private _hover_update = _.debounce(() => {
@@ -88,6 +89,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
 
     onClick(feature?: mapboxgl.MapboxGeoJSONFeature) {
         const name = feature === undefined ? 'World' : feature.properties!.name
+        this._click_feature = feature;
         const globalOffset = new Date(this.props.date).getTime() / DAYMILLS
         let ep = this.regionEpidemicData[name]
         if (!ep && name.indexOf('|') >= 0) return
@@ -342,7 +344,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
                 this.date = this.props.date
                 this.mapMode = this.props.mapMode
                 this.reloadEpidemicMap()
-                this.onHover(this.hover_feature)
+                this.onClick(this._click_feature)
             }
             this.updateMarkers()
         }
