@@ -21,7 +21,7 @@ const COUNTY_MIN_ZOOM = 4.5
 const COUNTRY_SOURCE_LAYER = 'countries'
 const REGIONE_SOURCE_LAYER = 'regione-0411'
 const PROVINCE_SOURCE_LAYER = 'provinces'
-const COUNTY_SOURCE_LAYER = 'China-counties'
+const COUNTY_SOURCE_LAYER = 'counties-0417'
 
 function get_source_layer_priority(source_layer: string): number {
     if (source_layer === COUNTRY_SOURCE_LAYER) return 0
