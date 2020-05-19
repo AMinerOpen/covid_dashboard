@@ -18,6 +18,7 @@ import SearchBox from "../searchbox";
 import EventTree from "../event/eventTree";
 import Hotbar from "../hotbar/hotbar";
 import EntityPanel from "../entityPanel/entityPanel";
+import River from '../river/river';
 
 interface IPanelParams {
   type: 'event' | "entity";
