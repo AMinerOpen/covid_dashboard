@@ -62,10 +62,13 @@ $btn-width: 60px;
             .timeline_bar {
                 .date {
                     position: absolute;
-                    background-color: grey;
+                    left: 0;
+                    top: 0;
+                    background-color: #0095ff;
                     font-size: 12px;
                     text-align: center;
-                    color: white;
+                    font-weight: bold;
+                    color: lightgrey;
                     user-select: none;
                 }
             }
@@ -77,6 +80,13 @@ $btn-width: 60px;
                     position: absolute;
                 }
             }
+        }
+        .river_con {
+            position: absolute;
+            left: 0;
+            bottom: 46;
+            width: 100%;
+            height: calc(#{$height} - 46px);
         }
     }
 }

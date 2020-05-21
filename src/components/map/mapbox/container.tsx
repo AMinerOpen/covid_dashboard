@@ -283,12 +283,12 @@ export default class MapContainer extends React.Component<IProp, IState> {
         } else if (this.map) {
             this.map.once('sourcedata', (e) => {
                 this.updateMarkers()
-                this.componentDidUpdate()
+                this.componentDidUpdate(this.props)
             })
         }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(preProps: IProp) {
         if (this.map) {
             this.events.forEach(prop => {
                 if (this.markers[prop.loc_zh]) {
@@ -296,6 +296,9 @@ export default class MapContainer extends React.Component<IProp, IState> {
                     // this.markers[prop.loc_zh].addTo(this.map!)
                 }
             })
+            if(preProps.date != this.props.date) {
+                this.onClick(this._click_feature)
+            }
         }
     }
 
@@ -344,7 +347,6 @@ export default class MapContainer extends React.Component<IProp, IState> {
                 this.date = this.props.date
                 this.mapMode = this.props.mapMode
                 this.reloadEpidemicMap()
-                this.onClick(this._click_feature)
             }
             this.updateMarkers()
         }

@@ -4,7 +4,8 @@ import { IDefaultProps, sameDay } from '../../global';
 import dateformat from 'dateformat'
 import { requestEvents, requestEventsUpdate } from '../../utils/requests';
 import GlobalStorage from '../../utils/global-storage';
-import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
+import { CaretRightOutlined, PauseOutlined, ConsoleSqlOutlined } from '@ant-design/icons';
+import River from '../river/river';
 
 interface IState {
     tflag: number;
@@ -18,7 +19,7 @@ interface IState {
 interface IProps extends IDefaultProps {
     langAll: boolean;
     onTflagChange: (tflag: number) => void;
-    onOpenEvent: (date: Date, data: any) => void;
+    onOpenEvent: (date: Date, data: any, list?: string[]) => void;
     onLoadNews?: (news: any[]) => void;
     onLoadEvents?: (events: any[]) => void;
     onChangeDate: (date: Date) => void;
@@ -26,8 +27,6 @@ interface IProps extends IDefaultProps {
 }
 
 export default class Timeline extends React.Component<IProps, IState> {
-    private begin = new Date(2020, 0, 24, 0, 0, 0, 0);
-    private end = new Date();
     private _ms1Day: number = 24*60*60*1000;
     private _rangeStartDate: Date;
     private _rangeEndDate: Date;
@@ -38,10 +37,10 @@ export default class Timeline extends React.Component<IProps, IState> {
 
     private _date_circle_border_width: number = 4;
     private _date_circle_margin: number = 4;
-    private _date_line_width: number = 100;
-    private _date_line_height: number = 26;
-    private _date_bottom: number = 42;
-    private _event_bar_width: number = 54;
+    private _date_line_width: number = 50;
+    private _date_line_height: number = 22;
+    private _date_bottom: number = 36;
+    private _event_bar_width: number = 46;
     private _bar_height_max: number = 160;
 
     private _dragging: boolean = false;
@@ -106,6 +105,7 @@ export default class Timeline extends React.Component<IProps, IState> {
         this.handleBar = this.handleBar.bind(this);
         this.handleDateUp = this.handleDateUp.bind(this);
         this.handleBtnClick = this.handleBtnClick.bind(this);
+        this.handleRiverLineClick = this.handleRiverLineClick.bind(this);
     }
 
     public componentDidMount() {
@@ -122,8 +122,10 @@ export default class Timeline extends React.Component<IProps, IState> {
     }
 
     public componentDidUpdate(preProps: IProps, preState: IState) {
-        if(!this._dragging && preProps.env.date != this.props.env.date) {
-            this.locatTimeline(this.props.env.date);
+        if(preProps.env.date != this.props.env.date) {
+            if(!this._dragging) {
+                this.locatTimeline(this.props.env.date);
+            }
         }
         if(preState.timelineData != this.state.timelineData) {
             this.setState({
@@ -146,6 +148,10 @@ export default class Timeline extends React.Component<IProps, IState> {
     private getPointerOffsetX(date: Date): number {
         let ratio: number = (date.getTime() - this._renderStartDate.getTime()) / this._ms1Day * this.dateWidth();
         return ratio;
+    }
+
+    private handleRiverLineClick(list: string[]) {
+        this.props.onOpenEvent && this.props.onOpenEvent(this.props.env.date, null, list);
     }
 
     private handleDateUp(date: Date) {
@@ -348,14 +354,13 @@ export default class Timeline extends React.Component<IProps, IState> {
                     onMouseUp={() => this.handleDateUp(value)}
                     onTouchEnd={() => this.handleDateUp(value)}
                     style={{
-                    left: 0,
-                    top: 0,
                     width: `${this._date_line_width}px`,
                     height: `${this._date_line_height}px`,
-                    borderRadius: `${this._date_line_height/3}px`,
+                    lineHeight: `${this._date_line_height - 8}px`,
+                    borderRadius: `4px`,
                     border: `${this._date_circle_border_width}px solid #0095ff`
                 }} >
-                    {dateformat(value, "yyyy/mm/dd")}
+                    {dateformat(value, "mm/dd")}
                 </div>
             </div>
         )
@@ -363,8 +368,8 @@ export default class Timeline extends React.Component<IProps, IState> {
 
     private handleBtnClick() {
         if(!this.props.env.speed) {
-            if(sameDay(this.props.env.date, this.end)) {
-                this.props.onChangeDate && this.props.onChangeDate(this.begin);
+            if(sameDay(this.props.env.date, this._rangeEndDate)) {
+                this.props.onChangeDate && this.props.onChangeDate(this._rangeStartDate);
             }
         }
         setTimeout(() => {
@@ -415,8 +420,11 @@ export default class Timeline extends React.Component<IProps, IState> {
                             }}}
                         onWheel={this.handleMouseWheel}>
                             {this.drawLine()}
-                            <div className='events'>
+                            {/* <div className='events'>
                                 { catchBars }
+                            </div> */}
+                            <div className='river_con'>
+                                <River start={this._renderStartDate} end={this._rangeEndDate} dayWidth={this.dateWidth()} onLineClick={this.handleRiverLineClick}/>
                             </div>
                     </div>
                 </div>

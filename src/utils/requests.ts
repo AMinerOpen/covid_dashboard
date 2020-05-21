@@ -48,6 +48,13 @@ export async function requestSearchEvent(text: string) {
     return items
 }
 
+export async function requestRiver(size: 'sm' | 'md' | 'lg') {
+    // let url: string = process.env.REACT_APP_API_URL + `/dist/flattened_timelines_${size}.json`;
+    let url: string = process.env.REACT_APP_API_URL + `/dist/hierarchical_timelines_${size}.json`;
+    const resp = await axios.get(url, { headers: {'Cache-Control': 'no-cache'} })
+    return resp.data as any
+}
+
 export async function requestEventsTree() {
     const resp = await axios.get(process.env.REACT_APP_API_URL + '/dist/events-tree.json', { headers: {'Cache-Control': 'no-cache' }})
     return resp.data as any
