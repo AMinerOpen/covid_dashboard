@@ -18,7 +18,7 @@ interface IState {
 
 export default class River extends React.Component<IProps, IState> {
   private _container: HTMLDivElement | null = null;
-  private _layer_total: number = 20;
+  private _layer_total: number = 12;
   private _ms1Day: number = 24*60*60*1000;
   private _datas: any[] = [];
   private _dates: string[] = [];
@@ -102,7 +102,7 @@ export default class River extends React.Component<IProps, IState> {
       this._svg = d3.select('#river_svg');
       this._x = d3.scaleLinear().domain([0, this._dates.length-1]).range([0, (this._dates.length * this.props.dayWidth)]);
       this._y = d3.scaleLinear().domain([d3.min(this._riverData, this.stackMin)!, d3.max(this._riverData, this.stackMax)!]).range([this._container.offsetHeight, 0]);
-      let z = d3.interpolateBlues;
+      let z = d3.interpolateGreys;
       this._area = d3.area()
         .x((_, i) => this._x!(i))
         .y0(d => this._y!(d[0]))
@@ -111,7 +111,7 @@ export default class River extends React.Component<IProps, IState> {
         .data(this._riverData)
         .enter().append('path')
         .attr('d', this._area)
-        .attr('fill', (_, i) => z(0.4 + i%3*0.15))
+        .attr('fill', (_, i) => z(0.2 + i%3*0.15))
         .on('mouseover', function(d, i) {
           d3.select(this)
             .style('filter', 'url(#drop-shadow)')

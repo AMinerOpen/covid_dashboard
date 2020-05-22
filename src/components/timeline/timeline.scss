@@ -84,9 +84,11 @@ $btn-width: 60px;
         .river_con {
             position: absolute;
             left: 0;
-            bottom: 46;
+            bottom: 36;
             width: 100%;
-            height: calc(#{$height} - 46px);
+            height: calc(#{$height} - 86px);
+            opacity: 0.7;
+            pointer-events: none;
         }
     }
 }

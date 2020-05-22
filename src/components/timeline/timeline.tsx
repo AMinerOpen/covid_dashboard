@@ -257,15 +257,17 @@ export default class Timeline extends React.Component<IProps, IState> {
 
     private requestEvents() {
         requestEvents().then(data => {
-            data.datas.forEach((event: any) => { GlobalStorage.events[event._id] = {...event, time: this.toDate(event.time), date: dateformat(this.toDate(event.time), 'yyyy-mm-dd') } })
-            let tflag: number = data.tflag;
-            let events: any[] = this._dates.map(d => {return {date: d, data:[]}});
-            let timelineData: any[] = this._dates.map(d => {return {date: d, data:{total: 0}}});
-            this.addToEventsAndTimeline(data.datas, events, timelineData);
-            this.handleEventsChange(events)
-            let max = timelineData.reduce((pre, cur) => Math.max(pre, cur.data.total), 0);
-            this.setState({tflag, events, timelineData, barHeightRatio: this._bar_height_max / max});
-            this.props.onTflagChange(tflag);
+            if(data && data.datas) {
+                data.datas.forEach((event: any) => { GlobalStorage.events[event._id] = {...event, time: this.toDate(event.time), date: dateformat(this.toDate(event.time), 'yyyy-mm-dd') } })
+                let tflag: number = data.tflag;
+                let events: any[] = this._dates.map(d => {return {date: d, data:[]}});
+                let timelineData: any[] = this._dates.map(d => {return {date: d, data:{total: 0}}});
+                this.addToEventsAndTimeline(data.datas, events, timelineData);
+                this.handleEventsChange(events)
+                let max = timelineData.reduce((pre, cur) => Math.max(pre, cur.data.total), 0);
+                this.setState({tflag, events, timelineData, barHeightRatio: this._bar_height_max / max});
+                this.props.onTflagChange(tflag);
+            }
         })
     }
 
@@ -420,11 +422,11 @@ export default class Timeline extends React.Component<IProps, IState> {
                             }}}
                         onWheel={this.handleMouseWheel}>
                             {this.drawLine()}
-                            {/* <div className='events'>
-                                { catchBars }
-                            </div> */}
                             <div className='river_con'>
                                 <River start={this._renderStartDate} end={this._rangeEndDate} dayWidth={this.dateWidth()} onLineClick={this.handleRiverLineClick}/>
+                            </div>
+                            <div className='events'>
+                                { catchBars }
                             </div>
                     </div>
                 </div>
