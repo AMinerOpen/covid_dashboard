@@ -1,7 +1,7 @@
 {
   "name": "covid-dashboard",
   "homepage": "https://covid-dashboard.aminer.cn",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.0.3",
