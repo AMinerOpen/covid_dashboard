@@ -102,7 +102,7 @@ export default class River extends React.Component<IProps, IState> {
       this._svg = d3.select('#river_svg');
       this._x = d3.scaleLinear().domain([0, this._dates.length-1]).range([0, (this._dates.length * this.props.dayWidth)]);
       this._y = d3.scaleLinear().domain([d3.min(this._riverData, this.stackMin)!, d3.max(this._riverData, this.stackMax)!]).range([this._container.offsetHeight, 0]);
-      let z = d3.interpolateGreys;
+      let z = d3.interpolateBlues;
       this._area = d3.area()
         .x((_, i) => this._x!(i))
         .y0(d => this._y!(d[0]))

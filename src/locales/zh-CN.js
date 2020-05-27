@@ -66,6 +66,7 @@ export default {
     "forecast.area": "地区",
     "forecast.incr": "确诊新增",
     "forecast.daily": "新增",
+    "forecast.risk": "风险指数",
 
     //source
     "source.title": "数据源",

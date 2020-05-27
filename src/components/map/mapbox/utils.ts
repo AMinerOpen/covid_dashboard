@@ -47,7 +47,7 @@ export function preprocessRenderData(src: {[id: string]: IEpidemicSeries}): {[id
             offset: Math.floor(new Date(series.begin).getTime() / DAYMILLS),
             data: _.map(series.data, (data, idx) => {
                 const [confirmed, suspected, cured, dead, severe, risk] = data
-                const [_confirmed, _suspected, _cured, _dead, _severe, _risk] = idx > 0 ? series.data[idx-1] : [null, null, null, null, null, null]
+                const [_confirmed, _suspected, _cured, _dead, _severe, _risk, _incr24] = idx > 0 ? series.data[idx-1] : [null, null, null, null, null, null, null]
                 const remain = (confirmed !== null) ? Math.max(confirmed - (cured || 0) - (dead || 0), 0) : null
                 const daydata = {
                     display: data.findIndex(x => x !== undefined && x !== null) >= 0,
@@ -59,6 +59,7 @@ export function preprocessRenderData(src: {[id: string]: IEpidemicSeries}): {[id
                     severe: n2u(severe),            severe_delta: delta(severe, _severe),
                     remain: n2u(remain),            remain_delta: delta(remain, _remain),
                     risk: n2u(risk),                risk_delta: delta(risk, _risk),
+                    incr24: n2u(_incr24)
                 }
                 daydata.colors = calcColors(daydata)
                 _remain = remain

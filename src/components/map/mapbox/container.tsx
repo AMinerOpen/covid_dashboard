@@ -169,7 +169,8 @@ export default class MapContainer extends React.Component<IProp, IState> {
                     dead_delta: dayEp.dead_delta || 0,
                     remain: dayEp.remain || 0,
                     remain_delta: dayEp.remain_delta || 0,
-                    risk: dayEp.risk || 0
+                    risk: dayEp.risk || 0,
+                    incr24: dayEp.incr24 || 0
                 }
             })
         })
