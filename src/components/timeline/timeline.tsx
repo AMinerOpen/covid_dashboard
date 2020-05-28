@@ -4,8 +4,10 @@ import { IDefaultProps, sameDay } from '../../global';
 import dateformat from 'dateformat'
 import { requestEvents, requestEventsUpdate, requestHots } from '../../utils/requests';
 import GlobalStorage from '../../utils/global-storage';
-import { CaretRightOutlined, PauseOutlined, ConsoleSqlOutlined } from '@ant-design/icons';
+import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 import River from '../river/river';
+import { ReactComponent as HotSvg } from './images/hot.svg';
+import { FormattedMessage } from 'react-intl';
 
 interface IState {
     tflag: number;
@@ -15,12 +17,14 @@ interface IState {
     catchLine: (JSX.Element|null)[] | null;
     barHeightRatio: number;
     hoverDate: string;
+    hots: any;
 }
 
 interface IProps extends IDefaultProps {
     langAll: boolean;
     onTflagChange: (tflag: number) => void;
     onOpenEvent: (date: Date, data: any, list?: string[]) => void;
+    onOpenEntity: (entity: any, date: Date) => void;
     onLoadNews?: (news: any[]) => void;
     onLoadEvents?: (events: any[]) => void;
     onChangeDate: (date: Date) => void;
@@ -35,6 +39,7 @@ export default class Timeline extends React.Component<IProps, IState> {
     private _renderEndDate: Date;
     private _container: HTMLDivElement | null = null;
     private _hotPanel: HTMLDivElement | null = null;
+    private _rightRoot: HTMLDivElement | null = null;
     private _dates: Date[];
 
     private _date_circle_border_width: number = 4;
@@ -50,6 +55,8 @@ export default class Timeline extends React.Component<IProps, IState> {
     private _moveLock: boolean = false;
     private _lastTouchX: number = 0;
     private _downTime: number = 0;
+
+    private _hotTimer: NodeJS.Timeout | null = null;
 
     private _types: any[] = [
         {
@@ -92,9 +99,9 @@ export default class Timeline extends React.Component<IProps, IState> {
             catchBars: null,
             timelineData: [],
             barHeightRatio: 1,
-            hoverDate: ""
+            hoverDate: "",
+            hots: null
         }
-
         this.handleDrawDate = this.handleDrawDate.bind(this);
         this.dateWidth = this.dateWidth.bind(this);
         this.handleTouchStart = this.handleTouchStart.bind(this);
@@ -110,6 +117,8 @@ export default class Timeline extends React.Component<IProps, IState> {
         this.handleRiverLineClick = this.handleRiverLineClick.bind(this);
         this.handleBarOver = this.handleBarOver.bind(this);
         this.handleBarOut = this.handleBarOut.bind(this);
+        this.handleHotOver = this.handleHotOver.bind(this);
+        this.handleHotOut = this.handleHotOut.bind(this);
     }
 
     public componentDidMount() {
@@ -264,6 +273,7 @@ export default class Timeline extends React.Component<IProps, IState> {
         requestHots().then(data => {
             if(data) {
                 console.log('hots:', data);
+                this.setState({hots: data});
             }
         });
     }
@@ -318,16 +328,34 @@ export default class Timeline extends React.Component<IProps, IState> {
         return this._date_circle_margin + this._date_line_width;
     }
 
+    private getDivOffset(div:HTMLDivElement, p: HTMLElement): {left: number, top: number} {
+        let result: {left: number, top: number} = {left: 0, top: 0};
+        let target: HTMLElement | null = div;
+        while(target && target != p) {
+            result.left += target.offsetLeft;
+            result.top += target.offsetTop;
+            if(target.parentElement) {
+                if(target.parentElement.scrollLeft) result.left -= target.parentElement.scrollLeft;
+                if(target.parentElement.scrollTop) result.top -= target.parentElement.scrollTop;
+            }
+            target = target.parentElement;
+        }
+        return result;
+    }
+
     private handleBarOver(e: React.MouseEvent, value: any) {
         let div: HTMLDivElement | null = e.target as HTMLDivElement;
         if(div) {
             div.style.transform = "scale(1.2, 1.4)";
             if(value && value.date) {
-                // this.setState({hoverDate: dateformat(value.date, "yyyy-MM-dd")})
-                // console.log("hot left: ", div.offsetLeft, div.offsetTop);
-                if(this._hotPanel && this._container) {
-                    this._hotPanel.style.left = `${div.offsetLeft}px`;
-                    this._hotPanel.style.bottom = `${this._container.offsetHeight - 140 - div.offsetTop - div.offsetHeight*0.4}px`;
+                if(this._hotTimer) {
+                    clearTimeout(this._hotTimer);
+                }
+                this.setState({hoverDate: dateformat(value.date, "yyyy-mm-dd")})
+                if(this._hotPanel && this._rightRoot && this._container) { 
+                    let pos: {left: number, top: number} = this.getDivOffset(div, this._rightRoot);
+                    this._hotPanel.style.left = `${pos.left + 20}px`;
+                    this._hotPanel.style.bottom = `${this._container.offsetHeight - pos.top + div.offsetHeight * 0.4 + 12}px`;
                 }
             }
         }
@@ -337,8 +365,28 @@ export default class Timeline extends React.Component<IProps, IState> {
         let div: HTMLDivElement | null = e.target as HTMLDivElement;
         if(div) {
             div.style.transform = "none";
-            this.setState({hoverDate: ""})
+            if(this._hotTimer) {
+                clearTimeout(this._hotTimer);
+            }
+            this._hotTimer = setTimeout(() => {
+                this.setState({hoverDate: ""});
+            }, 300);
         }
+    }
+
+    private handleHotOver() {
+        if(this._hotTimer) {
+            clearTimeout(this._hotTimer);
+        }
+    }
+
+    private handleHotOut() {
+        if(this._hotTimer) {
+            clearTimeout(this._hotTimer);
+        }
+        this._hotTimer = setTimeout(() => {
+            this.setState({hoverDate: ""});
+        }, 300);
     }
 
     private handleBar(value: any, index: number): JSX.Element | null {
@@ -369,6 +417,71 @@ export default class Timeline extends React.Component<IProps, IState> {
                 })}
             </div>
         );
+    }
+
+    private hotFlag(index: number): JSX.Element {
+        const flagColor: string[] = ['gold', 'lightgrey', 'tan'];
+        return (
+            <div className='hotflag'>
+                <HotSvg fill={flagColor[index]} />
+                <div className='hotflag_index'>{index+1}</div>
+            </div>
+        )
+    }
+
+    private drawHots(): JSX.Element | null {
+        let date: string = this.state.hoverDate;
+        console.log("date: ", date);
+        let hots: any = this.state.hots[date];
+        if(hots) {
+            let entities: any[] = hots.hot_entities && hots.hot_entities.length ? hots.hot_entities.slice(0, 3) : [];
+            console.log("hot entities: ", entities);
+            let nowObj: any = this.state.events.find(d => dateformat(d.date, "yyyy-mm-dd") == date);
+            let events: any[] = [];
+            if(nowObj) {
+                let allEvents: any[] = [...nowObj.data].sort((a:any, b:any) => b.influence - a.influence);
+                events = allEvents.slice(0, 3);
+            }
+            console.log("hot events: ", events);
+            return (
+                <div className='hots'>
+                    {
+                        entities && !!entities.length && (
+                            <div className='hot_entities'>
+                                <div className='hot_title'><FormattedMessage id='hot.entities' /></div>
+                                {entities.map((entity: any, i: number) => {
+                                    return (
+                                    <div className='hot_entity' key={i} onClick={() => this.props.onOpenEntity && this.props.onOpenEntity(entity, nowObj ? nowObj.date : this.props.env.date)}>
+                                        {this.hotFlag(i)}
+                                        <div className='hot_entity_title'><span>{entity.label}</span></div>
+                                    </div>
+                                    )
+                                })}
+                            </div>
+                        )
+                    }
+                    {
+                        events && !!events.length && (
+                            <div className='hot_events'>
+                                <div className='hot_title'><FormattedMessage id='hot.events' /></div>
+                                <div className='hot_events_list'>
+                                    {events.map((event: any, i: number) => {
+                                        return (
+                                            <div className='hot_event' key={i} onClick={() => this.props.onOpenEvent && this.props.onOpenEvent(nowObj ? nowObj.date : this.props.env.date, event)}>
+                                                {this.hotFlag(i)}
+                                                <span>{event.title}</span>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                        )
+                    }
+                </div>
+            )
+        }else {
+            return null;
+        }
     }
 
     private drawBars(): (JSX.Element|null)[] {
@@ -434,9 +547,9 @@ export default class Timeline extends React.Component<IProps, IState> {
 
     public render() {
         const { env } = this.props;
-        const { catchBars, hoverDate } = this.state;
+        const { catchBars, hoverDate, hots } = this.state;
         return (
-            <div className='timeline'>
+            <div className='timeline' ref={r => this._rightRoot = r}>
                 <div className='bg' />
                 <div className='play_btn' onClick={this.handleBtnClick}>
                 {
@@ -467,13 +580,12 @@ export default class Timeline extends React.Component<IProps, IState> {
                             <div className='events'>
                                 { catchBars }
                             </div>
-                            <div className='hot_panel' ref={r => this._hotPanel = r}>
-                                {hoverDate && (
-                                    <div className='hots'>
-                                    </div>
-                                )}
-                            </div>
                     </div>
+                    
+                </div>
+                <div className='hot_panel' ref={r => this._hotPanel = r} onMouseOver={this.handleHotOver} onMouseOut={this.handleHotOut}>
+                    {hoverDate && hots && <div className='hot_arrow'/>}
+                    {hoverDate && hots && this.drawHots()}
                 </div>
             </div>
         )
