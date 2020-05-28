@@ -15,6 +15,7 @@ interface IProps extends IDefaultProps {
     events: any[];
     focusEvent?: any;
     date: Date;
+    list?: string[];
     onClose: () => void;
     onOpenEntity: (entity: any, date: Date) => void;
 }
@@ -35,9 +36,20 @@ export default class EventPanel extends React.Component<IProps, IState> {
         super(props);
         let events: any[] = [];
         if(this.props.events && this.props.events.length) {
-            let obj: any = this.props.events.find(d => this.sameDay(d.date, this.props.date!));
-            if(obj) {
-                events = obj.data;
+            if(this.props.list && this.props.list.length) {
+                this.props.list.forEach(id => {
+                    this.props.events.forEach(e => { 
+                        let event: any = e.data.find((d:any) => d._id == id);
+                        if(event) {
+                            events.push(event);
+                        }
+                    });
+                })
+            }else {
+                let obj: any = this.props.events.find(d => this.sameDay(d.date, this.props.date!));
+                if(obj) {
+                    events = obj.data;
+                }
             }
         }
         this.state = {
@@ -91,16 +103,6 @@ export default class EventPanel extends React.Component<IProps, IState> {
                 }
             })
         }
-    }
-
-    private entityContent(entity: any): string {
-        let content: string = "";
-        if(entity.lang == 'zh') {
-            content = entity.abstractInfo.baidu || entity.abstractInfo.zhwiki || entity.abstractInfo.enwiki;
-        }else {
-            content = entity.abstractInfo.enwiki || entity.abstractInfo.baidu || entity.abstractInfo.zhwiki;
-        }
-        return content;
     }
 
     private handleMapEntities(entity: any, index: number): JSX.Element {
@@ -197,7 +199,7 @@ export default class EventPanel extends React.Component<IProps, IState> {
             <div className='eventpanel' onClick={this.handleClose}>
                 <div className='panel' onClick={(e: React.MouseEvent) => e.stopPropagation()}>
                     <div className='left'>
-                        <div className='events_header'>{`Events ${dateFormat(date, 'yyyy-mm-dd')} (${curEvents.length})`}</div>
+                        <div className='events_header'>{`Events ${this.props.list && this.props.list.length ? "" : dateFormat(date, 'yyyy-mm-dd')} (${curEvents.length})`}</div>
                         <div className='list'>
                             <div className='list_inner'>
                             { curEvents.map((value: any, index: number) => {

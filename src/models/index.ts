@@ -40,6 +40,7 @@ export interface IEpidemicData {
     remain_delta: number
     risk?: number
     risk_delta?: number
+    incr24?: number
 }
 
 export interface IBubbleData {
@@ -84,7 +85,7 @@ export interface INews {
 }
 
 // confired, suspected, cured, dead, severe
-export type IEpidemicCompressedData = [number | null, number | null, number | null, number | null, number | null, number | null]
+export type IEpidemicCompressedData = [number | null, number | null, number | null, number | null, number | null, number | null, number | null]
 
 export interface IEpidemicSeries {
     begin: string
@@ -104,7 +105,7 @@ export interface IRegionEpidemicDayData {
     remain_delta?: number
     risk?: number
     risk_delta?: number
-
+    incr24?: number
     display: boolean
     childDisplay: boolean
     colors: {[mode: string]: string}

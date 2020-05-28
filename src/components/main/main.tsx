@@ -15,15 +15,14 @@ import EventPanel from "../event/eventPanel";
 import { Header } from "covid-header";
 import Infobar from "../infobar/infobar";
 import SearchBox from "../searchbox";
-import EventTree from "../event/eventTree";
 import Hotbar from "../hotbar/hotbar";
 import EntityPanel from "../entityPanel/entityPanel";
-import River from '../river/river';
 
 interface IPanelParams {
   type: 'event' | "entity";
   date: Date;
   data: any;
+  list?: string[];
 }
 
 interface IProps extends IDefaultProps {
@@ -125,11 +124,12 @@ export default class Main extends React.Component<IProps, IState> {
     this.props.onChangeDate(newDate)
   } 
 
-  private handleOpenEventPanel(date: Date, data: any) {
+  private handleOpenEventPanel(date: Date, data: any, list?: string[]) {
     this.pushPanelStack({ 
       type: "event",
       date,
-      data
+      data,
+      list
     })
   }
 
@@ -279,6 +279,7 @@ export default class Main extends React.Component<IProps, IState> {
         env={this.props.env}
         events={this.state.events}
         date={param.date!}
+        list={param.list}
         onClose={this.popPanelStack}
         focusEvent={param.data}
         onOpenEntity={this.handleOpenEntityPanel}

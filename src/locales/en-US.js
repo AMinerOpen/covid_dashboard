@@ -66,6 +66,7 @@ export default {
     "forecast.area": "Area",
     "forecast.incr": "New Cases",
     "forecast.daily": "Daily",
+    "forecast.risk": "RI",
 
     //source
     "source.title": "Data sources",

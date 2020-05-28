@@ -2,9 +2,10 @@ import * as React from 'react';
 import './timeline.scss';
 import { IDefaultProps, sameDay } from '../../global';
 import dateformat from 'dateformat'
-import { requestEvents, requestEventsUpdate } from '../../utils/requests';
+import { requestEvents, requestEventsUpdate, requestHots } from '../../utils/requests';
 import GlobalStorage from '../../utils/global-storage';
-import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
+import { CaretRightOutlined, PauseOutlined, ConsoleSqlOutlined } from '@ant-design/icons';
+import River from '../river/river';
 
 interface IState {
     tflag: number;
@@ -13,12 +14,13 @@ interface IState {
     catchBars: (JSX.Element|null)[] | null;
     catchLine: (JSX.Element|null)[] | null;
     barHeightRatio: number;
+    hoverDate: string;
 }
 
 interface IProps extends IDefaultProps {
     langAll: boolean;
     onTflagChange: (tflag: number) => void;
-    onOpenEvent: (date: Date, data: any) => void;
+    onOpenEvent: (date: Date, data: any, list?: string[]) => void;
     onLoadNews?: (news: any[]) => void;
     onLoadEvents?: (events: any[]) => void;
     onChangeDate: (date: Date) => void;
@@ -26,22 +28,21 @@ interface IProps extends IDefaultProps {
 }
 
 export default class Timeline extends React.Component<IProps, IState> {
-    private begin = new Date(2020, 0, 24, 0, 0, 0, 0);
-    private end = new Date();
     private _ms1Day: number = 24*60*60*1000;
     private _rangeStartDate: Date;
     private _rangeEndDate: Date;
     private _renderStartDate: Date;
     private _renderEndDate: Date;
-    private _container: HTMLDivElement | null;
+    private _container: HTMLDivElement | null = null;
+    private _hotPanel: HTMLDivElement | null = null;
     private _dates: Date[];
 
     private _date_circle_border_width: number = 4;
     private _date_circle_margin: number = 4;
-    private _date_line_width: number = 100;
-    private _date_line_height: number = 26;
-    private _date_bottom: number = 42;
-    private _event_bar_width: number = 54;
+    private _date_line_width: number = 50;
+    private _date_line_height: number = 22;
+    private _date_bottom: number = 36;
+    private _event_bar_width: number = 46;
     private _bar_height_max: number = 160;
 
     private _dragging: boolean = false;
@@ -90,10 +91,10 @@ export default class Timeline extends React.Component<IProps, IState> {
             catchLine: null,
             catchBars: null,
             timelineData: [],
-            barHeightRatio: 1
+            barHeightRatio: 1,
+            hoverDate: ""
         }
 
-        this._container = null;
         this.handleDrawDate = this.handleDrawDate.bind(this);
         this.dateWidth = this.dateWidth.bind(this);
         this.handleTouchStart = this.handleTouchStart.bind(this);
@@ -106,11 +107,15 @@ export default class Timeline extends React.Component<IProps, IState> {
         this.handleBar = this.handleBar.bind(this);
         this.handleDateUp = this.handleDateUp.bind(this);
         this.handleBtnClick = this.handleBtnClick.bind(this);
+        this.handleRiverLineClick = this.handleRiverLineClick.bind(this);
+        this.handleBarOver = this.handleBarOver.bind(this);
+        this.handleBarOut = this.handleBarOut.bind(this);
     }
 
     public componentDidMount() {
         console.log("monte");
-        this.requestEvents()
+        this.requestEvents();
+        this.requestHots();
         this.locatTimeline(this.props.env.date);
         this.setState({catchLine: this._dates.map(this.handleDrawDate)})
 
@@ -122,8 +127,10 @@ export default class Timeline extends React.Component<IProps, IState> {
     }
 
     public componentDidUpdate(preProps: IProps, preState: IState) {
-        if(!this._dragging && preProps.env.date != this.props.env.date) {
-            this.locatTimeline(this.props.env.date);
+        if(preProps.env.date != this.props.env.date) {
+            if(!this._dragging) {
+                this.locatTimeline(this.props.env.date);
+            }
         }
         if(preState.timelineData != this.state.timelineData) {
             this.setState({
@@ -146,6 +153,10 @@ export default class Timeline extends React.Component<IProps, IState> {
     private getPointerOffsetX(date: Date): number {
         let ratio: number = (date.getTime() - this._renderStartDate.getTime()) / this._ms1Day * this.dateWidth();
         return ratio;
+    }
+
+    private handleRiverLineClick(list: string[]) {
+        this.props.onOpenEvent && this.props.onOpenEvent(this.props.env.date, null, list);
     }
 
     private handleDateUp(date: Date) {
@@ -249,17 +260,27 @@ export default class Timeline extends React.Component<IProps, IState> {
         return new Date(timeStr);
     }
 
+    private requestHots() {
+        requestHots().then(data => {
+            if(data) {
+                console.log('hots:', data);
+            }
+        });
+    }
+
     private requestEvents() {
         requestEvents().then(data => {
-            data.datas.forEach((event: any) => { GlobalStorage.events[event._id] = {...event, time: this.toDate(event.time), date: dateformat(this.toDate(event.time), 'yyyy-mm-dd') } })
-            let tflag: number = data.tflag;
-            let events: any[] = this._dates.map(d => {return {date: d, data:[]}});
-            let timelineData: any[] = this._dates.map(d => {return {date: d, data:{total: 0}}});
-            this.addToEventsAndTimeline(data.datas, events, timelineData);
-            this.handleEventsChange(events)
-            let max = timelineData.reduce((pre, cur) => Math.max(pre, cur.data.total), 0);
-            this.setState({tflag, events, timelineData, barHeightRatio: this._bar_height_max / max});
-            this.props.onTflagChange(tflag);
+            if(data && data.datas) {
+                data.datas.forEach((event: any) => { GlobalStorage.events[event._id] = {...event, time: this.toDate(event.time), date: dateformat(this.toDate(event.time), 'yyyy-mm-dd') } })
+                let tflag: number = data.tflag;
+                let events: any[] = this._dates.map(d => {return {date: d, data:[]}});
+                let timelineData: any[] = this._dates.map(d => {return {date: d, data:{total: 0}}});
+                this.addToEventsAndTimeline(data.datas, events, timelineData);
+                this.handleEventsChange(events)
+                let max = timelineData.reduce((pre, cur) => Math.max(pre, cur.data.total), 0);
+                this.setState({tflag, events, timelineData, barHeightRatio: this._bar_height_max / max});
+                this.props.onTflagChange(tflag);
+            }
         })
     }
 
@@ -297,11 +318,36 @@ export default class Timeline extends React.Component<IProps, IState> {
         return this._date_circle_margin + this._date_line_width;
     }
 
+    private handleBarOver(e: React.MouseEvent, value: any) {
+        let div: HTMLDivElement | null = e.target as HTMLDivElement;
+        if(div) {
+            div.style.transform = "scale(1.2, 1.4)";
+            if(value && value.date) {
+                // this.setState({hoverDate: dateformat(value.date, "yyyy-MM-dd")})
+                // console.log("hot left: ", div.offsetLeft, div.offsetTop);
+                if(this._hotPanel && this._container) {
+                    this._hotPanel.style.left = `${div.offsetLeft}px`;
+                    this._hotPanel.style.bottom = `${this._container.offsetHeight - 140 - div.offsetTop - div.offsetHeight*0.4}px`;
+                }
+            }
+        }
+    }
+
+    private handleBarOut(e: React.MouseEvent) {
+        let div: HTMLDivElement | null = e.target as HTMLDivElement;
+        if(div) {
+            div.style.transform = "none";
+            this.setState({hoverDate: ""})
+        }
+    }
+
     private handleBar(value: any, index: number): JSX.Element | null {
         return (
             <div
                 className='bar'
                 key={index}
+                onMouseOver={(e) => this.handleBarOver(e, value)}
+                onMouseOut={(e) => this.handleBarOut(e)}
                 onMouseUp={() => this.handleDateUp(value.date)}
                 onTouchEnd={() => this.handleDateUp(value.date)}
                 style={{
@@ -316,7 +362,8 @@ export default class Timeline extends React.Component<IProps, IState> {
                             position: "relative",
                             width: `${this._event_bar_width}px`,
                             height: `${(value.data[d.type] || 0) * this.state.barHeightRatio}px`,
-                            backgroundColor: d.color
+                            backgroundColor: d.color,
+                            pointerEvents: 'none'
                         }} />
                     )
                 })}
@@ -348,14 +395,13 @@ export default class Timeline extends React.Component<IProps, IState> {
                     onMouseUp={() => this.handleDateUp(value)}
                     onTouchEnd={() => this.handleDateUp(value)}
                     style={{
-                    left: 0,
-                    top: 0,
                     width: `${this._date_line_width}px`,
                     height: `${this._date_line_height}px`,
-                    borderRadius: `${this._date_line_height/3}px`,
+                    lineHeight: `${this._date_line_height - 8}px`,
+                    borderRadius: `4px`,
                     border: `${this._date_circle_border_width}px solid #0095ff`
                 }} >
-                    {dateformat(value, "yyyy/mm/dd")}
+                    {dateformat(value, "mm/dd")}
                 </div>
             </div>
         )
@@ -363,8 +409,8 @@ export default class Timeline extends React.Component<IProps, IState> {
 
     private handleBtnClick() {
         if(!this.props.env.speed) {
-            if(sameDay(this.props.env.date, this.end)) {
-                this.props.onChangeDate && this.props.onChangeDate(this.begin);
+            if(sameDay(this.props.env.date, this._rangeEndDate)) {
+                this.props.onChangeDate && this.props.onChangeDate(this._rangeStartDate);
             }
         }
         setTimeout(() => {
@@ -388,7 +434,7 @@ export default class Timeline extends React.Component<IProps, IState> {
 
     public render() {
         const { env } = this.props;
-        const { catchBars } = this.state;
+        const { catchBars, hoverDate } = this.state;
         return (
             <div className='timeline'>
                 <div className='bg' />
@@ -415,8 +461,17 @@ export default class Timeline extends React.Component<IProps, IState> {
                             }}}
                         onWheel={this.handleMouseWheel}>
                             {this.drawLine()}
+                            <div className='river_con'>
+                                <River start={this._renderStartDate} end={this._rangeEndDate} dayWidth={this.dateWidth()} onLineClick={this.handleRiverLineClick}/>
+                            </div>
                             <div className='events'>
                                 { catchBars }
+                            </div>
+                            <div className='hot_panel' ref={r => this._hotPanel = r}>
+                                {hoverDate && (
+                                    <div className='hots'>
+                                    </div>
+                                )}
                             </div>
                     </div>
                 </div>

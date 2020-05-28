@@ -6,6 +6,7 @@ import { Table, Tooltip } from "antd";
 import { ReactComponent as Close_Svg } from "./images/close.svg";
 import { ReactComponent as Tip_Svg } from '../main/images/tip.svg';
 import ActiveNumber from '../activeNumber/ActiveNumber';
+import { risk2color } from '../../utils/color';
 
 //https://innovaapi.aminer.cn/covid/api/v1/pneumonia/prediction
 //https://innovaapi.aminer.cn/covid/api/v1/pneumonia/data
@@ -364,15 +365,13 @@ export default class Forcast extends React.Component<IProps, IState> {
           )
         },
         {
-          title: lang == 'zh' ? "新增" : "Daily",
-          dataIndex: "incr",
-          key: "incr",
-          width: "23%",
+          title: lang == 'zh' ? "风险指数" : "RI",
+          dataIndex: "risk",
+          key: "risk",
+          width: "22%",
           className: "forcast_table_column",
           render: (text: string) => (
-            <span
-              style={{ fontWeight: "bold", color: "#d9692d" }}
-            >{`+${text}`}</span>
+            <span style={{ fontWeight: "bold", color: risk2color(Number(text)) }}>{text}</span>
           )
         },
         {
@@ -392,7 +391,9 @@ export default class Forcast extends React.Component<IProps, IState> {
           width: "22%",
           className: "forcast_table_column",
           render: (text: string) => (
-            <span style={{ fontWeight: "bold", color: "#a7abb3" }}>{text}</span>
+            <span
+              style={{ fontWeight: "bold", color: "#d9692d" }}
+            >{`+${text}`}</span>
           )
         }
       ];
@@ -418,8 +419,8 @@ export default class Forcast extends React.Component<IProps, IState> {
       }
       worldArr.sort((a: any, b: any): number => {
         return (
-          (b.data[0].data.confirmed_delta || 0) -
-          (a.data[0].data.confirmed_delta || 0)
+          (b.data[0].data.risk || 0) -
+          (a.data[0].data.risk || 0)
         );
       });
       for (let i: number = 0; i < 50; ++i) {
@@ -429,7 +430,8 @@ export default class Forcast extends React.Component<IProps, IState> {
           area: d.area,
           incr: d.data[0].data.confirmed_delta || 0,
           confirmed: d.data[0].data.confirmed || 0,
-          dead: d.data[0].data.dead || 0
+          dead: d.data[0].data.dead || 0,
+          risk: d.data[0].data.risk || 0
         });
       }
       this.setState({tableColumn: column, tableData: data});

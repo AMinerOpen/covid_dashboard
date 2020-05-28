@@ -71,9 +71,18 @@ export default class DashBoard extends React.Component<IProps, IState> {
             show: false
           },
           xAxis: {
+            name: "date",
             type: 'category',
-            boundaryGap: false, 
-            data: keys
+            // boundaryGap: false, 
+            data: keys,
+            splitLine: {
+              show: true,
+              interval: 2,
+              lineStyle: {
+                  color: '#999',
+                  opacity: 0.4
+              }
+            }
           },
           yAxis: {
             show: false,
