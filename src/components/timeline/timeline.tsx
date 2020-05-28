@@ -2,7 +2,7 @@ import * as React from 'react';
 import './timeline.scss';
 import { IDefaultProps, sameDay } from '../../global';
 import dateformat from 'dateformat'
-import { requestEvents, requestEventsUpdate } from '../../utils/requests';
+import { requestEvents, requestEventsUpdate, requestHots } from '../../utils/requests';
 import GlobalStorage from '../../utils/global-storage';
 import { CaretRightOutlined, PauseOutlined, ConsoleSqlOutlined } from '@ant-design/icons';
 import River from '../river/river';
@@ -14,6 +14,7 @@ interface IState {
     catchBars: (JSX.Element|null)[] | null;
     catchLine: (JSX.Element|null)[] | null;
     barHeightRatio: number;
+    hoverDate: string;
 }
 
 interface IProps extends IDefaultProps {
@@ -32,7 +33,8 @@ export default class Timeline extends React.Component<IProps, IState> {
     private _rangeEndDate: Date;
     private _renderStartDate: Date;
     private _renderEndDate: Date;
-    private _container: HTMLDivElement | null;
+    private _container: HTMLDivElement | null = null;
+    private _hotPanel: HTMLDivElement | null = null;
     private _dates: Date[];
 
     private _date_circle_border_width: number = 4;
@@ -89,10 +91,10 @@ export default class Timeline extends React.Component<IProps, IState> {
             catchLine: null,
             catchBars: null,
             timelineData: [],
-            barHeightRatio: 1
+            barHeightRatio: 1,
+            hoverDate: ""
         }
 
-        this._container = null;
         this.handleDrawDate = this.handleDrawDate.bind(this);
         this.dateWidth = this.dateWidth.bind(this);
         this.handleTouchStart = this.handleTouchStart.bind(this);
@@ -106,11 +108,14 @@ export default class Timeline extends React.Component<IProps, IState> {
         this.handleDateUp = this.handleDateUp.bind(this);
         this.handleBtnClick = this.handleBtnClick.bind(this);
         this.handleRiverLineClick = this.handleRiverLineClick.bind(this);
+        this.handleBarOver = this.handleBarOver.bind(this);
+        this.handleBarOut = this.handleBarOut.bind(this);
     }
 
     public componentDidMount() {
         console.log("monte");
-        this.requestEvents()
+        this.requestEvents();
+        this.requestHots();
         this.locatTimeline(this.props.env.date);
         this.setState({catchLine: this._dates.map(this.handleDrawDate)})
 
@@ -255,6 +260,14 @@ export default class Timeline extends React.Component<IProps, IState> {
         return new Date(timeStr);
     }
 
+    private requestHots() {
+        requestHots().then(data => {
+            if(data) {
+                console.log('hots:', data);
+            }
+        });
+    }
+
     private requestEvents() {
         requestEvents().then(data => {
             if(data && data.datas) {
@@ -305,11 +318,36 @@ export default class Timeline extends React.Component<IProps, IState> {
         return this._date_circle_margin + this._date_line_width;
     }
 
+    private handleBarOver(e: React.MouseEvent, value: any) {
+        let div: HTMLDivElement | null = e.target as HTMLDivElement;
+        if(div) {
+            div.style.transform = "scale(1.2, 1.4)";
+            if(value && value.date) {
+                // this.setState({hoverDate: dateformat(value.date, "yyyy-MM-dd")})
+                // console.log("hot left: ", div.offsetLeft, div.offsetTop);
+                if(this._hotPanel && this._container) {
+                    this._hotPanel.style.left = `${div.offsetLeft}px`;
+                    this._hotPanel.style.bottom = `${this._container.offsetHeight - 140 - div.offsetTop - div.offsetHeight*0.4}px`;
+                }
+            }
+        }
+    }
+
+    private handleBarOut(e: React.MouseEvent) {
+        let div: HTMLDivElement | null = e.target as HTMLDivElement;
+        if(div) {
+            div.style.transform = "none";
+            this.setState({hoverDate: ""})
+        }
+    }
+
     private handleBar(value: any, index: number): JSX.Element | null {
         return (
             <div
                 className='bar'
                 key={index}
+                onMouseOver={(e) => this.handleBarOver(e, value)}
+                onMouseOut={(e) => this.handleBarOut(e)}
                 onMouseUp={() => this.handleDateUp(value.date)}
                 onTouchEnd={() => this.handleDateUp(value.date)}
                 style={{
@@ -324,7 +362,8 @@ export default class Timeline extends React.Component<IProps, IState> {
                             position: "relative",
                             width: `${this._event_bar_width}px`,
                             height: `${(value.data[d.type] || 0) * this.state.barHeightRatio}px`,
-                            backgroundColor: d.color
+                            backgroundColor: d.color,
+                            pointerEvents: 'none'
                         }} />
                     )
                 })}
@@ -395,7 +434,7 @@ export default class Timeline extends React.Component<IProps, IState> {
 
     public render() {
         const { env } = this.props;
-        const { catchBars } = this.state;
+        const { catchBars, hoverDate } = this.state;
         return (
             <div className='timeline'>
                 <div className='bg' />
@@ -427,6 +466,12 @@ export default class Timeline extends React.Component<IProps, IState> {
                             </div>
                             <div className='events'>
                                 { catchBars }
+                            </div>
+                            <div className='hot_panel' ref={r => this._hotPanel = r}>
+                                {hoverDate && (
+                                    <div className='hots'>
+                                    </div>
+                                )}
                             </div>
                     </div>
                 </div>

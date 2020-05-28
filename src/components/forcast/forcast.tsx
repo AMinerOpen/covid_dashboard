@@ -6,6 +6,7 @@ import { Table, Tooltip } from "antd";
 import { ReactComponent as Close_Svg } from "./images/close.svg";
 import { ReactComponent as Tip_Svg } from '../main/images/tip.svg';
 import ActiveNumber from '../activeNumber/ActiveNumber';
+import { risk2color } from '../../utils/color';
 
 //https://innovaapi.aminer.cn/covid/api/v1/pneumonia/prediction
 //https://innovaapi.aminer.cn/covid/api/v1/pneumonia/data
@@ -370,7 +371,7 @@ export default class Forcast extends React.Component<IProps, IState> {
           width: "22%",
           className: "forcast_table_column",
           render: (text: string) => (
-            <span style={{ fontWeight: "bold", color: "#a7abb3" }}>{text}</span>
+            <span style={{ fontWeight: "bold", color: risk2color(Number(text)) }}>{text}</span>
           )
         },
         {

@@ -78,7 +78,22 @@ $btn-width: 60px;
                 top: calc(#{$height} - 50px);
                 .bar {
                     position: absolute;
-                    transition: all 0.3s linear;
+                    transform-origin: bottom;
+                    transition: all 0.1s linear;
+                }
+            }
+            .hot_panel {
+                position: absolute;
+                .hots {
+                    position: absolute;
+                    left: 0;
+                    bottom: 0px;
+                    width: 100px;
+                    height: 100px;
+                    transform: translateX(-50%);
+                    background-color: white;
+                    border-radius: 4px;
+                    border: 2px solid orange;
                 }
             }
         }

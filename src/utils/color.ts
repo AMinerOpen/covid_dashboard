@@ -1,6 +1,6 @@
 import chromajs from 'chroma-js'
 import _ from 'lodash'
-import { IRegionEpidemicData, IRegionEpidemicDayData } from '../models'
+import { IRegionEpidemicDayData } from '../models'
 
 function getSeriousLevel(cnt: number): number {
     if (cnt >= 10000) return 5
