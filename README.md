@@ -40,7 +40,7 @@ You are very welcome to join us, [Submit an Issue](https://github.com/AMinerOpen
 This project follows the [Contributor Convenant](http://contributor-covenant.org/version/1/3/0/). 
 You can also enter our developer WeChat group to participate in our discussions.  
 WeChat QRCode:  
-![](https://lfs.aminer.cn/misc/ncov/dashboard/wechat_20200522.jpg)
+![](https://lfs.aminer.cn/misc/ncov/dashboard/wechat_20200529.jpg)
 
 ## Data source
 #### Epidemic data
