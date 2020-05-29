@@ -42,6 +42,7 @@ $btn-width: 60px;
         top: 0;
         width: calc(100% - #{$btn-width});
         height: 100%;
+        overflow: visible;
         mask-image: linear-gradient(90deg, #0000 0%, #000f 4%, #000f 100%);
         .timeline_pointer {
             position: absolute;
@@ -82,20 +83,6 @@ $btn-width: 60px;
                     transition: all 0.1s linear;
                 }
             }
-            .hot_panel {
-                position: absolute;
-                .hots {
-                    position: absolute;
-                    left: 0;
-                    bottom: 0px;
-                    width: 100px;
-                    height: 100px;
-                    transform: translateX(-50%);
-                    background-color: white;
-                    border-radius: 4px;
-                    border: 2px solid orange;
-                }
-            }
         }
         .river_con {
             position: absolute;
@@ -105,6 +92,118 @@ $btn-width: 60px;
             height: calc(#{$height} - 86px);
             opacity: 0.7;
             pointer-events: none;
+        }
+    }
+    .hot_panel {
+        position: absolute;
+        .hot_arrow {
+            position: absolute;
+            left: 0;
+            top: -6px;
+            width: 12px;
+            height: 12px;
+            transform: rotate(45deg);
+            background-color: orange;
+        }
+        .hots {
+            position: absolute;
+            left: 0;
+            bottom: 0px;
+            width: 200px;
+            height: 260px;
+            transform: translateX(-50%);
+            background-color: white;
+            border-radius: 4px;
+            border: 4px solid orange;
+            overflow: hidden;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            .hot_entities {
+                position: relative;
+                width: 100%;
+                height: 42%;
+                .hot_entity {
+                    position: relative;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    margin-top: 4px;
+                    margin-bottom: 6px;
+                    user-select: none;
+                    cursor: pointer;
+                    .hot_entity_title {
+                        position: relative;
+                        flex: 1;
+                        width: 0;
+                        span {
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            max-width: 100%;
+                            padding: 2px 4px;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            background-color: rgb(186, 236, 252);
+                            border-radius: 4px;
+                        }
+                    }
+                }
+            }
+            .hot_events {
+                position: relative;
+                flex: 1;
+                height: 0;
+                width: 100%;
+                border-top: 1px solid lightgrey;
+                display: flex;
+                flex-direction: column;
+                .hot_events_list {
+                    position: relative;
+                    width: 100%;
+                    flex: 1;
+                    height: 0;
+                    overflow-y: scroll;
+                    .hot_event {
+                        position: relative;
+                        margin: 2px 0;
+                        padding: 2px 4px;
+                        user-select: none;
+                        cursor: pointer;
+                    }
+                }
+            }
+            .hot_title {
+                padding: 0 6px;
+                height: 22px;
+                line-height: 22px;
+                font-weight: bold;
+                background-color: rgba(255, 166, 0, 0.26);
+            }
+        }
+    }
+    .hotflag {
+        position: relative;
+        width: 18px;
+        height: 18px;
+        margin-left: 2px;
+        margin-right: 2px;
+        display: inline-block;
+        svg {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .hotflag_index {
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: purple;
+            font-weight: bold;
         }
     }
 }

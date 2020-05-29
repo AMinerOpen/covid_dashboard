@@ -230,6 +230,7 @@ export default class Main extends React.Component<IProps, IState> {
         onLoadNews={news => this.setState({ news })}
         onLoadEvents={events => this.setState({events})}
         onOpenEvent={this.handleOpenEventPanel}
+        onOpenEntity={this.handleOpenEntityPanel}
       />
     );
   }
