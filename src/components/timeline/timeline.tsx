@@ -122,7 +122,6 @@ export default class Timeline extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
-        console.log("monte");
         this.requestEvents();
         this.requestHots();
         this.locatTimeline(this.props.env.date);
@@ -272,7 +271,6 @@ export default class Timeline extends React.Component<IProps, IState> {
     private requestHots() {
         requestHots().then(data => {
             if(data) {
-                console.log('hots:', data);
                 this.setState({hots: data});
             }
         });
@@ -431,18 +429,15 @@ export default class Timeline extends React.Component<IProps, IState> {
 
     private drawHots(): JSX.Element | null {
         let date: string = this.state.hoverDate;
-        console.log("date: ", date);
         let hots: any = this.state.hots[date];
         if(hots) {
             let entities: any[] = hots.hot_entities && hots.hot_entities.length ? hots.hot_entities.slice(0, 3) : [];
-            console.log("hot entities: ", entities);
             let nowObj: any = this.state.events.find(d => dateformat(d.date, "yyyy-mm-dd") == date);
             let events: any[] = [];
             if(nowObj) {
                 let allEvents: any[] = [...nowObj.data].sort((a:any, b:any) => b.influence - a.influence);
                 events = allEvents.slice(0, 3);
             }
-            console.log("hot events: ", events);
             return (
                 <div className='hots'>
                     {
