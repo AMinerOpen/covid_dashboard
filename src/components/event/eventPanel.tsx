@@ -62,7 +62,11 @@ export default class EventPanel extends React.Component<IProps, IState> {
         this.handleMapEntities = this.handleMapEntities.bind(this);
         this.handleSelectEvent = this.handleSelectEvent.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        if (this.props.focusEvent) this.handleSelectEvent(this.props.focusEvent._id)
+        if (this.props.focusEvent) {
+            this.handleSelectEvent(this.props.focusEvent._id);
+        }else if(events.length) {
+            this.handleSelectEvent(events[0]._id);
+        }
     }
 
     public componentDidMount() {
