@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './index.scss';
 import { IDefaultProps } from '../../global';
-import { IRegionEpidemicDayData, IRegionInfo, ITimeline, IEpidemicData } from '../../models';
+import { IRegionEpidemicDayData, IRegionInfo, ITimeline, IEpidemicData, ISearchResult } from '../../models';
 import DBBlock from './dbblock';
 import { displayNumber } from '../../utils/data';
 import { risk2color } from '../../utils/color';
@@ -11,6 +11,9 @@ import { Tooltip } from 'antd';
 import { FormattedMessage} from 'react-intl';
 import dateformat from 'dateformat';
 import { ReactComponent as Tip_Svg } from '../main/images/tip.svg';
+import SearchBar from './searchBar';
+import { requestSearch } from '../../utils/requests';
+import SearchResults from './searchResults';
 
 interface IProps extends IDefaultProps{
   regionInfo: IRegionInfo
@@ -20,10 +23,12 @@ interface IProps extends IDefaultProps{
   endDate: Date
   mapMode: string, 
   onSetMapMode: (mode: string) => void
+  onOpenEvent: (date: Date, data: any, list?: string[]) => void;
+  onOpenEntity: (entity: any, date: Date) => void;
 }
 
 interface IState {
-
+  searchResults: ISearchResult | null;
 }
 
 export default class DashBoard extends React.Component<IProps, IState> {
@@ -40,11 +45,28 @@ export default class DashBoard extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-
+      searchResults: null
     }
     this._rightdownHeight = this._upHeight - this._blockMargin - this._rightupHeight;
     this._riskWidth = 3 * this._dataWidth + 2 * this._blockMargin;
     this._timeHeight = props.env.isMobile ? 32 : 36;
+
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleSearchClose = this.handleSearchClose.bind(this);
+  }
+
+  private handleSearch(text: string) {
+    requestSearch(text).then(data => {
+      if(data && data.status) {
+        this.setState({searchResults: data.data});
+      }else {
+        this.setState({searchResults: null});
+      }
+    })
+  }
+
+  private handleSearchClose() {
+    this.setState({searchResults: null});
   }
 
   private riskOption() {
@@ -58,34 +80,17 @@ export default class DashBoard extends React.Component<IProps, IState> {
         let keys: string[] = Object.keys(regionData);
         if(keys.length > 20) keys = keys.slice(-20);
         option = {
-          grid: {
-            left: "0%",
-            right: "0%",
-            top: '0%',
-            bottom: "0%"
-          },
-          tooltip: {
-            trigger: 'axis'
-          },
-          legend: {
-            show: false
-          },
-          xAxis: {
-            // name: "date",
-            type: 'category',
-            boundaryGap: false, 
-            data: keys,
-          },
+          grid: { left: "0%", right: "0%", top: '0%', bottom: "0%" },
+          tooltip: { trigger: 'axis' },
+          legend: { show: false },
+          xAxis: { type: 'category', boundaryGap: false, data: keys },
           yAxis: {
             show: true,
             type: 'value',
             splitLine: {
               show: true,
               interval: 25,
-              lineStyle: {
-                  color: '#999',
-                  opacity: 0.2
-              }
+              lineStyle: { color: '#999', opacity: 0.2 }
             },
             max: 100,
             min: 0,
@@ -94,31 +99,13 @@ export default class DashBoard extends React.Component<IProps, IState> {
           visualMap: {
             show: false,
             pieces: [
-              {
-                gt: 0,
-                lte: 20,
-                color: risk2color(10)
-              }, {
-                  gt: 20,
-                  lte: 40,
-                  color: risk2color(30)
-              }, {
-                  gt: 40,
-                  lte: 60,
-                  color: risk2color(50)
-              }, {
-                  gt: 60,
-                  lte: 80,
-                  color: risk2color(70)
-              }, {
-                  gt: 80,
-                  lte: 100,
-                  color: risk2color(90)
-              }
+              { gt: 0, lte: 20, color: risk2color(10) }, 
+              { gt: 20, lte: 40, color: risk2color(30) }, 
+              { gt: 40, lte: 60, color: risk2color(50) }, 
+              { gt: 60, lte: 80, color: risk2color(70) }, 
+              { gt: 80, lte: 100, color: risk2color(90) }
             ],
-            outOfRange: {
-              color: '#999'
-            }
+            outOfRange: { color: '#999' }
           },
           series: [
             {
@@ -128,11 +115,7 @@ export default class DashBoard extends React.Component<IProps, IState> {
               smooth: true,
               symbol: 'none',
               data: keys.map(d => worldData![d].risk || 0),
-              lineStyle: {
-                color: 'grey',
-                width: 3,
-                opacity: 0.5
-              }
+              lineStyle: { color: 'grey', width: 3, opacity: 0.5 }
             },
             {
               name: 'Region Risk',
@@ -140,9 +123,7 @@ export default class DashBoard extends React.Component<IProps, IState> {
               smooth: true,
               symbol: 'none',
               data: keys.map(d => regionData![d].risk || 0),
-              lineStyle: {
-                width: 3
-              }
+              lineStyle: { width: 3 }
             }
           ]
         }
@@ -228,10 +209,27 @@ export default class DashBoard extends React.Component<IProps, IState> {
                     </div>
                   </DBBlock>
                 </div>
+                <div className='rightsearch'>
+                  <SearchBar lang={this.props.env.lang} width={this._riskWidth} height={this._rightupHeight} onSearch={this.handleSearch} onClose={this.handleSearchClose} />
+                </div>
               </div>
             )
           }
         </div>
+        { 
+          this.state.searchResults && (
+            <div className='searchresults'>
+              <SearchResults 
+                lang={this.props.env.lang} 
+                date={this.props.env.date}
+                data={this.state.searchResults} 
+                defaultWidth={this._leftWidth+this._riskWidth+this._blockMargin} 
+                maxHeight={document.body.offsetHeight-this._blockMargin*2-this._upHeight-220}
+                onOpenEntity={this.props.onOpenEntity}
+                onOpenEvent={this.props.onOpenEvent} />
+            </div>
+          )
+        }
       </div>
     )
   }

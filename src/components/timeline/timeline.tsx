@@ -83,7 +83,7 @@ export default class Timeline extends React.Component<IProps, IState> {
         this._rangeStartDate = new Date(2020,0,24,0,0,0);
         this._rangeEndDate = new Date();
         this._renderStartDate = new Date(2020,0,10,0,0,0);
-        this._renderEndDate = new Date(this._rangeEndDate.getTime() + 15*this._ms1Day);
+        this._renderEndDate = new Date(this._rangeEndDate.getTime() + 30*this._ms1Day);
         let dates: Date[] = [];
         let date: number = this._renderStartDate.getTime();
         while(date < this._renderEndDate.getTime()) {

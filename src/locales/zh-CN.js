@@ -92,7 +92,14 @@ export default {
     "entitypanel.relations": "关系",
     "entitypanel.properties": "属性",
 
-    "search.placeholder": "事件关键词，如：瑞德西韦",
+    "search.placeholder": "键入以搜索实体、事件、地点...",
+    "search.empty": "未搜到相关内容，换个关键词试试？",
+    "search.place": "地名",
+    "search.location": "位置",
+    "search.entity": "实体",
+    'search.risk_1': "低风险",
+    'search.risk_2': "中风险",
+    'search.risk_3': "高风险",
 
     //contributors
     "contributors.title": "合作者",
