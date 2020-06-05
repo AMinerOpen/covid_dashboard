@@ -59,3 +59,9 @@ export async function requestEventsTree() {
     const resp = await axios.get(process.env.REACT_APP_API_URL + '/dist/events-tree.json', { headers: {'Cache-Control': 'no-cache' }})
     return resp.data as any
 }
+
+export async function requestSearch(q: string) {
+    const url: string = `${process.env.REACT_APP_API_URL}/search?q=${q}`;
+    const resp = await axios.get(url, { headers: {'Cache-Control': 'no-cache'}})
+    return resp.data as any
+}

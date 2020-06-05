@@ -55,16 +55,6 @@ export interface IPolicyData extends IBubbleData {
     type: string
 }
 
-export interface IEventData {
-    id: string
-    type: string
-    date: string
-    title: string
-    href?: string
-    locs: string[]
-    geos: IGeoPosition[]
-}
-
 export interface IGeoInfo {
     originText: string
     geoName: string
@@ -73,6 +63,7 @@ export interface IGeoInfo {
 }
 
 export interface INews {
+    _id: string;
     lang: string
     locs: string[]
     title: string
@@ -122,4 +113,45 @@ export interface IRegionInfo {
     name_en: string
     name_zh: string
     bbox: [number, number, number, number]
+}
+
+export interface ISearchRegion {
+    code: string;
+    full: string[];
+    level: number;
+    region: string;
+    risk_level: string;
+    _id: string;
+}
+
+export interface IEntityRelation {
+    label: string;
+    relation: string;
+    url: string;
+    forward: boolean;
+}
+
+export interface IEntityAbstractInfoCOVID {
+    properties: {[index: string]: string};
+    relations: IEntityRelation[];
+}
+
+export interface IEntityAbstractInfo {
+    baidu: string | null;
+    enwiki: string | null;
+    zhwiki: string | null;
+    COVID?: IEntityAbstractInfoCOVID;
+}
+
+export interface IEntity {
+    url: string;
+    label: string;
+    img?: string;
+    abstractInfo: IEntityAbstractInfo;
+}
+
+export interface ISearchResult {
+    regions?: ISearchRegion[];
+    entities?: IEntity[];
+    events?: INews[];
 }

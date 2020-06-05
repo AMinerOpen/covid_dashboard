@@ -189,6 +189,8 @@ export default class Main extends React.Component<IProps, IState> {
         langAll={this.state.langAll}
         mapMode={this.state.mapMode}
         onSetMapMode={(mapMode: string) => this.setState({mapMode})}
+        onOpenEntity={this.handleOpenEntityPanel}
+        onOpenEvent={this.handleOpenEventPanel}
       />
     );
   }

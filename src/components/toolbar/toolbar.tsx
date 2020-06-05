@@ -38,9 +38,9 @@ export default class Toolbar extends React.Component<IProps, any> {
                 <div className='toolbar_source' onClick={() => this.props.onClickSource()}>
                     <Source_Svg />
                 </div>
-                <div className='toolbar_source' onClick={() => this.props.onSearch()}>
+                {/* <div className='toolbar_source' onClick={() => this.props.onSearch()}>
                     <Search_Svg />
-                </div>
+                </div> */}
                 {/* <div className='toolbar_locale' onClick={this.handleClickLocale}>
                     {
                         env.lang == 'en' ? <En_Svg style={{fill: 'lightgrey'}} /> : <Zh_Svg style={{fill: '#e72620'}}/>

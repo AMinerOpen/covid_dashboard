@@ -1,0 +1,41 @@
+@import "../../global.scss";
+
+.searchbar {
+  position: relative;
+
+  .input {
+    margin: 2px 2px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    font-weight: bold;
+    color: $background;
+    font-size: 14px;
+  }
+  .svg {
+    position: absolute;
+    left: 6px;
+    top: 4px;
+    fill: $background;
+    width: 26px;
+    height: 26px;
+    transition: all 0.2s linear;
+    cursor: pointer;
+
+    &:hover {
+      fill: grey;
+    }
+  }
+  .close {
+    position: absolute;
+    top: 4px;
+    right: -30px;
+    width: 26px;
+    height: 26px;
+    fill: dimgray;
+    opacity: 0.6;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}

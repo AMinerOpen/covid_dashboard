@@ -19,6 +19,8 @@ interface IProps extends IDefaultProps  {
     onEventClick: (event: any) => void
     mapMode: string
     onSetMapMode: (mode: string) => void
+    onOpenEvent: (date: Date, data: any, list?: string[]) => void;
+    onOpenEntity: (entity: any, date: Date) => void;
 }
 interface IState {
     region?: IRegionData
@@ -77,6 +79,8 @@ export default class EpidemicMap extends React.Component<IProps, IState> {
                     endDate={this.state.endDate}
                     mapMode={this.props.mapMode}
                     onSetMapMode={this.props.onSetMapMode}
+                    onOpenEvent={this.props.onOpenEvent}
+                    onOpenEntity={this.props.onOpenEntity}
                 />
             </div>
         )

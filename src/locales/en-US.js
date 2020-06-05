@@ -92,7 +92,14 @@ export default {
     "entitypanel.relations": "Relations",
     "entitypanel.properties": "Properties",
 
-    "search.placeholder": "Event Keywords, e.g., Remdesivir",
+    "search.placeholder": "Search entities、events、location...",
+    "search.empty": "Empty results...Try another keyword ?",
+    "search.place": "Place",
+    "search.location": "Location",
+    "search.entity": "Entity",
+    'search.risk_1': "Low risk",
+    'search.risk_2': "Medium risk",
+    'search.risk_3': "High risk",
 
     //contributors
     "contributors.title": "Contributors",
