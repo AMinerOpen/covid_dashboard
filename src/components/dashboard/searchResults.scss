@@ -54,6 +54,11 @@ $bg-color: rgba(240, 250, 250, 0.9);
             font-weight: bold;
             user-select: none;
             cursor: pointer;
+            i {
+              margin-left: 8px;
+              font-size: 14px;
+              color: grey;
+            }
           }
           .risk-level {
             position: absolute;

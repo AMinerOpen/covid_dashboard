@@ -1,6 +1,10 @@
 import * as mapboxgl from 'mapbox-gl'
 
-export function initMapbox() {
+export const DEFAULT_STYLE = 'mapbox://styles/somefive/ck842alxl33y01ipj9342t85s';
+export const mapTool = {onLocate: (geo, zoom) => {}};
+
+export function initMapbox(isMobile, onLocate) {
+    mapTool.onLocate = onLocate;
     if(process.env.REACT_APP_MAPBOX_PROXY) {
         mapboxgl.baseApiUrl = process.env.REACT_APP_MAPBOX_PROXY;
     }
@@ -9,4 +13,12 @@ export function initMapbox() {
     }else {
         mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESSTOKEN;
     }
+    return new mapboxgl.Map({
+        container: 'mapbox-container',
+        style: DEFAULT_STYLE,
+        center: isMobile ? [70, 20] : [200, 70],
+        zoom: isMobile ? 0.5 : 1,
+        minZoom: 0,
+        maxZoom: 9
+    })
 }

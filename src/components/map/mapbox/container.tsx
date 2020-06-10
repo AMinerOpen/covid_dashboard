@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import './container.scss'
 import * as mapboxgl from 'mapbox-gl'
 import _ from 'lodash'
-import { ITimeline, IEpidemicData, IRegionEpidemicDayData, INews, IEpidemicSeries, IRegionEpidemicData, IEpidemicCompressedData, IRegionInfo } from '../../../models'
+import { ITimeline, IEpidemicData, IRegionEpidemicDayData, INews, IEpidemicSeries, IRegionEpidemicData, IEpidemicCompressedData, IRegionInfo, IGeoInfo } from '../../../models'
 import { Position } from 'geojson'
 import { setMapLanguage, preprocessRenderData } from './utils'
 import dateformat from 'dateformat'
@@ -12,7 +12,7 @@ import { IDefaultProps } from '../../../global'
 import axios from 'axios'
 import { getLastDate } from '../../../utils/epidemic'
 import { DAYMILLS } from '../../../utils/date'
-import { initMapbox } from './mapbox.js';
+import { initMapbox, DEFAULT_STYLE } from './mapbox.js';
 import { requestRegionsInfo, requestEpidemic } from '../../../utils/requests'
 
 const PROVINCE_MIN_ZOOM = 2.8
@@ -29,8 +29,6 @@ function get_source_layer_priority(source_layer: string): number {
     if (source_layer === PROVINCE_SOURCE_LAYER) return 2
     return 3
 }
-
-const DEFAULT_STYLE = 'mapbox://styles/somefive/ck842alxl33y01ipj9342t85s'
 
 interface IProp extends IDefaultProps {
     date: string
@@ -174,7 +172,6 @@ export default class MapContainer extends React.Component<IProp, IState> {
                 }
             })
         })
-        console.log('load ep data')
         this.props.onLoadGlobalEpData(globalEpData)
         this.onClick(undefined)
     }
@@ -183,21 +180,24 @@ export default class MapContainer extends React.Component<IProp, IState> {
         requestEpidemic().then(this.handle_epidemic_resp);
     }
 
+    handleLocate(geo: IGeoInfo, zoom?: number) {
+        let lonlat: mapboxgl.LngLatLike = {
+            lon: Number(geo.longitude),
+            lat: Number(geo.latitude)
+        }
+        let option: mapboxgl.EaseToOptions = {
+            center: lonlat, 
+            zoom: zoom || 5
+        };
+        this.map?.easeTo(option);
+    }
+
     init() {
         if (!this.container) {
             setTimeout(this.init.bind(this), 50)
             return
         }
-        let isMobile: boolean = this.props.env.isMobile;
-        initMapbox();
-        this.map = new mapboxgl.Map({
-            container: 'mapbox-container',
-            style: DEFAULT_STYLE,
-            center: isMobile ? [70, 20] : [200, 70],
-            zoom: isMobile ? 0.5 : 1,
-            minZoom: 0,
-            maxZoom: 9
-        })
+        this.map = initMapbox(this.props.env.isMobile, this.handleLocate.bind(this));
 
         requestEpidemic().then(this.handle_epidemic_resp)
             .catch(err => {

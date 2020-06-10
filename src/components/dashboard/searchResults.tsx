@@ -4,6 +4,7 @@ import './searchResults.scss';
 import { ISearchResult, ISearchRegion, INews, IEntity } from '../../models';
 import { ReactComponent as Empty_Svg } from './images/empty.svg';
 import EventFlag from '../eventFlag/eventFlag';
+import { mapTool } from '../map/mapbox/mapbox.js';
 
 interface ISBoxProps extends React.ComponentProps<any> {
   width: number;
@@ -76,7 +77,7 @@ class SearchResults extends React.Component<IProps, IState> {
                       <div className='sts-top'>
                         <div className='sts-item'>
                           <div className='sts-type'>{intl.formatMessage({id: 'search.place'})}</div>
-                          <div className='sts-name'>{region.region}</div>
+                          <div className='sts-name' onClick={region.geo ? () => mapTool.onLocate && mapTool.onLocate(region.geo, region.level == 3 ? 6 : 5) : undefined}>{`${region.region}`}{region.geo && <i className='fa fa-map-marker-alt' />}</div>
                         </div>
                         {
                           region.risk_level && region.risk_level != '-' && this.riskFlag(region.risk_level)

@@ -122,6 +122,7 @@ export interface ISearchRegion {
     region: string;
     risk_level: string;
     _id: string;
+    geo: IGeoInfo;
 }
 
 export interface IEntityRelation {
