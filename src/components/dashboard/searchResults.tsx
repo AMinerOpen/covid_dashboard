@@ -77,7 +77,7 @@ class SearchResults extends React.Component<IProps, IState> {
                       <div className='sts-top'>
                         <div className='sts-item'>
                           <div className='sts-type'>{intl.formatMessage({id: 'search.place'})}</div>
-                          <div className='sts-name' onClick={region.geo ? () => mapTool.onLocate && mapTool.onLocate(region.geo, region.level == 3 ? 6 : 5) : undefined}>{`${region.region}`}{region.geo && <i className='fa fa-map-marker-alt' />}</div>
+                          <div className='sts-name' onClick={region.geo ? () => mapTool.onLocate && mapTool.onLocate(region.geo, region.level + 5) : undefined}>{`${region.region}`}{region.geo && <i className='fa fa-map-marker-alt' />}</div>
                         </div>
                         {
                           region.risk_level && region.risk_level != '-' && this.riskFlag(region.risk_level)
