@@ -19,6 +19,6 @@ export function initMapbox(isMobile, onLocate) {
         center: isMobile ? [70, 20] : [200, 70],
         zoom: isMobile ? 0.5 : 1,
         minZoom: 0,
-        maxZoom: 9
+        maxZoom: 16
     })
 }

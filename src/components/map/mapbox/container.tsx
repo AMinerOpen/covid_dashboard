@@ -75,6 +75,12 @@ export default class MapContainer extends React.Component<IProp, IState> {
         return ep.data[idx]
     }
 
+    __getDecayFactor() {
+        const zoomLevel = this.map?.getZoom() || 0
+        const decayFactor = (zoomLevel < 8) ? 1.0 : (zoomLevel < 9 ? 0.6 : (zoomLevel < 10 ? 0.2 : 0.1))
+        return decayFactor
+    }
+
     private _hover_feature?: mapboxgl.MapboxGeoJSONFeature
     private _click_feature?: mapboxgl.MapboxGeoJSONFeature
     private hover_feature?: mapboxgl.MapboxGeoJSONFeature
@@ -82,7 +88,8 @@ export default class MapContainer extends React.Component<IProp, IState> {
     private _hover_update = _.debounce(() => {
         if (this.hover_feature) this.map?.setFeatureState(this.hover_feature, { hover_opacity: undefined, hover_stroke_opacity: undefined })
         this.hover_feature = this._hover_feature
-        if (this.hover_feature) this.map?.setFeatureState(this.hover_feature, { hover_opacity: 0.9, hover_stroke_opacity: 0.5 })
+        const decayFactor = this.__getDecayFactor()
+        if (this.hover_feature) this.map?.setFeatureState(this.hover_feature, { hover_opacity: 0.9 * decayFactor, hover_stroke_opacity: 0.5 * decayFactor })
     })
 
     onClick(feature?: mapboxgl.MapboxGeoJSONFeature) {
@@ -110,6 +117,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
         const forceDisplayMinZoom = [0, PROVINCE_MIN_ZOOM, COUNTY_MIN_ZOOM, 16];
         [COUNTRY_SOURCE_LAYER, REGIONE_SOURCE_LAYER, PROVINCE_SOURCE_LAYER, COUNTY_SOURCE_LAYER].forEach(sourceLayer => {
             this.map!.querySourceFeatures('composite', { sourceLayer }).forEach((feature) => {
+                const decayFactor = this.__getDecayFactor()
                 const ep = this.regionEpidemicData[feature.properties!.name]
                 if (ep) {
                     const dayEp = this.__getDayEp(ep, globalOffset, {display: false})
@@ -121,9 +129,9 @@ export default class MapContainer extends React.Component<IProp, IState> {
                         )
                     ) : 0
                     const color = (opacity > 0 && dayEp.colors) ? (dayEp.colors[this.mapMode] || '#ffffff') : '#ffffff'
-                    this.map!.setFeatureState({source: 'composite', sourceLayer, id: feature.id}, { color, opacity, stroke_opacity })
+                    this.map!.setFeatureState({source: 'composite', sourceLayer, id: feature.id}, { color, opacity: opacity * decayFactor, stroke_opacity: stroke_opacity * decayFactor })
                 } else if (sourceLayer === COUNTRY_SOURCE_LAYER) {
-                    this.map!.setFeatureState({source: 'composite', sourceLayer, id: feature.id}, { color: '#dddddd', opacity: 1, stroke_opacity: 0.1})
+                    this.map!.setFeatureState({source: 'composite', sourceLayer, id: feature.id}, { color: '#dddddd', opacity: 1 * decayFactor, stroke_opacity: 0.1 * decayFactor})
                 }
             })
         })
@@ -186,7 +194,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
             lat: Number(geo.latitude)
         }
         let option: mapboxgl.EaseToOptions = {
-            center: lonlat, 
+            center: lonlat,
             zoom: zoom || 5
         };
         this.map?.easeTo(option);
