@@ -16,6 +16,7 @@ interface IProps extends IDefaultProps  {
     theme: string
     news: any[]
     langAll: boolean
+    markerVisible: boolean
     onEventClick: (event: any) => void
     mapMode: string
     onSetMapMode: (mode: string) => void
@@ -56,6 +57,7 @@ export default class EpidemicMap extends React.Component<IProps, IState> {
                     news={this.props.news}
                     onChangeEndDate={(endDate) => this.setState({endDate})}
                     langAll={this.props.langAll}
+                    markerVisible={this.props.markerVisible}
                     mapMode={this.props.mapMode}
                 />
                 {/* <ControlPanel

@@ -25,6 +25,9 @@ export default {
     "toolbar.showall" : "Show all",
     "toolbar.showall.tip": "Only show current language data",
     "toolbar.showall.tip_off": "Show all language data",
+    "toolbar.marker": "Marker",
+    "toolbar.marker.tip": "Hide events marker",
+    "toolbar.marker.tip_off": "Show events marker",
     //toolbar.mapMode
     "toolbar.mapmode": "Mode",
     "toolbar.mapmode.risk": "Risk",

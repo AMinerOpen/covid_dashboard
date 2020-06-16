@@ -34,6 +34,7 @@ interface IProp extends IDefaultProps {
     date: string
     theme: string
     langAll: boolean
+    markerVisible: boolean
     onHover: (info: IRegionInfo, dayEp: Partial<IRegionEpidemicDayData>) => void
     onLoadGlobalEpData: (epData:  {[id: string]: ITimeline<IEpidemicData>}) => void
     onLoadGlobalTranslateData: (transData: {[id: string]: {[lang: string]: string}}) => void
@@ -181,7 +182,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
             })
         })
         this.props.onLoadGlobalEpData(globalEpData)
-        this.onClick(undefined)
+        this.onClick(this._click_feature || undefined);
     }
 
     updateEpidemic() {
@@ -195,7 +196,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
         }
         let option: mapboxgl.EaseToOptions = {
             center: lonlat,
-            zoom: zoom || 5
+            zoom: zoom || 6
         };
         this.map?.easeTo(option);
     }
@@ -230,7 +231,6 @@ export default class MapContainer extends React.Component<IProp, IState> {
                     if (name === 'World') name = ''
                     translateData[name] = {zh: info.name_zh, en: info.name_en}
                 })
-                console.log('load regions info')
                 this.props.onLoadGlobalTranslateData(translateData)
                 this.onClick(undefined)
             })
@@ -264,12 +264,14 @@ export default class MapContainer extends React.Component<IProp, IState> {
             //     translations[feature.properties!['name_zh-Hans']] = feature.properties!['name_en']
             // })
             const mappedNews: {[date: string]: INews[]} = {}
-            _.forEach(dailyNews, (news: INews[], loc: string) => {
-                // const _loc = _.reverse(loc.split('.')).find(l => mappings[l])
-                // if (!_loc) return
-                if (!mappedNews[loc]) mappedNews[loc] = []
-                news.forEach(n => mappedNews[loc].push(n))
-            })
+            if(this.props.markerVisible) {
+                _.forEach(dailyNews, (news: INews[], loc: string) => {
+                    // const _loc = _.reverse(loc.split('.')).find(l => mappings[l])
+                    // if (!_loc) return
+                    if (!mappedNews[loc]) mappedNews[loc] = []
+                    news.forEach(n => mappedNews[loc].push(n))
+                })
+            }
             // remove outdated markers
             _.forEach(Object.keys(this.markers), loc => {
                 if (!mappedNews[loc]) {
@@ -277,18 +279,20 @@ export default class MapContainer extends React.Component<IProp, IState> {
                     delete this.markers[loc]
                 }
             })
-            // update new markers
-            this.events = _.map(mappedNews, (news: INews[], loc: string) => {
-                let pos: Position = [ Number(news[0].geoInfo[0].longitude), Number(news[0].geoInfo[0].latitude)]
-                let lonlat: mapboxgl.LngLatLike = {
-                    lon: Number(news[0].geoInfo[0].longitude),
-                    lat: Number(news[0].geoInfo[0].latitude)
-                }
-                if (!this.markers[loc]) {
-                    this.markers[loc] = new mapboxgl.Marker(document.createElement('div')).setLngLat(lonlat).addTo(this.map!)
-                }
-                return { news, loc_zh: loc, loc_en : loc, lang: this.props.env.lang, pos, onClick: this.props.onEventClick }
-            }) //.sort((a, b) => (a.pos[0] - b.pos[0]))
+            if(this.props.markerVisible) {
+                // update new markers
+                this.events = _.map(mappedNews, (news: INews[], loc: string) => {
+                    let pos: Position = [ Number(news[0].geoInfo[0].longitude), Number(news[0].geoInfo[0].latitude)]
+                    let lonlat: mapboxgl.LngLatLike = {
+                        lon: Number(news[0].geoInfo[0].longitude),
+                        lat: Number(news[0].geoInfo[0].latitude)
+                    }
+                    if (!this.markers[loc]) {
+                        this.markers[loc] = new mapboxgl.Marker(document.createElement('div')).setLngLat(lonlat).addTo(this.map!)
+                    }
+                    return { news, loc_zh: loc, loc_en : loc, lang: this.props.env.lang, pos, onClick: this.props.onEventClick }
+                }) //.sort((a, b) => (a.pos[0] - b.pos[0]))
+            }
         } else if (this.map) {
             this.map.once('sourcedata', (e) => {
                 this.updateMarkers()

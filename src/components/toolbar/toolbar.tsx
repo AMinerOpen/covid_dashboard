@@ -11,6 +11,8 @@ import _ from 'lodash'
 interface IProps extends IDefaultProps {
     langAll: boolean;
     onLangAllChange: () => void;
+    markerVisible: boolean;
+    onMarkerVisibleChange: () => void;
     theme: string;
     onSwitchTheme: () => void;
     onClickSource: () => void;
@@ -23,14 +25,23 @@ export default class Toolbar extends React.Component<IProps, any> {
     }
 
     public render() {
-        const {env, langAll, onLangAllChange} = this.props;
+        const {env, langAll, onLangAllChange, markerVisible, onMarkerVisibleChange} = this.props;
         return (
             <div className='toolbar'>
-                {
+                {/* {
                     !env.isMobile && (
                         <Tooltip title={<FormattedMessage id={langAll ? 'toolbar.showall.tip' : 'toolbar.showall.tip_off'}/>} >
                             <div className='toolbar_langall'>
                                 <span className='toolbar_showall'><FormattedMessage id='toolbar.showall'/>:</span><Switch style={langAll ? {backgroundColor: 'skyblue'} : {backgroundColor: 'grey'}} checked={langAll} onChange={() => onLangAllChange && onLangAllChange()} />
+                            </div>
+                        </Tooltip>
+                    )
+                } */}
+                {
+                    !env.isMobile && (
+                        <Tooltip title={<FormattedMessage id={markerVisible ? 'toolbar.marker.tip' : "toolbar.marker.tip_off"}/>} >
+                            <div className='toolbar_langall'>
+                                <span className='toolbar_showall'><FormattedMessage id='toolbar.marker'/>:</span><Switch style={markerVisible ? {backgroundColor: 'skyblue'} : {backgroundColor: 'grey'}} checked={markerVisible} onChange={() => onMarkerVisibleChange && onMarkerVisibleChange()} />
                             </div>
                         </Tooltip>
                     )

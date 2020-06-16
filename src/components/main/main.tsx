@@ -50,6 +50,7 @@ interface IState {
   mapMode: string;
   showSearch: boolean;
   fps: number;
+  markerVisible: boolean;
 }
 
 export default class Main extends React.Component<IProps, IState> {
@@ -81,6 +82,7 @@ export default class Main extends React.Component<IProps, IState> {
     this.state = {
       tflag: 0,
       langAll: true,
+      markerVisible: true,
       theme: "light",
       showForcast: false,
       news: [],
@@ -92,7 +94,6 @@ export default class Main extends React.Component<IProps, IState> {
       fps: 0
     };
 
-    this.handleLangAllChange = this.handleLangAllChange.bind(this);
     this.handleClickDataSource = this.handleClickDataSource.bind(this);
     this.handleOpenEventPanel = this.handleOpenEventPanel.bind(this);
     this.handleKg = this.handleKg.bind(this);
@@ -105,10 +106,6 @@ export default class Main extends React.Component<IProps, IState> {
 
   public componentDidMount() {
     this.props.onChangeDate(new Date());
-  }
-
-  private handleLangAllChange() {
-    this.setState({ langAll: !this.state.langAll });
   }
 
   private handleClickDataSource() {
@@ -187,6 +184,7 @@ export default class Main extends React.Component<IProps, IState> {
         news={this.state.news}
         onEventClick={this.handleMarkerClick}
         langAll={this.state.langAll}
+        markerVisible={this.state.markerVisible}
         mapMode={this.state.mapMode}
         onSetMapMode={(mapMode: string) => this.setState({mapMode})}
         onOpenEntity={this.handleOpenEntityPanel}
@@ -197,12 +195,14 @@ export default class Main extends React.Component<IProps, IState> {
 
   private toolbar(): JSX.Element {
     const { env, onSwitchLocale } = this.props;
-    const { langAll } = this.state;
+    const { langAll, markerVisible } = this.state;
     return (
       <Toolbar
         env={env}
         langAll={langAll}
-        onLangAllChange={this.handleLangAllChange}
+        onLangAllChange={() => this.setState({ langAll: !this.state.langAll })}
+        markerVisible={markerVisible}
+        onMarkerVisibleChange={() => this.setState({ markerVisible: !this.state.markerVisible })}
         transData={this.props.transData}
         epData={this.props.epData}
         theme={this.state.theme}
