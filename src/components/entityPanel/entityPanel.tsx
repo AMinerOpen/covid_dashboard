@@ -2,7 +2,7 @@ import React from 'react';
 import './entityPanel.scss';
 import { Tooltip } from 'antd';
 import { IEnv } from '../../global';
-import { requestEntity } from '../../utils/requests';
+import { requestEntity, requestEntityView } from '../../utils/requests';
 import { FormattedMessage } from 'react-intl';
 import EventFlag from '../eventFlag/eventFlag';
 import EntityFlag from '../entityFlag/entityFlag';
@@ -47,6 +47,7 @@ export default class EntityPanel extends React.Component<IProps, IState> {
   private requestEntity() {
     requestEntity(this.props.data.url, (this.props.date || this.props.env.date).getTime()).then(data => {
       if(data && data.status) {
+        requestEntityView(this.props.data.url);
         let date: Date = this.props.date || this.props.env.date;
         let obj: any = this.props.events.find(d => sameDay(date, d.date));
         let relatedEvents: any[] = [];

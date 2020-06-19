@@ -65,3 +65,15 @@ export async function requestSearch(q: string) {
     const resp = await axios.get(url, { headers: {'Cache-Control': 'no-cache'}})
     return resp.data as any
 }
+
+export async function requestEntityHint(name: string) {
+    const url: string = `https://innovaapi.aminer.cn/covid/api/v1/pneumonia/hit?name=${name}`;
+    const resp = await axios.get(url);
+    return resp.data as any;
+}
+
+export async function requestEntityView(url: string) {
+    const req: string = `https://innovaapi.aminer.cn/covid/api/v1/pneumonia/view?url=${url}`;
+    const resp = await axios.get(req);
+    return resp.data as any;
+}

@@ -38,4 +38,22 @@
       opacity: 0.9;
     }
   }
+  .hints {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 2px);
+    width: 100%;
+    background-color:white;
+    border-radius: 4px;
+    border: 1px solid $background;
+    z-index: 1100;
+
+    .hint_entity {
+      padding: 0 8px;
+      border-bottom: 1px solid rgb(231, 231, 231);
+      height: 32px;
+      line-height: 32px;
+      font-size: 14px;
+    }
+  }
 }
