@@ -73,6 +73,7 @@ export interface INews {
     type: string
     category: string
     geoInfo: IGeoInfo[]
+    influence: number
 }
 
 // confired, suspected, cured, dead, severe
@@ -148,6 +149,7 @@ export interface IEntity {
     url: string;
     label: string;
     img?: string;
+    hot: number;
     abstractInfo: IEntityAbstractInfo;
 }
 

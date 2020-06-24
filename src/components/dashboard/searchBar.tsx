@@ -38,6 +38,7 @@ class SearchBar extends React.Component<IProps, IState> {
     this.handleClose = this.handleClose.bind(this);
     this.clearHintTimer = this.clearHintTimer.bind(this);
     this.handleInputKeydown = this.handleInputKeydown.bind(this);
+    this.handleHintClick = this.handleHintClick.bind(this);
   }
 
   private handleInputChange(e: React.ChangeEvent) {
@@ -54,6 +55,8 @@ class SearchBar extends React.Component<IProps, IState> {
             }
           })
         }, 500)
+      }else {
+        this.setState({hintEntities: [], hintIndex: -1});
       }
     }
   }
@@ -89,6 +92,14 @@ class SearchBar extends React.Component<IProps, IState> {
     }
   }
 
+  private handleHintClick(label: string) {
+    if(label) {
+      this.setState({hintEntities: [], hintIndex: -1, text: label});
+      this.clearHintTimer();
+      this.props.onSearch && this.props.onSearch(label);
+    }
+  }
+
   private clearHintTimer() {
     if(this._hintTimeout) {
       clearTimeout(this._hintTimeout);
@@ -97,7 +108,7 @@ class SearchBar extends React.Component<IProps, IState> {
   }
 
   private handleClose() {
-    this.setState({focus: false})
+    this.setState({focus: false, hintEntities: []})
     this.props.onClose && this.props.onClose();
   }
 
@@ -120,9 +131,14 @@ class SearchBar extends React.Component<IProps, IState> {
         {!!hintEntities.length && (
           <div className="hints" >
             {hintEntities.map((entity: any, i: number) => {
+              let label: string = entity[`label_${entity.lang || "zh"}`];
               return (
-                <div className="hint_entity" style={hintIndex == i ? {backgroundColor: "#d1f2ff"} : undefined} key={i}>
-                  {entity[`label_${entity.lang || "zh"}`]}
+                <div 
+                  className="hint_entity" 
+                  style={hintIndex == i ? {backgroundColor: "#d1f2ff"} : undefined} 
+                  key={i}
+                  onClick={() => this.handleHintClick(label)}>
+                  {label}
                 </div>
               )
             })}

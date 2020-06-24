@@ -10,6 +10,7 @@ import _ from 'lodash'
 import { getEventColor } from '../eventFlag/utils';
 import { str2Date } from '../../utils/date';
 import EntityFlag from '../entityFlag/entityFlag';
+import InfluenceFlag from '../influenceFlag/influenceFlag';
 
 interface IProps extends IDefaultProps {
     events: any[];
@@ -173,9 +174,9 @@ export default class EventPanel extends React.Component<IProps, IState> {
     private title(): JSX.Element {
         const event: any = this.state.eventDetail;
         if(event.type == 'paper') {
-            return <div className='title' ><EventFlag lang={this.props.env.lang} type={event.type} category={event.category}/><a href={`https://www.aminer.cn/pub/${event.aminer_id}`} target="_blank" style={{color: 'white'}}>{this.format(event.title)}</a></div>
+            return <div className='title' ><EventFlag lang={this.props.env.lang} type={event.type} category={event.category}/>{ !!event.influence && event.influence > 0 && <InfluenceFlag lang={this.props.env.lang} influence={event.influence || 0} />}<a href={`https://www.aminer.cn/pub/${event.aminer_id}`} target="_blank" style={{color: 'white'}}>{this.format(event.title)}</a></div>
         }else {
-            return <div className='title' ><EventFlag lang={this.props.env.lang} type={event.type} category={event.category}/>{this.format(event.title)}</div>
+            return <div className='title' ><EventFlag lang={this.props.env.lang} type={event.type} category={event.category}/>{ !!event.influence && event.influence > 0 && <InfluenceFlag lang={this.props.env.lang} influence={event.influence || 0} />}{this.format(event.title)}</div>
         }
     }
 
@@ -208,7 +209,7 @@ export default class EventPanel extends React.Component<IProps, IState> {
                             <div className='list_inner'>
                             { curEvents.map((value: any, index: number) => {
                                 return (
-                                    <div className='event_title' key={index} onClick={() => this.handleSelectEvent(value._id)}><EventFlag lang={env.lang} type={value.type} category={value.category}/>{value.title}</div>
+                                    <div className='event_title' key={index} onClick={() => this.handleSelectEvent(value._id)}><EventFlag lang={env.lang} type={value.type} category={value.category}/>{ !!value.influence && value.influence > 0 && <InfluenceFlag lang={this.props.env.lang} influence={value.influence || 0} />}{value.title}</div>
                                 )
                             })}
                             </div>

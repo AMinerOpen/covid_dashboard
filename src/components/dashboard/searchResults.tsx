@@ -4,6 +4,7 @@ import './searchResults.scss';
 import { ISearchResult, ISearchRegion, INews, IEntity } from '../../models';
 import { ReactComponent as Empty_Svg } from './images/empty.svg';
 import EventFlag from '../eventFlag/eventFlag';
+import InfluenceFlag from '../influenceFlag/influenceFlag';
 import { mapTool } from '../map/mapbox/mapbox.js';
 
 interface ISBoxProps extends React.ComponentProps<any> {
@@ -94,6 +95,7 @@ class SearchResults extends React.Component<IProps, IState> {
                 })}
                 {
                   data.entities && !!data.entities.length && data.entities.map((entity: IEntity, i: number) => {
+                    let hot: number = Math.min(3, Math.floor((entity.hot || 0) / 0.32))
                     return <SBox width={defaultWidth} key={i}>
                       <div className='sts-block'>
                         <div className='sts-block-entity'>
@@ -101,7 +103,10 @@ class SearchResults extends React.Component<IProps, IState> {
                             <div className='sts-top'>
                               <div className='sts-item'>
                                 <div className='sts-type'>{intl.formatMessage({id: 'search.entity'})}</div>
-                                <div className='sts-name' onClick={() => this.props.onOpenEntity(entity, this.props.date)}>{entity.label}</div>
+                                <div className='sts-name' onClick={() => this.props.onOpenEntity(entity, this.props.date)}>
+                                  {entity.label}
+                                  <span style={{marginLeft: "6px"}}>{!!hot && Array(hot).fill(0).map((_, i) => <i key={i} className='fa fa-fire' style={{color: "orangered"}} />)}</span>
+                                </div>
                               </div>
                             </div>
                             <div>{entity.abstractInfo.baidu || entity.abstractInfo.enwiki || entity.abstractInfo.zhwiki}</div>
@@ -118,7 +123,13 @@ class SearchResults extends React.Component<IProps, IState> {
                 }
                 { !!events && events.map((event: INews, i: number) => {
                   return <SBox width={defaultWidth} key={i}>
-                    <div className='sts-news-title' onClick={() => this.props.onOpenEvent(this.props.date, event, events.map((d:INews) => d._id))} ><EventFlag lang={this.props.lang} type={event.type} category={event.category}/>{event.title}</div>
+                    <div 
+                      className='sts-news-title' 
+                      onClick={() => this.props.onOpenEvent(this.props.date, event, events.map((d:INews) => d._id))} >
+                        <EventFlag lang={this.props.lang} type={event.type} category={event.category}/>
+                        { !!event.influence && event.influence > 0 && <InfluenceFlag lang={this.props.lang} influence={event.influence || 0} />}
+                        {event.title}
+                      </div>
                   </SBox>
                 }) }
               </div>
