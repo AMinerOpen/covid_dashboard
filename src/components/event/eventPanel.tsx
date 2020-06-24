@@ -148,7 +148,7 @@ export default class EventPanel extends React.Component<IProps, IState> {
         return (
             <div className='content_outter'>
                 <div className='paper_line'>Year: <span className='paper_content'>{event.year || '2020'}</span></div>
-                <div className='paper_line'>Authors: <span className='paper_content'>{event.authors.map((d:any) => d.name).join(", ")}</span></div>
+                <div className='paper_line'>Authors: <span className='paper_content'>{event.authors.map((d:any) => d.name || d.name_zh).join(", ")}</span></div>
                 { event.pdf && <div className='paper_line'>Pdf: <span className='paper_content'><a href={event.pdf} target='_blank' >[<FormattedMessage id='event.download' />]</a></span></div>}
                 { event.content && <div className='paper_line'>Abstract: <span className='paper_content'>{this.format(event.content)}</span></div> }
                 <div style={{width: '100%', height: '80px'}}></div>

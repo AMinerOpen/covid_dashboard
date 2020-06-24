@@ -40,7 +40,7 @@ yarn build
 此项目遵循 [Contributor Convenant](http://contributor-covenant.org/version/1/3/0/) 行为规范。  
 你也可以进入我们的开发者微信群参与我们的讨论。  
 微信群二维码:  
-![](https://lfs.aminer.cn/misc/ncov/dashboard/wechat_20200529.jpg)
+![](https://lfs.aminer.cn/misc/ncov/dashboard/wechat_20200624.png)
 
 ## 数据源
 #### 疫情数据
