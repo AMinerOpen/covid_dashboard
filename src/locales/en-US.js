@@ -88,6 +88,7 @@ export default {
     //hos
     "hot.entities": "Hot Entities",
     "hot.events": "Hot Events",
+    "hot.beijing": "Beijing",
 
     //entityPanel
     "entitypanel.events": "Related Events",

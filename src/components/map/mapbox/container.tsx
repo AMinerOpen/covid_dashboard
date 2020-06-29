@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom'
 import './container.scss'
 import * as mapboxgl from 'mapbox-gl'
 import _ from 'lodash'
-import { ITimeline, IEpidemicData, IRegionEpidemicDayData, INews, IRegionEpidemicData, IRegionInfo, IGeoInfo } from '../../../models'
-import { Position } from 'geojson'
+import { ITimeline, IEpidemicData, IRegionEpidemicDayData, INews, IRegionEpidemicData, IRegionInfo, IGeoInfo, IHotRegion, ISearchRegion } from '../../../models'
 import { setMapLanguage, preprocessRenderData } from './utils'
 import dateformat from 'dateformat'
 import EventMarker, { IEventMarkerProp } from './event-marker'
@@ -13,7 +12,8 @@ import axios from 'axios'
 import { getLastDate } from '../../../utils/epidemic'
 import { DAYMILLS } from '../../../utils/date'
 import { initMapbox, DEFAULT_STYLE } from './mapbox.js';
-import { requestRegionsInfo, requestEpidemic } from '../../../utils/requests'
+import { requestRegionsInfo, requestEpidemic, requestHotRegions } from '../../../utils/requests'
+import HotMarker, { IHotMarkerProps } from './hot-marker'
 
 const PROVINCE_MIN_ZOOM = 2.8
 const COUNTY_MIN_ZOOM = 4.5
@@ -22,6 +22,16 @@ const COUNTRY_SOURCE_LAYER = 'countries'
 const REGIONE_SOURCE_LAYER = 'regione-0411'
 const PROVINCE_SOURCE_LAYER = 'provinces'
 const COUNTY_SOURCE_LAYER = 'counties-0417'
+
+const HOT_REGIONS:IHotRegion[] = [
+    {
+        name: "beijing",
+        zoomMin: 8.6,
+        zoom: 9.4,
+        bound: [116.04880884325848, 39.63258933028658, 116.96873450242674, 40.31091353808489],
+        center: [116.407526, 39.90403]
+    }
+]
 
 function get_source_layer_priority(source_layer: string): number {
     if (source_layer === COUNTRY_SOURCE_LAYER) return 0
@@ -42,6 +52,7 @@ interface IProp extends IDefaultProps {
     news: {date: Date, data: INews[]}[]
     onEventClick: (data: any) => void
     mapMode: string
+    hotRegion: string
 }
 
 interface IState {}
@@ -61,6 +72,8 @@ export default class MapContainer extends React.Component<IProp, IState> {
     private regionEpidemicData: {[id: string]: IRegionEpidemicData} = {}
 
     private regionsInfo: {[id: string]: IRegionInfo} = {}
+
+    private curHotRegion: IHotRegion | null = null
 
     constructor(props: IProp) {
         super(props)
@@ -114,6 +127,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
 
     private reloadEpidemicMap = _.debounce(() => {
         if (!this.map) return
+        this.handleMapMove()
         const globalOffset = new Date(this.props.date).getTime() / DAYMILLS
         const forceDisplayMinZoom = [0, PROVINCE_MIN_ZOOM, COUNTY_MIN_ZOOM, 16];
         [COUNTRY_SOURCE_LAYER, REGIONE_SOURCE_LAYER, PROVINCE_SOURCE_LAYER, COUNTY_SOURCE_LAYER].forEach(sourceLayer => {
@@ -189,7 +203,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
         requestEpidemic().then(this.handle_epidemic_resp);
     }
 
-    handleLocate(geo: IGeoInfo, zoom?: number) {
+    handleLocate(geo: {longitude: string, latitude: string}, zoom?: number) {
         let lonlat: mapboxgl.LngLatLike = {
             lon: Number(geo.longitude),
             lat: Number(geo.latitude)
@@ -237,10 +251,64 @@ export default class MapContainer extends React.Component<IProp, IState> {
             .catch(err => console.log('regions info failed', err))
 
         this.map.on('zoomend', () => this.reloadEpidemicMap())
+        this.map.on('moveend', () => this.handleMapMove())
         this.map.on('sourcedata', () => this.reloadEpidemicMap())
 
         this.map.on('mousemove', (e) => this.onHover(this._selectTargetFeature(this.map!.queryRenderedFeatures(e.point))))
         this.map.on('mousedown', (e) => this.onClick(this._selectTargetFeature(this.map!.queryRenderedFeatures(e.point))))
+    }
+
+    handleMapMove() {
+        if(this.map) {
+            let zoom: number = this.map.getZoom();
+            let lnglat: mapboxgl.LngLat = this.map.getCenter();
+            let region: IHotRegion | undefined = HOT_REGIONS.find(region => {
+                return zoom >= region.zoomMin &&
+                    lnglat.lng >= region.bound[0] && lnglat.lng <= region.bound[2] && 
+                    lnglat.lat >= region.bound[1] && lnglat.lat <= region.bound[3];
+            })
+            if(region && region != this.curHotRegion) {
+                this.curHotRegion = region;
+                this.drawHotRegion();
+            }else if(!region && this.curHotRegion) {
+                this.curHotRegion = null;
+                this.clearHotRegion();
+            }
+        }
+    }
+
+    private hotMarkers: {[loc: string]: mapboxgl.Marker} = {}
+    private hotEvents: IHotMarkerProps[] = []
+    drawHotRegion() {
+        this.clearHotRegion();
+        if(this.curHotRegion) {
+            requestHotRegions(this.curHotRegion.name).then(data => {
+                if(this.curHotRegion && data && data.status) {
+                    let regions: ISearchRegion[] = data.data;
+                    regions.forEach(region => {
+                        let risk: number = Number(region.risk_level || "1");
+                        if(risk > 1) {
+                            let lnglat: mapboxgl.LngLatLike = {
+                                lng: Number(region.geo.longitude),
+                                lat: Number(region.geo.latitude)
+                            }
+                            if(!this.hotMarkers[region.code]) {
+                                this.hotMarkers[region.code] = new mapboxgl.Marker(document.createElement('div')).setLngLat(lnglat).addTo(this.map!);
+                            }
+                            this.hotEvents.push({ code: region.code, risk_level: Number(region.risk_level || "1"), label: region.region, lang: this.props.env.lang, onClick: () => {}});
+                        }
+                    })
+                }
+            })
+        }
+    }
+
+    clearHotRegion() {
+        Object.keys(this.hotMarkers).forEach(loc => {
+            this.hotMarkers[loc].remove()
+            delete this.hotMarkers[loc]
+        })
+        this.hotEvents = []
     }
 
     componentDidMount() {
@@ -282,7 +350,6 @@ export default class MapContainer extends React.Component<IProp, IState> {
             if(this.props.markerVisible) {
                 // update new markers
                 this.events = _.map(mappedNews, (news: INews[], loc: string) => {
-                    let pos: Position = [ Number(news[0].geoInfo[0].longitude), Number(news[0].geoInfo[0].latitude)]
                     let lonlat: mapboxgl.LngLatLike = {
                         lon: Number(news[0].geoInfo[0].longitude),
                         lat: Number(news[0].geoInfo[0].latitude)
@@ -290,7 +357,7 @@ export default class MapContainer extends React.Component<IProp, IState> {
                     if (!this.markers[loc]) {
                         this.markers[loc] = new mapboxgl.Marker(document.createElement('div')).setLngLat(lonlat).addTo(this.map!)
                     }
-                    return { news, loc_zh: loc, loc_en : loc, lang: this.props.env.lang, pos, onClick: this.props.onEventClick }
+                    return { news, loc_zh: loc, loc_en : loc, lang: this.props.env.lang, onClick: this.props.onEventClick }
                 }) //.sort((a, b) => (a.pos[0] - b.pos[0]))
             }
         } else if (this.map) {
@@ -305,10 +372,21 @@ export default class MapContainer extends React.Component<IProp, IState> {
         if (this.map) {
             this.events.forEach(prop => {
                 if (this.markers[prop.loc_zh]) {
-                    ReactDOM.render(<EventMarker onClick={this.props.onEventClick} news={prop.news} loc_zh={prop.loc_zh} loc_en={prop.loc_en} lang={prop.lang}/>, this.markers[prop.loc_zh].getElement())
+                    ReactDOM.render(<EventMarker onClick={prop.onClick} news={prop.news} loc_zh={prop.loc_zh} loc_en={prop.loc_en} lang={prop.lang}/>, this.markers[prop.loc_zh].getElement())
                     // this.markers[prop.loc_zh].addTo(this.map!)
                 }
             })
+            this.hotEvents.forEach(prop => {
+                if (this.hotMarkers[prop.code]) {
+                    ReactDOM.render(<HotMarker onClick={prop.onClick} risk_level={prop.risk_level} code={prop.code} label={prop.label} lang={prop.lang}/>, this.hotMarkers[prop.code].getElement())
+                }
+            })
+            if(this.props.hotRegion && this.props.hotRegion != preProps.hotRegion) {
+                let region: IHotRegion | undefined = HOT_REGIONS.find(region => region.name == this.props.hotRegion);
+                if(region) {
+                    this.handleLocate({longitude: region.center[0].toString(), latitude: region.center[1].toString()}, region.zoom);
+                }
+            }
             if(preProps.date != this.props.date) {
                 this.onClick(this._click_feature)
             }

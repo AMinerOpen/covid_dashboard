@@ -114,6 +114,22 @@
             user-select: none;
           }
         }
+        .hot-btns {
+          .hot-btn {
+            width: 100%;
+            font-weight: bold;
+            background: radial-gradient(orange, red);
+            color: white;
+            &:focus {
+              outline: none;
+              border: none;
+            }
+            &:hover {
+              outline: none;
+              border: none;
+            }
+          }
+        }
       }
     }
   }

@@ -88,6 +88,7 @@ export default {
     //hos
     "hot.entities": "热点实体",
     "hot.events": "热点事件",
+    "hot.beijing": "北京疫情",
 
     //entityPanel
     "entitypanel.events": "相关事件",

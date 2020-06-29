@@ -158,3 +158,11 @@ export interface ISearchResult {
     entities?: IEntity[];
     events?: INews[];
 }
+
+export interface IHotRegion {
+    name: string; 
+    zoomMin: number; 
+    zoom: number;
+    bound: [number, number, number, number];
+    center: [number, number];
+}

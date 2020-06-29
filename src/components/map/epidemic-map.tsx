@@ -15,6 +15,8 @@ interface IProps extends IDefaultProps  {
     onChangeSpeed: (speed: number) => void
     theme: string
     news: any[]
+    hotRegion: string
+    onChangeHotRegion: (hotRegion: string) => void
     langAll: boolean
     markerVisible: boolean
     onEventClick: (event: any) => void
@@ -59,6 +61,7 @@ export default class EpidemicMap extends React.Component<IProps, IState> {
                     langAll={this.props.langAll}
                     markerVisible={this.props.markerVisible}
                     mapMode={this.props.mapMode}
+                    hotRegion={this.props.hotRegion}
                 />
                 {/* <ControlPanel
                     env={this.props.env}
@@ -83,6 +86,7 @@ export default class EpidemicMap extends React.Component<IProps, IState> {
                     onSetMapMode={this.props.onSetMapMode}
                     onOpenEvent={this.props.onOpenEvent}
                     onOpenEntity={this.props.onOpenEntity}
+                    onChangeHotRegion={this.props.onChangeHotRegion}
                 />
             </div>
         )

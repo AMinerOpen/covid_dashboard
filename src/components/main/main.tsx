@@ -17,6 +17,7 @@ import Infobar from "../infobar/infobar";
 import SearchBox from "../searchbox";
 import Hotbar from "../hotbar/hotbar";
 import EntityPanel from "../entityPanel/entityPanel";
+import { setTimeout } from "timers";
 
 interface IPanelParams {
   type: 'event' | "entity";
@@ -51,6 +52,7 @@ interface IState {
   showSearch: boolean;
   fps: number;
   markerVisible: boolean;
+  hotRegion: string;
 }
 
 export default class Main extends React.Component<IProps, IState> {
@@ -91,7 +93,8 @@ export default class Main extends React.Component<IProps, IState> {
       panelStack: [],
       mapMode: 'risk',
       showSearch: false,
-      fps: 0
+      fps: 0,
+      hotRegion: ""
     };
 
     this.handleClickDataSource = this.handleClickDataSource.bind(this);
@@ -102,6 +105,7 @@ export default class Main extends React.Component<IProps, IState> {
     this.handleOpenEntityPanel = this.handleOpenEntityPanel.bind(this);
     this.pushPanelStack = this.pushPanelStack.bind(this);
     this.popPanelStack = this.popPanelStack.bind(this);
+    this.handleChangeHotRegion = this.handleChangeHotRegion.bind(this);
   }
 
   public componentDidMount() {
@@ -170,6 +174,11 @@ export default class Main extends React.Component<IProps, IState> {
     window.open(url, "_blank");
   }
 
+  private handleChangeHotRegion(region: string) {
+    this.setState({hotRegion: region});
+    setTimeout(() => {this.setState({hotRegion: ""})}, 1000);
+  }
+
   private map(): JSX.Element {
     return (
       <EpidemicMap
@@ -189,6 +198,8 @@ export default class Main extends React.Component<IProps, IState> {
         onSetMapMode={(mapMode: string) => this.setState({mapMode})}
         onOpenEntity={this.handleOpenEntityPanel}
         onOpenEvent={this.handleOpenEventPanel}
+        hotRegion={this.state.hotRegion}
+        onChangeHotRegion={this.handleChangeHotRegion}
       />
     );
   }

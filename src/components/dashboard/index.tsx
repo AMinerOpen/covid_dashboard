@@ -7,7 +7,7 @@ import { displayNumber } from '../../utils/data';
 import { risk2color } from '../../utils/color';
 import ReactEcharts from 'echarts-for-react';
 import MapModeSelector from '../map/map-mode-selector';
-import { Tooltip } from 'antd';
+import { Tooltip, Button } from 'antd';
 import { FormattedMessage} from 'react-intl';
 import dateformat from 'dateformat';
 import { ReactComponent as Tip_Svg } from '../main/images/tip.svg';
@@ -25,6 +25,7 @@ interface IProps extends IDefaultProps{
   onSetMapMode: (mode: string) => void
   onOpenEvent: (date: Date, data: any, list?: string[]) => void;
   onOpenEntity: (entity: any, date: Date) => void;
+  onChangeHotRegion: (hotRegion: string) => void;
 }
 
 interface IState {
@@ -208,6 +209,9 @@ export default class DashBoard extends React.Component<IProps, IState> {
                       <div className='title'><FormattedMessage id='map.control.riskchart' /></div>
                     </div>
                   </DBBlock>
+                  <div className='hot-btns' style={{width: `${this._dataWidth}px`, height: `${this._rightupHeight}`}}>
+                    <Button className='hot-btn' onClick={() => this.props.onChangeHotRegion && this.props.onChangeHotRegion("beijing")}><FormattedMessage id="hot.beijing" /></Button>
+                  </div>
                 </div>
                 <div className='rightsearch'>
                   <SearchBar lang={this.props.env.lang} width={this._riskWidth} height={this._rightupHeight} onSearch={this.handleSearch} onClose={this.handleSearchClose} />

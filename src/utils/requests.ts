@@ -77,3 +77,9 @@ export async function requestEntityView(url: string) {
     const resp = await axios.get(req);
     return resp.data as any;
 }
+
+export async function requestHotRegions(region: string) {
+    const req: string = process.env.REACT_APP_API_URL + `/hotregion?r=${region}`;
+    const resp = await axios.get(req);
+    return resp.data as any;
+}

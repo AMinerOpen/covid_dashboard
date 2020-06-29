@@ -1,0 +1,33 @@
+.hot-marker {
+  position: relative;
+  svg {
+    position: absolute;
+    left: -14px;
+    top: -34px;
+    width: 28px;
+    height: 34px;
+  }
+  i {
+    position: absolute;
+    user-select: none;
+    left: -14px;
+    top: -26px;
+    width: 28px;
+    text-align: center;
+    color: white;
+  }
+  .hot-marker-label {
+    position: absolute;
+    left: -100px;
+    display: none;
+    width: 200px;
+    text-align: center;
+    pointer-events: none;
+    font-weight: bold;
+  }
+  &:hover {
+    .hot-marker-label {
+      display: inline;
+    }
+  }
+}
