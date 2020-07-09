@@ -1,11 +1,12 @@
 # COVID-19 Graph - Knowledge Dashboard API Doc
 
 ## Epidemic
-### 1. Request epidemic data
+### 1. Epidemic datas
 #### Description
-> Request epidemic realtime data (Updated every 5 mins).
+> Request real-time epidemic data after multi-source integration in all regions (countries/provinces/states/counties).  
+> Updated every 5 mins.
 #### URL
-> [https://covid-dashboard-api.aminer.cn/dist/epidemic.json](https://covid-dashboard-api.aminer.cn/dist/epidemic.json)
+> [https://covid-dashboard.aminer.cn/api/dist/epidemic.json](https://covid-dashboard.aminer.cn/api/dist/epidemic.json)
 #### Request method
 > GET
 #### Request params
@@ -15,20 +16,21 @@
 #### Response data
 ```
 {
-    REGION_NAME: {
+    [COUNTRY|PROVINCE|COUNTY]: {
         "begin": "YYYY-mm-dd",
         "data": [
-            [CONFIRMED,SUSPECTED, CURED, DEAD, SEVERE, RISK]
+            [CONFIRMED,SUSPECTED, CURED, DEAD, SEVERE, RISK, inc24]
         ]
     }
 }
 ```
 ## Events
-### 1. Request events data
+### 1. Events datas
 #### Description
-> Request events realtime data (Updated every 5 mins).
+> Request data for all events (news, papers, etc.), including title, type, language, date, geo, entities, risk influence, etc.
+> Updated every 5 mins.
 #### URL
-> [https://covid-dashboard-api.aminer.cn/dist/events.json](https://covid-dashboard-api.aminer.cn/dist/events.json)
+> [https://covid-dashboard.aminer.cn/api/dist/events.json](https://covid-dashboard.aminer.cn/api/dist/events.json)
 #### Request method
 > GET
 #### Request params
@@ -54,7 +56,8 @@
                     "latitude",
                     "longitude"
                 }
-            ]
+            ],
+            "influence"
         }
     ]
 }
@@ -63,7 +66,7 @@
 #### Description
 > Update events newer than "tflag".
 #### URL
-> [https://covid-dashboard-api.aminer.cn/events/update](https://covid-dashboard-api.aminer.cn/events/update)
+> [https://covid-dashboard.aminer.cn/api/events/update](https://covid-dashboard.aminer.cn/api/events/update)
 #### Request method
 > GET
 #### Request params
@@ -89,11 +92,14 @@
                     "latitude",
                     "longitude"
                 }
-            ]
+            ],
+            "influence"
         }
     ]
 }
 ```
+#### Example
+> https://covid-dashboard.aminer.cn/api/events/update?tflag=1594290598139
 ### 3. Request event details
 #### Description
 > Request event details by id.
@@ -132,18 +138,71 @@
             "latitude",
             "longitude"
         }
+    ],
+    "influence"
+}
+```
+#### Example
+> https://covid-dashboard.aminer.cn/api/event/5f05f3f69fced0a24b2f84ee
+
+## Entity
+### 1, Request Entity Details
+#### Description
+> Request entity details by url.
+> Include related events around specified time.
+#### URL 
+> https://covid-dashboard.aminer.cn/api/entity
+#### Request method
+> GET
+#### Request params
+> url: entity url
+> time: time flag
+#### Response data format 
+> JSON
+#### Response data
+```
+{
+    "label",
+    "url",
+    "source",
+    "img",
+    "hot",
+    "abstractInfo": {
+        "baidu",
+        "enwiki",
+        "zhwiki",
+        "COVID": {
+            "properties",
+            "relations"
+        }
+    },
+    "pos": [
+        {
+            "end",
+            "start"
+        }
+    ],
+    "related_events": [
+        ...EVENT_ID
     ]
 }
 ```
+#### Example
+https://covid-dashboard.aminer.cn/api/entity?url=https://covid-19.aminer.cn/kg/class/virus&time=1594137600000
+
 ## Regions info
 ### 1. Request Regions info
 #### Description
-> Request Regions info csv.
+> Request all regions info csv.
 #### URL
-> [https://covid-dashboard-api.aminer.cn/dist/regions-info.csv](https://covid-dashboard-api.aminer.cn/dist/regions-info.csv)
+> [https://covid-dashboard.aminer.cn/api/dist/regions-info.csv](https://covid-dashboard.aminer.cn/api/dist/regions-info.csv)
 #### Request method
 > GET
 #### Request params
 > Empty
 #### Response data format
 > CSV
+#### Response data
+```
+[name, name_zh, name_en]
+```
