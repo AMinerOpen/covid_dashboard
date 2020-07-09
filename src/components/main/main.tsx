@@ -3,7 +3,7 @@ import "./main.scss";
 import EpidemicMap from "../map/epidemic-map";
 import { IDefaultProps, IEnv } from "../../global";
 import Toolbar from "../toolbar/toolbar";
-import Forcast from "../forcast/forcast";
+import Forcast from "../forcaste";
 import { ITimeline, IEpidemicData } from "../../models/index";
 import Timeline from "../timeline/timeline";
 import { ReactComponent as Forcast_Svg } from "./images/forcast.svg";

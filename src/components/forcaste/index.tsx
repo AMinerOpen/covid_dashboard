@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./forcast.scss";
+import "./index.scss";
 import { FormattedMessage } from "react-intl";
 import ReactEcharts from "echarts-for-react";
 import { Table, Tooltip } from "antd";
@@ -175,24 +175,24 @@ export default class Forcast extends React.Component<IProps, IState> {
           data: this.cutDate(forcastData["world"]["Italy"], startDate, endDate)
         },
         {
-          name_en: "Germany",
-          name_zh: "德国",
+          name_en: "Brazil",
+          name_zh: "巴西",
           data: this.cutDate(
-            forcastData["world"]["Germany"],
+            forcastData["world"]["Brazil"],
             startDate,
             endDate
           )
         },
         {
-          name_en: "France",
-          name_zh: "法国",
-          data: this.cutDate(forcastData["world"]["France"], startDate, endDate)
+          name_en: "India",
+          name_zh: "印度",
+          data: this.cutDate(forcastData["world"]["India"], startDate, endDate)
         },
         {
-          name_en: "Korea",
-          name_zh: "韩国",
+          name_en: "Russian",
+          name_zh: "俄罗斯",
           data: this.cutDate(
-            forcastData["world"]["Republic of Korea"],
+            forcastData["world"]["Russian Federation"],
             startDate,
             endDate
           )
@@ -201,6 +201,11 @@ export default class Forcast extends React.Component<IProps, IState> {
           name_en: "Iran",
           name_zh: "伊朗",
           data: this.cutDate(forcastData["world"]["Iran"], startDate, endDate)
+        },
+        {
+          name_en: "UK",
+          name_zh: "英国",
+          data: this.cutDate(forcastData["world"]["United Kingdom"], startDate, endDate)
         },
         {
           name_en: "China",
@@ -215,7 +220,7 @@ export default class Forcast extends React.Component<IProps, IState> {
             d.f = d.real;
             d.f1 = "-";
           } else {
-            if (p.real) {
+            if (p && p.real) {
               p.f1 = p.real;
             }
             d.f = "-";

@@ -4,7 +4,7 @@ import { Input } from 'antd';
 import { requestEntityHint } from '../../utils/requests';
 import './searchBar.scss';
 import { ReactComponent as Search_Svg } from '../toolbar/images/search.svg';
-import { ReactComponent as Close_Svg } from '../forcast/images/close.svg';
+import { ReactComponent as Close_Svg } from '../forcaste/images/close.svg';
 
 interface IProps extends WrappedComponentProps {
   lang: 'zh' | 'en';

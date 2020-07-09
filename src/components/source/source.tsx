@@ -1,6 +1,6 @@
 import * as React from 'react';
 import "./source.scss";
-import { ReactComponent as Close_Svg } from '../forcast/images/close.svg';
+import { ReactComponent as Close_Svg } from '../forcaste/images/close.svg';
 import { FormattedMessage } from "react-intl";
 
 interface IState {
