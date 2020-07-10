@@ -24,6 +24,7 @@
     }
 }
 ```
+---
 ## Events
 ### 1. Events datas
 #### Description
@@ -62,6 +63,7 @@
     ]
 }
 ```
+---
 ### 2. Update events data
 #### Description
 > Update events newer than "tflag".
@@ -70,7 +72,11 @@
 #### Request method
 > GET
 #### Request params
-> tflag: Number
+
+| Param | Required | Type | Description |  
+|-------------|-------------|-------------|-------------|
+| tflag | true | number | Event tflag |
+
 #### Response data format
 > JSON
 #### Response data
@@ -100,6 +106,7 @@
 ```
 #### Example
 > https://covid-dashboard.aminer.cn/api/events/update?tflag=1594290598139
+---
 ### 3. Request event details
 #### Description
 > Request event details by id.
@@ -108,7 +115,11 @@
 #### Request method
 > GET
 #### Request params
-> id: Event id
+
+| Param | Required | Type | Description |  
+|-------------|-------------|-------------|-------------|
+| id | true | number | Event _id |
+
 #### Response data format
 > JSON
 #### Response data
@@ -145,6 +156,8 @@
 #### Example
 > https://covid-dashboard.aminer.cn/api/event/5f05f3f69fced0a24b2f84ee
 
+---
+
 ## Entity
 ### 1, Request Entity Details
 #### Description
@@ -155,8 +168,12 @@
 #### Request method
 > GET
 #### Request params
-> url: entity url
-> time: time flag
+
+| Param | Required | Type | Description |  
+|-------------|-------------|-------------|-------------|  
+| url | true | string | Entity url |
+| time | true | number | Related events timeflag |
+
 #### Response data format 
 > JSON
 #### Response data
@@ -189,6 +206,8 @@
 ```
 #### Example
 https://covid-dashboard.aminer.cn/api/entity?url=https://covid-19.aminer.cn/kg/class/virus&time=1594137600000
+
+---
 
 ## Regions info
 ### 1. Request Regions info
