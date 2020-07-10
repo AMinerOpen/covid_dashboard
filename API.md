@@ -75,33 +75,37 @@
 
 | Param | Required | Type | Description |  
 |-------------|-------------|-------------|-------------|
-| tflag | true | number | Event tflag |
+| tflag | true | number | Event timeflag (tflag) |
 
 #### Response data format
 > JSON
 #### Response data
 ```
 {
-    "tflag",
-    "datas": [
-        {
-            "_id",
-            "type",
-            "title",
-            "category",
-            "time",
-            "lang",
-            "geoInfo: [
-                {
-                    "originText",
-                    "geoName",
-                    "latitude",
-                    "longitude"
-                }
-            ],
-            "influence"
-        }
-    ]
+    "code",
+    "msg",
+    "data": {
+        "tflag",
+        "datas": [
+            {
+                "_id",
+                "type",
+                "title",
+                "category",
+                "time",
+                "lang",
+                "geoInfo: [
+                    {
+                        "originText",
+                        "geoName",
+                        "latitude",
+                        "longitude"
+                    }
+                ],
+                "influence"
+            }
+        ]
+    }
 }
 ```
 #### Example
@@ -125,32 +129,36 @@
 #### Response data
 ```
 {
-    "_id",
-    "type",
-    "title",
-    "category",
-    "time",
-    "lang",
-    "content",
-    "source",
-    "urls": [
-        "URL"
-    ],
-    "entities": [
-        {
-            "label",
-            "url"
-        }
-    ],
-    "geoInfo: [
-        {
-            "originText",
-            "geoName",
-            "latitude",
-            "longitude"
-        }
-    ],
-    "influence"
+    "code",
+    "msg",
+    "data": {
+        "_id",
+        "type",
+        "title",
+        "category",
+        "time",
+        "lang",
+        "content",
+        "source",
+        "urls": [
+            "URL"
+        ],
+        "entities": [
+            {
+                "label",
+                "url"
+            }
+        ],
+        "geoInfo: [
+            {
+                "originText",
+                "geoName",
+                "latitude",
+                "longitude"
+            }
+        ],
+        "influence"
+    }
 }
 ```
 #### Example
@@ -179,30 +187,35 @@
 #### Response data
 ```
 {
-    "label",
-    "url",
-    "source",
-    "img",
-    "hot",
-    "abstractInfo": {
-        "baidu",
-        "enwiki",
-        "zhwiki",
-        "COVID": {
-            "properties",
-            "relations"
-        }
-    },
-    "pos": [
-        {
-            "end",
-            "start"
-        }
-    ],
-    "related_events": [
-        ...EVENT_ID
-    ]
+    "code",
+    "msg",
+    "data": {
+        "label",
+        "url",
+        "source",
+        "img",
+        "hot",
+        "abstractInfo": {
+            "baidu",
+            "enwiki",
+            "zhwiki",
+            "COVID": {
+                "properties",
+                "relations"
+            }
+        },
+        "pos": [
+            {
+                "end",
+                "start"
+            }
+        ],
+        "related_events": [
+            ...EVENT_ID
+        ]
+    }
 }
+
 ```
 #### Example
 https://covid-dashboard.aminer.cn/api/entity?url=https://covid-19.aminer.cn/kg/class/virus&time=1594137600000
