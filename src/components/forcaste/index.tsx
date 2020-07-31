@@ -398,7 +398,7 @@ export default class Forcast extends React.Component<IProps, IState> {
           render: (text: string) => (
             <span
               style={{ fontWeight: "bold", color: "#d9692d" }}
-            >{`+${text}`}</span>
+            >{`${text}`}</span>
           )
         }
       ];
