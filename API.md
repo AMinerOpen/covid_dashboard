@@ -109,7 +109,108 @@
 }
 ```
 #### Example
-> https://covid-dashboard.aminer.cn/api/events/update?tflag=1594290598139
+Url:
+```
+https://covid-dashboard.aminer.cn/api/events/update?tflag=1596778751436
+```
+Response:
+```json
+{
+    "data": {
+        "datas": [
+            {
+                "_id": "5f2cea499fced0a24ba87659",
+                "category": "",
+                "content": "美国新冠确诊病例和死亡病例仍在迅速增加。",
+                "date": "Fri, 07 Aug 2020 05:12:57 GMT",
+                "entities": [
+                    {
+                        "label": "美国",
+                        "url": "http://xlore.org/instance/bdi6266305"
+                    },
+                    {
+                        "label": "确诊病例",
+                        "url": "https://covid-19.aminer.cn/kg/resource/R26053"
+                    },
+                    {
+                        "label": "新冠",
+                        "url": "https://covid-19.aminer.cn/kg/resource/R25833"
+                    }
+                ],
+                "geoInfo": [
+                    {
+                        "geoName": "United States",
+                        "latitude": "39.76",
+                        "longitude": "-98.5",
+                        "originText": "美国"
+                    }
+                ],
+                "id": "xinhua112633846611150107",
+                "lang": "zh",
+                "sitename": "XINHUANET_ZH",
+                "source": "新华网",
+                "tflag": 1596779081074,
+                "time": "2020-08-07 13:12:57",
+                "title": "约翰斯·霍普金斯大学：美国新冠死亡病例超16万例",
+                "type": "news",
+                "urls": [
+                    "http://m.xinhuanet.com/2020-08/07/c_1126338466.htm"
+                ]
+            }
+            {
+                "_id": "5f2cee599fced0a24bab5be3",
+                "category": "",
+                "content": "WASHINGTON -- U.S. President Donald Trump on Thursday issued an executive order banning any U.S. transactions with Chinese tech firm ByteDance, owner of popular video-sharing app TikTok, starting in 45 days, a controversial move widely criticized by experts.,NEW DELHI -- India's COVID-19 tally crossed 2 million mark on Friday, reaching 2,027,074, the federal health ministry said.,OTTAWA -- Canada has vowed to take countermeasures after U.S. President Donald Trump announced the decision to re-impose a 10-percent tariff on Canadian aluminum imports, citing national security concerns.,\"In response to the American tariffs announced today, Canada will impose countermeasures that will include dollar-for-dollar retaliatory tariffs,\" Canadian Prime Minister Justin Trudeau said Thursday evening.,NEW YORK -- U.S. COVID-19 deaths have surpassed the 160,000 mark to reach 160,090 as of 21:48 p.m. local time on Thursday (0148 GMT Friday), according to the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University.,Meanwhile, the number of COVID-19 cases in the country has risen to 4,881,974, according to the CSSE.",
+                "date": "Fri, 07 Aug 2020 05:40:02 GMT",
+                "entities": [
+                    {
+                        "label": "tiktok",
+                        "url": "http://xlore.org/instance/eni4368592"
+                    },
+                    {
+                        "label": "u.s. president donald trump",
+                        "url": "http://xlore.org/instance/eni925107"
+                    },
+                    {
+                        "label": "systems science",
+                        "url": "http://xlore.org/instance/eni238897"
+                    },
+                    {
+                        "label": "xinhua",
+                        "url": "http://xlore.org/instance/eni126120"
+                    }
+                ],
+                "geoInfo": [
+                    {
+                        "geoName": "Comunidad India",
+                        "latitude": "20.06944",
+                        "longitude": "-75.77389",
+                        "originText": "India"
+                    },
+                    {
+                        "geoName": "Canadian County",
+                        "latitude": "35.54244",
+                        "longitude": "-97.98238",
+                        "originText": "Canadian"
+                    }
+                ],
+                "id": "xinhua13927245711110320",
+                "lang": "en",
+                "source": "XINHUANET",
+                "tflag": 1596780118572,
+                "time": "2020-08-07 13:40:02",
+                "title": "Xinhua world news summary at 0530 GMT, Aug. 7",
+                "type": "news",
+                "urls": [
+                    "http://www.xinhuanet.com/english/2020-08/07/c_139272457.htm"
+                ]
+            }
+        ],
+        "tflag": 1596781632728
+    },
+    "status": true
+}
+```
 ---
 ### 3. Request event details
 #### Description
@@ -126,44 +227,129 @@
 
 #### Response data format
 > JSON
-#### Response data
+#### Example
+Url:
 ```
+https://covid-dashboard.aminer.cn/api/event/5f05f3f69fced0a24b2f84ee
+```
+Response:
+```json
 {
-    "code",
-    "msg",
     "data": {
-        "_id",
-        "type",
-        "title",
-        "category",
-        "time",
-        "lang",
-        "content",
-        "source",
-        "urls": [
-            "URL"
-        ],
+        "_id": "5f05f3f69fced0a24b2f84ee",
+        "category": "",
+        "content": "HELSINKI, July 8 (Xinhua) -- Finnish think tank Sitra said on Wednesday a majority of Finns believe that their post-COVID-19 society will attach more importance to science and expertise and will witness heightened social tension and conflicts on economic interests.,Less than 20 percent of respondents said that people would become more interested in personally participating in political activities in the wake of the COVID-19 pandemic.,Antti Kivela, a director at Sitra, noted in a press release on Wednesday that based on the poll's findings, Finns want the decisions about their future to be \"based on researched information.\",Kalle Nieminen, a leading expert at Sitra, told Finnish newspaper Hufvudstadsbladet that Finland should not waste the opportunities offered by the COVID-19 epidemic.,The poll of about 4,000 individuals was conducted in May. Sitra is a leading Finnish think tank operating on a capital initially donated by the state in 1967.",
+        "date": "Wed, 08 Jul 2020 15:54:59 GMT",
         "entities": [
             {
-                "label",
-                "url"
-            }
-        ],
-        "geoInfo: [
+                "label": "hufvudstadsbladet",
+                "url": "http://xlore.org/instance/eni451410"
+            },
             {
-                "originText",
-                "geoName",
-                "latitude",
-                "longitude"
+                "label": "sitra",
+                "url": "http://xlore.org/instance/eni820264"
+            },
+            {
+                "label": "think tank",
+                "url": "http://xlore.org/instance/eni18475"
+            },
+            {
+                "label": "xinhua",
+                "url": "http://xlore.org/instance/eni126120"
+            },
+            {
+                "label": "finns",
+                "url": "http://xlore.org/instance/eni240847"
+            },
+            {
+                "label": "helsinki",
+                "url": "http://xlore.org/instance/eni6431"
+            },
+            {
+                "label": "finnish",
+                "url": "http://xlore.org/instance/eni4929"
+            },
+            {
+                "label": "epidemic",
+                "url": "https://covid-19.aminer.cn/kg/class/epidemic"
+            },
+            {
+                "label": "COVID-19",
+                "url": "https://covid-19.aminer.cn/kg/resource/R332"
             }
         ],
-        "influence"
-    }
+        "geoInfo": [
+            {
+                "geoName": "Snoma Finnish Cemetery",
+                "latitude": "44.63303",
+                "longitude": "-103.68491",
+                "originText": "Finnish"
+            },
+            {
+                "geoName": "Republic of Finland",
+                "latitude": "64",
+                "longitude": "26",
+                "originText": "Finland"
+            }
+        ],
+        "id": "xinhua13919810411110320",
+        "influence": 0.2758120058205174,
+        "lang": "en",
+        "related_events": [
+            {
+                "id": "5ec2d4809fced0a24b8e6b2d",
+                "score": 0.9113580346658512
+            },
+            {
+                "id": "5ee0cd1c9fced0a24b4f42ba",
+                "score": 0.899462472807494
+            },
+            {
+                "id": "5e9ded0a9fced0a24b5bc270",
+                "score": 0.8976683557998417
+            },
+            {
+                "id": "5ec7cdad9fced0a24bf35d30",
+                "score": 0.8971055445251076
+            },
+            {
+                "id": "5eb2d44b9fced0a24b741872",
+                "score": 0.8966782151341071
+            },
+            {
+                "id": "5ec57e959fced0a24b5fbc91",
+                "score": 0.8949342654876311
+            },
+            {
+                "id": "5ec16df09fced0a24bec32b9",
+                "score": 0.894795169443423
+            },
+            {
+                "id": "5e94b3c09fced0a24bf01117",
+                "score": 0.8938918557235777
+            },
+            {
+                "id": "5eb964d39fced0a24bd491eb",
+                "score": 0.8933007474044586
+            },
+            {
+                "id": "5e95fb919fced0a24b9e9d26",
+                "score": 0.8932850056281226
+            }
+        ],
+        "seg_text": "finn believ crisi give boost scienc helsinki , juli 8 ( xinhua ) -- finnish think tank sitra said wednesday major finn believ post - covid - 19 societi attach import scienc expertis wit heighten social tension conflict econom interest . , less 20 percent respond said peopl would becom interest person particip polit activ wake covid - 19 pandem . , antti kivela , director sitra , note press releas wednesday base poll ' find , finn want decis futur `` base research inform . `` , kall nieminen , lead expert sitra , told finnish newspap hufvudstadsbladet finland wast opportun offer covid - 19 epidem . , poll 4 , 000 individu wa conduct may . sitra lead finnish think tank oper capit initi donat state 1967 .",
+        "source": "XINHUANET",
+        "tflag": 1594225654814,
+        "time": "2020-07-08 23:54:59",
+        "title": "Finns believe crisis gives boost to science",
+        "type": "news",
+        "urls": [
+            "http://www.xinhuanet.com/english/2020-07/08/c_139198104.htm"
+        ]
+    },
+    "status": true
 }
 ```
-#### Example
-> https://covid-dashboard.aminer.cn/api/event/5f05f3f69fced0a24b2f84ee
-
 ---
 
 ## Entity
@@ -184,42 +370,76 @@
 
 #### Response data format 
 > JSON
-#### Response data
+#### Example
+Url:
 ```
+https://covid-dashboard.aminer.cn/api/entity?url=https://covid-19.aminer.cn/kg/class/virus&time=1594137600000
+```
+Response:
+```json
 {
-    "code",
-    "msg",
     "data": {
-        "label",
-        "url",
-        "source",
-        "img",
-        "hot",
         "abstractInfo": {
-            "baidu",
-            "enwiki",
-            "zhwiki",
             "COVID": {
-                "properties",
-                "relations"
-            }
+                "properties": {
+                    "传播方式": "感染",
+                    "包括": "拟病毒、类病毒和病毒粒子",
+                    "定义": "1种独特的传染因子",
+                    "应用": "疫苗、细胞工程、基因工程",
+                    "特征": "自主地复制",
+                    "生存条件": "活的宿主细胞"
+                },
+                "relations": [
+                    {
+                        "forward": true,
+                        "label": "heterotroph",
+                        "relation": "subClassOf",
+                        "url": "https://covid-19.aminer.cn/kg/class/heterotroph"
+                    },
+                    {
+                        "forward": false,
+                        "label": "weijin worm variant go",
+                        "relation": "belongTo",
+                        "url": "https://covid-19.aminer.cn/kg/resource/R24957"
+                    },
+                    {
+                        "forward": false,
+                        "label": "yellow fever virus",
+                        "relation": "belongTo",
+                        "url": "https://covid-19.aminer.cn/kg/resource/R24929"
+                    }
+                ]
+            },
+            "baidu": "病毒是一种个体微小，结构简单，只含一种核酸（DNA或RNA），必须在活细胞内寄生并以复制方式增殖的非细胞型生物。",
+            "enwiki": "",
+            "zhwiki": ""
         },
+        "hot": 0.8576686777650161,
+        "img": "https://bkimg.cdn.bcebos.com/pic/2e2eb9389b504fc2b9419de6e4dde71190ef6d32?x-bce-process=image/resize,m_lfit,w_268,limit_1/format,f_jpg",
+        "label": "virus",
         "pos": [
             {
-                "end",
-                "start"
+                "end": 971,
+                "start": 966
             }
         ],
         "related_events": [
-            ...EVENT_ID
-        ]
-    }
+            "5f03ec519fced0a24bf92d73",
+            "5f08655f9fced0a24b20f285",
+            "5f08655f9fced0a24b20f2b9",
+            "5f099f029fced0a24b65699a",
+            "5f099f039fced0a24b6569aa",
+            "5f099f039fced0a24b6569bd",
+            "5f099f049fced0a24b6569da",
+            "5f0352e89fced0a24bdedc4a",
+            "5f03584d9fced0a24be00cd6"
+        ],
+        "source": "kg",
+        "url": "https://covid-19.aminer.cn/kg/class/virus"
+    },
+    "status": true
 }
-
 ```
-#### Example
-https://covid-dashboard.aminer.cn/api/entity?url=https://covid-19.aminer.cn/kg/class/virus&time=1594137600000
-
 ---
 
 ## Regions info
