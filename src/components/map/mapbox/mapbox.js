@@ -5,9 +5,9 @@ export const mapTool = {onLocate: (geo, zoom) => {}};
 
 export function initMapbox(isMobile, onLocate) {
     mapTool.onLocate = onLocate;
-    if(process.env.REACT_APP_MAPBOX_PROXY) {
-        mapboxgl.baseApiUrl = process.env.REACT_APP_MAPBOX_PROXY;
-    }
+    // if(process.env.REACT_APP_MAPBOX_PROXY) {
+    //     mapboxgl.baseApiUrl = process.env.REACT_APP_MAPBOX_PROXY;
+    // }
     if(!process.env.REACT_APP_MAPBOX_ACCESSTOKEN) {
         console.error("REACT_APP_MAPBOX_ACCESSTOKEN missing, config REACT_APP_MAPBOX_ACCESSTOKEN in PROJECT_ROOT/.env.local");
     }else {
