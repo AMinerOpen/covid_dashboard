@@ -116,7 +116,7 @@ export default class TimeSlider extends React.Component<IProp, IState> {
             onMouseDown={(e) => { this.setClick(true, e.clientX, env.date) }}
             onMouseUp={() => { this.setClick(false, 0, env.date) }}
             onMouseLeave={() => { this.setClick(false, 0, env.date) }}
-            onMouseMove={(e) => this.dragTimeline(e)}>>
+            onMouseMove={(e) => this.dragTimeline(e)}>
             <div className="mask"/>
             <div className="calibers">
                 <div className="marks" style={{left: `${offsetIdx * this.caliberInterval + 200}px`, width: `${this.caliberLength * this.caliberInterval}px`}}
