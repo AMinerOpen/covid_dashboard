@@ -57,7 +57,7 @@ export default {
     "infobar.papers": "论文",
     "infobar.events": "事件",
     "infobar.regions": "国家/地区",
-    "infobar.viewed": "访问",
+    "infobar.viewed": "总访问",
     "infobar.lastupdate": "最近更新",
 
     //forcast

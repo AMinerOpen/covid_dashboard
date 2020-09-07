@@ -88,7 +88,7 @@ export default class Infobar extends React.Component<IProps, IState> {
                 })
             }).then(response => response.json()).then(data => {
                 if(data && data.data.length) {
-                    let viewed: number = data.data.reduce((num: number, cur: any) => num + cur.positive_cnt, 0);
+                    let viewed: number = data.data.reduce((num: number, cur: any) => num + cur.positive_cnt, 0) + 322022;
                     if(viewed != this.state.viewed) {
                         this.setState({viewed});
                     }
@@ -115,6 +115,7 @@ export default class Infobar extends React.Component<IProps, IState> {
                 }
             })
         })
+        papers += 84232;
         if(papers != this.state.papers || events != this.state.events) {
             this.setState({papers, events});
         }
