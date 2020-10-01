@@ -21,7 +21,7 @@ export default {
     "main.contributors": "Contributors",
     "main.title": "COVID-19 Graph - Knowledge Dashboard",
 
-    //toolbar
+    //toolbar.showall
     "toolbar.showall" : "Show all",
     "toolbar.showall.tip": "Only show current language data",
     "toolbar.showall.tip_off": "Show all language data",
